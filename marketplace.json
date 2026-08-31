@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "official-mavecode",
+  "name": "MaveCode-MarketPlace",
+  "publisher": "MaveCode",
+  "publishedAt": "2026-08-31T00:00:00.000Z",
+  "personasCatalogUrl": "personas/personas.json",
+  "mcpsCatalogUrl": "mcps/mcps.json",
+  "signingKeyId": "mavecode-marketplace-2026-01",
+  "signature": "UNSIGNED_LOCAL_DEVELOPMENT_PLACEHOLDER"
+}
