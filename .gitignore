@@ -1,0 +1,10 @@
+﻿marketplace.md
+published/
+.env
+.env.*
+node_modules/
+.pnpm-store/
+dist/
+coverage/
+*.log
+*.tmp
