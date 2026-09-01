@@ -41,6 +41,20 @@ Then every phone-number anchor must use `href="%%=RedirectTo(@CallCTA)=%%"` with
 
 Spans may use numerical styling such as `font-weight:700`, italic, underline, colour, or nowrap, but spans must never carry a `font-family` declaration in any workflow — for example `font-family:'enphase-visuelt-semibold', Arial, sans-serif;` on a span is a blocking defect. The parent text cell owns the Enphase font family, font size, and line height.
 
+Never wrap an `<a>` in a `<span>` whose only purpose is styling (colour, underline, weight, or other decoration). The anchor must carry its own complete inline style directly. A span around an anchor is permitted only when it carries a real inline difference that cannot live on the anchor itself (for example `white-space:nowrap` spanning mixed anchor and non-anchor content). A redundant styling span wrapper around an anchor is a blocking defect.
+
+Bad code:
+
+```html
+<span style="color:#000000; text-decoration:underline;"><a alias="supportpagina" conversion="false" data-linkto="https://" href="https://support.enphase.com/s/article/optimizing-dynamic-tariffs-with-custom-rate-inputs?utm_campaign=%%=v(@utm_campaign)=%%" style="color:#000000; text-decoration:underline;" target="_blank" title="supportpagina">supportpagina</a></span>
+```
+
+Good code:
+
+```html
+<a alias="supportpagina" conversion="false" data-linkto="https://" href="https://support.enphase.com/s/article/optimizing-dynamic-tariffs-with-custom-rate-inputs?utm_campaign=%%=v(@utm_campaign)=%%" style="color:#000000; text-decoration:underline;" target="_blank" title="supportpagina">supportpagina</a>
+```
+
 ## Header and Footer Country Selection
 
 [`references/Header and Footer Blocks.md`](../references/Header%20and%20Footer%20Blocks.md) is the source of truth for header/footer `ContentBlockbyID` values. Detect the target country/language from the user's instructions or content, then select the matching header and its corresponding footer as a pair from that reference. Update BOTH the `%%=ContentBlockbyID("ID")=%%` value AND the paired comment names so the comments name the exact block used (e.g. `<!-- Header_Dark_Version1_FR Content Block Below -->` ... `<!-- //Header_Dark_Version1_FR Content Block below -->`). If the requested country/language has no matching block (or a header exists but no footer, e.g. Greece/Malta), fall back to the US pair: `Header_Dark_Version1_EN` (196561) and `NA_Footer_Section` (171497). Never mix one country's header with a different country's footer outside this fallback. Set the `@utm_campaign` AMPscript value per the user's instructions; keep the `'UTM_Here'` placeholder only when no campaign value is given.
@@ -67,5 +81,6 @@ Scan the copy and brief for URLs before finalizing. Extract every URL present (C
 - If VML uses `w:anchorlock`, the root `html` tag must include `xmlns:w="urn:schemas-microsoft-com:office:word"`.
 - Every image must have an alt attribute: use exact visible image text when present, otherwise use the brand/company/product/object/platform name; empty alt is only for purely decorative images explained by adjacent live text.
 - Remove generic empty placeholder comments from final output.
+- Scan every anchor during final QA and reject any `<span>` that wraps an `<a>` purely for styling; the anchor must carry its full inline style itself.
 - During QA, treat any violation of these table-cell rules as a blocking defect.
 - Before completion, scan every opening `<td>` and `<img>` tag and reject the output until all prohibited heights are removed.

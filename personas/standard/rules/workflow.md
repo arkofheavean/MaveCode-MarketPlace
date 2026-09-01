@@ -267,6 +267,7 @@ Never use JavaScript, event handlers, embedded browser content, forms, modern br
 - **Mandatory font enforcement:** Inspect every inline `font-size` value. Any value greater than `20px` must have the closest matching existing `em_font_*` class. Use an exact matching class where it exists. If a massive display size has no exact approved class, use the nearest available approved large class (`em_font_24`, `em_font_26`, `em_font_28`, `em_font_30`, `em_font_32`, `em_font_36`, or `em_font_38`) rather than adding a custom utility. A missing responsive font class is a blocking defect, including text in headers, feature cards, account data, footer content, and compact nested tables.
 - A font class belongs on the same text-bearing `<td>` or `<span>` as the inline desktop `font-size`; do not put it only on an ancestor table. Preserve the inline desktop font size and line height while the class provides the approved mobile value.
 - Use `em_defaultlink` for links that inherit the surrounding text style. Use `em_defaultlink1` only when the required inherited link style is underlined.
+- Every `td` that contains an anchor (`<a>`) anywhere in its children, or that contains direct text content, must include the `em_defaultlink` class on that `td` (alongside any other required classes such as `em_font_*`). Structural wrapper, spacer, gutter, and image-only cells without text or anchors must not receive `em_defaultlink`.
 - Keep headings and body copy inside table cells; do not depend on browser-default heading or paragraph margins.
 - Parent text cells own the normal font family, font size, and line height. Do not put `font-family` on spans, and do not put `font-size` or `line-height` on spans unless the span intentionally differs from the parent text cell.
 - Use spans only for true inline differences such as numeric font weight, italic, underline, colour, or no-break behaviour. Underlined inline text uses `text-decoration:underline` on the span only when it is not already an anchor that can carry the underline itself.
@@ -705,6 +706,7 @@ Before finalizing an email, verify all of the following:
 - All normal text uses `line-height = font-size + 3px`.
 - All `font-weight` declarations are numerical; no `bold`, `normal`, `lighter`, or `bolder` keyword is used.
 - Every text-bearing `<td>` or `<span>` with an inline font size above `20px` has the closest existing `em_font_*` class, including oversized display text.
+- Every `td` with an anchor child or direct text content carries `em_defaultlink`; no text-free structural, spacer, gutter, or image-only cell carries it.
 - Every image has suitable alt text, explicit width, no height attribute or inline height CSS, `display:block`, and fallback styling.
 - Hero/banner images use `em_full_img` for responsive scaling.
 - Every `<img>` has been individually checked against the `280px` threshold: every image wider than `280px` has `em_full_img` on its direct parent `<td>`, and no image at or below `280px` has that class.

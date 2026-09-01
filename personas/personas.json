@@ -8,11 +8,11 @@
       "name": "🧭 Standard Email-Dev",
       "type": "persona",
       "description": "Universal client-agnostic email development persona for any brand",
-      "version": "1.2.19",
+      "version": "1.2.20",
       "updatedAt": "2026-09-01T00:00:00.000Z",
       "packageUrl": "personas/standard/package.mavepersona.json",
-      "sha256": "fe4af423e559aea5d697cd1fba34f9fd77b33b42194a73160405fd106e9cc7f1",
-      "packageSize": 134685,
+      "sha256": "1c7d420200b7bd3e0f165d98890954ad962b3f97a929e9112082c43caef1cf29",
+      "packageSize": 135180,
       "signingKeyId": "mavecode-marketplace-2026-01",
       "minimumMaveCodeVersion": "0.0.0",
       "tags": [
@@ -24,11 +24,11 @@
       "name": "⚡ Enphase Email-Dev",
       "type": "persona",
       "description": "Self-contained Enphase project engineering persona",
-      "version": "1.3.18",
+      "version": "1.3.19",
       "updatedAt": "2026-09-01T00:00:00.000Z",
       "packageUrl": "personas/enphase/package.mavepersona.json",
-      "sha256": "af5a64dbf5870d5552fc4c54c6d6c28d98115ebcbdf026031cfd6dff95d0500b",
-      "packageSize": 307780,
+      "sha256": "5907e05c04c565c1df05e84f20c5be902cf9bba29db1aef1ed48b8869cbe1070",
+      "packageSize": 309150,
       "signingKeyId": "mavecode-marketplace-2026-01",
       "minimumMaveCodeVersion": "0.0.0",
       "tags": [
@@ -37,5 +37,5 @@
     }
   ],
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "+W+WDl9n/6DPTj9rVhl4QgD5ajMrVed7CB3YnV8zbyrd5jeHjLHy6hhPQezR0NcCw1/eRun3Fo2behDT5y/FAw=="
+  "signature": "HwWh18DyeDdo6Pu0k8eX1dK0NFdiTLDWi1v8LXwMdl92ZjnjUkvr3OmMHjeUhAEAsuMyGGe3R9RMRKPIpo69Dg=="
 }
