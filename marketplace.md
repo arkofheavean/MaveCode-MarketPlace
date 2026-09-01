@@ -1349,6 +1349,8 @@ Remove and cleanup behavior:
 
 ## 1 Aug 2026 plans
 
+**Implementation status (1 Sep 2026): IMPLEMENTED.** All phases below are shipped in this repo (commit bf36a9d: Standard 1.2.14, Enphase 1.3.12 with `figma/capability.json`, `figma/prompt-rules.json`, `figma/skeleton.html`, extended validators/QA, rebuilt and re-signed catalogs) and in the extension repo (bundled persona fallbacks deleted, no-fallback bootstrap with 30s → 2m → 10m → 2h single-flight retry, generic package-driven Figma rule engine with fail-closed QA, `supportsFigma` capability defaulting to `false` and `true` only for Standard/Enphase). Implementation deviation from the plan text below: the shipped `figma/skeleton.html` contract uses `{{TITLE}}` and `{{WIDTH}}` placeholders only (not `{{SUBJECT}}`/`{{PREHEADER}}`/`{{SECTIONS}}`), and shipped validator/QA assets use `kind`-tagged JSON (`figma-email-html-gate`, `figma-email-qa-instructions`, `figma-prompt-rules`, `figma-capability`) with an 11-id validator vocabulary rather than the generic rule-type engine names listed in Phase 0.
+
 Planned direction: remove bundled persona fallbacks, bootstrap Standard/Enphase from the marketplace at install, move ALL persona behavior (prompts, skeletons, validators, QA, leakage markers) into marketplace persona packages only, keep the Figma workflow fully generic, and add a `supportsFigma` persona capability. Each edge case below includes its resolution. Where this heading conflicts with earlier bundled-fallback sections above, this heading is the newer intent.
 
 ### Phase 0: Frozen package contracts
