@@ -1,16 +1,132 @@
 {
-	"schemaVersion": 2,
+	"schemaVersion": 3,
 	"kind": "figma-email-html-gate",
-	"description": "Enphase Figma email completion gate: generic email checks plus Enphase SFMC anchor, UTM, and phone-tracking rules.",
-	"validators": [
-		"unsupported-code",
-		"shared-email-markup",
-		"image-alt-and-height",
-		"content-td-height",
-		"text-only-td-width",
-		"reference-sample-leakage"
-	],
+	"description": "Enphase Figma email completion gate: Enphase-owned email hygiene rules plus Enphase SFMC anchor, UTM, and phone-tracking rules, all executed by the generic extension rule engine.",
 	"rules": [
+		{
+			"id": "enphase-unsupported-tags",
+			"type": "forbidden-tag",
+			"code": "UNSUPPORTED_TAG",
+			"message": "Unsupported email HTML tags found:",
+			"tags": ["script", "iframe", "embed", "object", "form", "input", "button"]
+		},
+		{
+			"id": "enphase-unsupported-css",
+			"type": "forbidden-css-feature",
+			"code": "UNSUPPORTED_CSS",
+			"message": "Unsupported email CSS found:",
+			"features": [
+				{ "label": "display:flex", "pattern": "display\\s*:\\s*flex" },
+				{ "label": "display:grid", "pattern": "display\\s*:\\s*grid" },
+				{ "label": "gap", "pattern": "(?:^|;)\\s*gap\\s*:" },
+				{ "label": "position:absolute", "pattern": "position\\s*:\\s*absolute" },
+				{ "label": "position:fixed", "pattern": "position\\s*:\\s*fixed" },
+				{ "label": "@import", "pattern": "@import\\b" },
+				{ "label": "CSS variables", "pattern": "(?:var\\(|--[A-Za-z0-9_-]+\\s*:)" },
+				{ "label": "pseudo-elements", "pattern": "::(?:before|after)\\b" },
+				{ "label": "keyword font-weight", "pattern": "font-weight\\s*:\\s*(?:bold|normal|lighter|bolder)" }
+			]
+		},
+		{
+			"id": "enphase-td-alignment-attributes",
+			"type": "required-tag-attributes",
+			"code": "TD_ALIGNMENT_ATTRIBUTES",
+			"message": "Every td must explicitly include both align and valign attributes.",
+			"tag": "td",
+			"attributePatterns": ["\\salign\\s*=", "\\svalign\\s*="]
+		},
+		{
+			"id": "enphase-table-presentation-role",
+			"type": "required-tag-attributes",
+			"code": "TABLE_PRESENTATION_ROLE",
+			"message": "Layout tables must include role=\"presentation\".",
+			"tag": "table",
+			"attributePatterns": ["\\srole\\s*=\\s*[\"']presentation[\"']"]
+		},
+		{
+			"id": "enphase-image-alt-required",
+			"type": "required-tag-attributes",
+			"code": "IMAGE_ALT_MISSING",
+			"message": "Every img element must include an alt attribute.",
+			"tag": "img",
+			"attributePatterns": ["\\salt\\s*="]
+		},
+		{
+			"id": "enphase-image-height-attribute",
+			"type": "forbidden-css-pattern",
+			"code": "IMAGE_HEIGHT_ATTRIBUTE",
+			"message": "An img element has a prohibited height attribute.",
+			"pattern": "<img\\b[^>]*\\sheight\\s*="
+		},
+		{
+			"id": "enphase-image-height-style",
+			"type": "forbidden-inline-style-property",
+			"code": "IMAGE_HEIGHT_STYLE",
+			"message": "An img element has prohibited inline height CSS.",
+			"tag": "img",
+			"propertyPattern": "(?:^|;)\\s*height\\s*:"
+		},
+		{
+			"id": "enphase-no-colspan",
+			"type": "forbidden-css-pattern",
+			"code": "COLSPAN",
+			"message": "Generated email markup must not use colspan.",
+			"pattern": "\\scolspan\\s*="
+		},
+		{
+			"id": "enphase-no-empty-generic-comments",
+			"type": "forbidden-css-pattern",
+			"code": "GENERIC_EMPTY_COMMENT",
+			"message": "Final output must not retain empty generic block comments.",
+			"pattern": "<!--\\s*Body Block \\d+ BELOW as table\\s*-->\\s*<!--\\s*Body Block \\d+ BELOW as table ENDS\\s*-->"
+		},
+		{
+			"id": "enphase-span-font-family",
+			"type": "forbidden-inline-style-property",
+			"code": "SPAN_FONT_FAMILY",
+			"message": "Spans must not carry font-family; parent text cells own it.",
+			"tag": "span",
+			"propertyPattern": "\\bfont-family\\s*:"
+		},
+		{
+			"id": "enphase-span-typography",
+			"type": "forbidden-inline-style-property",
+			"code": "SPAN_TYPOGRAPHY",
+			"message": "Spans should not carry font-size or line-height unless intentionally different from the parent cell.",
+			"tag": "span",
+			"propertyPattern": "\\b(?:font-size|line-height)\\s*:"
+		},
+		{
+			"id": "enphase-vml-word-namespace",
+			"type": "conditional-required-pattern",
+			"code": "VML_WORD_NAMESPACE",
+			"message": "VML w:anchorlock requires the Word namespace on html.",
+			"whenPattern": "\\bw:anchorlock\\b",
+			"requiredPatterns": ["xmlns:w\\s*=\\s*[\"']urn:schemas-microsoft-com:office:word[\"']"]
+		},
+		{
+			"id": "enphase-dark-mode-meta",
+			"type": "conditional-required-pattern",
+			"code": "DARK_MODE_META",
+			"message": "Color-scheme CSS requires matching dark-mode meta tags.",
+			"whenPattern": "color-scheme\\s*:\\s*light dark",
+			"requiredPatterns": [
+				"<meta\\b[^>]*name\\s*=\\s*[\"']color-scheme[\"'][^>]*content\\s*=\\s*[\"']light dark[\"'][^>]*>",
+				"<meta\\b[^>]*name\\s*=\\s*[\"']supported-color-schemes[\"'][^>]*content\\s*=\\s*[\"']light dark[\"'][^>]*>"
+			]
+		},
+		{
+			"id": "enphase-content-td-height",
+			"type": "content-cell-height-policy",
+			"code": "CONTENT_TD_HEIGHT",
+			"message": "A content td has height; only an actual CTA button cell or dedicated empty spacer cell may have height."
+		},
+		{
+			"id": "enphase-text-only-td-width",
+			"type": "text-only-cell-width-policy",
+			"code": "TEXT_ONLY_TD_WIDTH",
+			"message": "A paragraph/body-text-only td has width; its parent table or structural column must control width."
+		},
 		{
 			"id": "enphase-sfmc-anchor-attributes",
 			"type": "anchor-attribute-policy",
@@ -50,13 +166,19 @@
 				"SET\\s+@CallCTA\\s*=\\s*CloudPagesURL\\s*\\(",
 				"href\\s*=\\s*[\"']%%=RedirectTo\\(@CallCTA\\)=%%[\"']"
 			]
+		},
+		{
+			"id": "enphase-reference-sample-leakage",
+			"type": "content-marker-leakage",
+			"code": "REFERENCE_SAMPLE_CONTENT",
+			"message": "Output contains persona-reference sample content not found in the task's primary reference:",
+			"markers": [
+				"Early access to new smart charging features before anyone else",
+				"Verify your details and request a call from Enphase",
+				"Pricing and Financing Disclaimer",
+				"LOYAL CUSTOMER EXCLUSIVE",
+				"SUBVENCIÓN BALEARES 2026"
+			]
 		}
-	],
-	"sampleLeakageMarkers": [
-		"Early access to new smart charging features before anyone else",
-		"Verify your details and request a call from Enphase",
-		"Pricing and Financing Disclaimer",
-		"LOYAL CUSTOMER EXCLUSIVE",
-		"SUBVENCIÓN BALEARES 2026"
 	]
 }
