@@ -10,12 +10,18 @@
       "description": "Universal client-agnostic email development persona for any brand",
       "version": "1.2.12",
       "updatedAt": "2026-08-31T00:00:00.000Z",
-      "packageUrl": "standard/package.mavepersona.json",
-      "sha256": "5856227af77256e881a39ea4c2606a7ef0e43da1aeb602e2b5061d4fac401e6c",
-      "packageSize": 119776,
+      "packageUrl": "personas/standard/package.mavepersona.json",
+      "sha256": "0a0269b004d2bfc48cc0d717cda487e2e3cfec8426283403a54acdaf045abc89",
+      "packageSize": 119826,
       "signingKeyId": "mavecode-marketplace-2026-01",
       "minimumMaveCodeVersion": "0.0.0",
-      "tags": ["email-development", "email-html", "responsive-email", "client-agnostic", "official"]
+      "tags": [
+        "email-development",
+        "email-html",
+        "responsive-email",
+        "client-agnostic",
+        "official"
+      ]
     },
     {
       "id": "enphase",
@@ -24,14 +30,19 @@
       "description": "Self-contained Enphase project engineering persona",
       "version": "1.3.10",
       "updatedAt": "2026-08-31T00:00:00.000Z",
-      "packageUrl": "enphase/package.mavepersona.json",
-      "sha256": "4547b89eaf035535ec6d21050d69b3fe310495e7194c0e4769cd257c077f8e00",
-      "packageSize": 232692,
+      "packageUrl": "personas/enphase/package.mavepersona.json",
+      "sha256": "625aee3a74b4744553ea2d22f2b58bfbecef08bd7df8e568a7b2f5c5c3628731",
+      "packageSize": 232742,
       "signingKeyId": "mavecode-marketplace-2026-01",
       "minimumMaveCodeVersion": "0.0.0",
-      "tags": ["mavecode", "enphase", "email", "official"]
+      "tags": [
+        "mavecode",
+        "enphase",
+        "email",
+        "official"
+      ]
     }
   ],
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "UNSIGNED_LOCAL_DEVELOPMENT_PLACEHOLDER"
+  "signature": "eT9j3tjObEQTY8jmdxB1s7X2Aa0pw1Lgf/buxzGoBp/JFvlsBNyd9ElE0Z7WIMEf/mRdo4qM7Yhs+xuxHIgoDw=="
 }

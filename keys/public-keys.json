@@ -3,7 +3,7 @@
     {
       "id": "mavecode-marketplace-2026-01",
       "algorithm": "Ed25519",
-      "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEApi3b8BLwImWFo6PKVc5V9S0hsbqZnhp7qHo+to41PH8=\n-----END PUBLIC KEY-----"
+      "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAcuHQVk6/ntpuSCVfxLq8pFEeGFFdQeKop6TpVWnGxhE=\n-----END PUBLIC KEY-----"
     }
   ]
 }
