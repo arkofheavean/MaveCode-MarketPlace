@@ -1,0 +1,51 @@
+{
+  "id": "apify",
+  "name": "Apify Actors",
+  "description": "Enables AI assistants to interact with Apify's web scraping and automation actors, providing access to tools for data extraction, web searching, social media analysis, and more.",
+  "author": "apify",
+  "url": "https://github.com/apify/actors-mcp-server",
+  "tags": [
+    "web-scraping",
+    "data-extraction",
+    "automation",
+    "actor-management",
+    "apify-platform"
+  ],
+  "content": [
+    {
+      "name": "NPX",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@apify/actors-mcp-server\"],\n  \"env\": {\n    \"APIFY_TOKEN\": \"{{APIFY_TOKEN}}\"\n  }\n}\n"
+    },
+    {
+      "name": "NPX with Specific Actors",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@apify/actors-mcp-server\", \"--actors\", \"{{ACTOR_LIST}}\"],\n  \"env\": {\n    \"APIFY_TOKEN\": \"{{APIFY_TOKEN}}\"\n  }\n}\n",
+      "parameters": [
+        {
+          "name": "Actor List",
+          "key": "ACTOR_LIST",
+          "placeholder": "lukaskrivka/google-maps-with-contact-details,apify/instagram-scraper"
+        }
+      ]
+    },
+    {
+      "name": "Remote MCP - SSE",
+      "content": "{\n  \"type\": \"sse\",\n  \"url\": \"https://actors-mcp-server.apify.actor/sse\",\n  \"env\": {\n    \"APIFY_TOKEN\": \"{{APIFY_TOKEN}}\"\n  }\n}\n"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Apify API Token",
+      "key": "APIFY_TOKEN",
+      "placeholder": "your_apify_api_token"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

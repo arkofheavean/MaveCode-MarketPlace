@@ -1,0 +1,66 @@
+{
+  "id": "browserbase",
+  "name": "Browserbase",
+  "description": "Cloud browser automation server enabling LLMs to interact with web pages, take screenshots, extract data, and execute JavaScript using Browserbase and Puppeteer.",
+  "author": "browserbase",
+  "url": "https://github.com/browserbase/mcp-server-browserbase",
+  "tags": [
+    "web-automation",
+    "puppeteer",
+    "screenshot-capture",
+    "data-extraction",
+    "javascript-execution"
+  ],
+  "content": [
+    {
+      "name": "NPX",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"@browserbasehq/mcp\"],\n  \"env\": {\n    \"BROWSERBASE_API_KEY\": \"{{BROWSERBASE_API_KEY}}\",\n    \"BROWSERBASE_PROJECT_ID\": \"{{BROWSERBASE_PROJECT_ID}}\"\n  }\n}\n"
+    },
+    {
+      "name": "NPX with Proxies",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"@browserbasehq/mcp\", \"--proxies\"],\n  \"env\": {\n    \"BROWSERBASE_API_KEY\": \"{{BROWSERBASE_API_KEY}}\",\n    \"BROWSERBASE_PROJECT_ID\": \"{{BROWSERBASE_PROJECT_ID}}\"\n  }\n}\n"
+    },
+    {
+      "name": "NPX with Advanced Stealth",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"@browserbasehq/mcp\", \"--advancedStealth\"],\n  \"env\": {\n    \"BROWSERBASE_API_KEY\": \"{{BROWSERBASE_API_KEY}}\",\n    \"BROWSERBASE_PROJECT_ID\": \"{{BROWSERBASE_PROJECT_ID}}\"\n  }\n}\n"
+    },
+    {
+      "name": "NPX with Custom Context",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"@browserbasehq/mcp\", \"--contextId\", \"{{BROWSERBASE_CONTEXT_ID}}\"],\n  \"env\": {\n    \"BROWSERBASE_API_KEY\": \"{{BROWSERBASE_API_KEY}}\",\n    \"BROWSERBASE_PROJECT_ID\": \"{{BROWSERBASE_PROJECT_ID}}\"\n  }\n}\n",
+      "parameters": [
+        {
+          "name": "Browserbase Context ID",
+          "key": "BROWSERBASE_CONTEXT_ID",
+          "placeholder": "your_browserbase_context_id"
+        }
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Browserbase API Key",
+      "key": "BROWSERBASE_API_KEY",
+      "placeholder": "your_browserbase_api_key"
+    },
+    {
+      "name": "Browserbase Project ID",
+      "key": "BROWSERBASE_PROJECT_ID",
+      "placeholder": "your_browserbase_project_id"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

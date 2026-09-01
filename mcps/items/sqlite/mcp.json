@@ -1,0 +1,40 @@
+{
+  "id": "sqlite",
+  "name": "SQLite",
+  "description": "Provides database interaction and business intelligence capabilities through SQLite, enabling SQL queries, data analysis, and automated business insight generation.",
+  "author": "modelcontextprotocol",
+  "url": "https://github.com/modelcontextprotocol/servers-archived/tree/main/src/sqlite",
+  "tags": [
+    "sql",
+    "data-analysis",
+    "business-intelligence",
+    "database-management",
+    "sqlite"
+  ],
+  "content": [
+    {
+      "name": "UVX",
+      "prerequisites": [
+        "Python and uv"
+      ],
+      "content": "{\n  \"command\": \"uvx\",\n  \"args\": [\"mcp-server-sqlite\", \"--db-path\", \"{{DB_PATH}}\"]\n}\n"
+    },
+    {
+      "name": "Docker",
+      "prerequisites": [
+        "Docker"
+      ],
+      "content": "{\n  \"command\": \"docker\",\n  \"args\": [\"run\", \"--rm\", \"-i\", \"-v\", \"mcp-sqlite:/mcp\", \"mcp/sqlite\", \"--db-path\", \"{{DB_PATH}}\"]\n}\n"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Database Path",
+      "key": "DB_PATH",
+      "placeholder": "/path/to/database.db"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

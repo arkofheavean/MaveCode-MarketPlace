@@ -1,0 +1,71 @@
+{
+  "id": "motherduck",
+  "name": "MotherDuck",
+  "description": "Enables database operations with MotherDuck and local DuckDB, providing tools for connection initialization, schema reading, and query execution.",
+  "author": "motherduckdb",
+  "url": "https://github.com/motherduckdb/mcp-server-motherduck",
+  "tags": [
+    "duckdb",
+    "motherduck",
+    "sql",
+    "database-management",
+    "query-execution"
+  ],
+  "content": [
+    {
+      "name": "UVX",
+      "prerequisites": [
+        "Python and uv"
+      ],
+      "content": "{\n  \"command\": \"uvx\",\n  \"args\": [\"mcp-server-motherduck\", \"--db-path\", \"md:\", \"--motherduck-token\", \"{{MOTHERDUCK_TOKEN}}\"]\n}\n"
+    },
+    {
+      "name": "UVX with Local DuckDB",
+      "prerequisites": [
+        "Python and uv"
+      ],
+      "content": "{\n  \"command\": \"uvx\",\n  \"args\": [\"mcp-server-motherduck\", \"--db-path\", \"{{DB_PATH}}\"]\n}\n",
+      "parameters": [
+        {
+          "name": "Database Path",
+          "key": "DB_PATH",
+          "placeholder": "/path/to/your/local.db"
+        }
+      ]
+    },
+    {
+      "name": "UVX with In-Memory Database",
+      "prerequisites": [
+        "Python",
+        "uv"
+      ],
+      "content": "{\n  \"command\": \"uvx\",\n  \"args\": [\"mcp-server-motherduck\", \"--db-path\", \":memory:\"]\n}\n"
+    },
+    {
+      "name": "UVX with Read-Only Mode",
+      "prerequisites": [
+        "Python",
+        "uv"
+      ],
+      "content": "{\n  \"command\": \"uvx\",\n  \"args\": [\"mcp-server-motherduck\", \"--db-path\", \"{{DB_PATH}}\", \"--read-only\"]\n}\n"
+    },
+    {
+      "name": "UVX with SaaS Mode",
+      "prerequisites": [
+        "Python",
+        "uv"
+      ],
+      "content": "{\n  \"command\": \"uvx\",\n  \"args\": [\"mcp-server-motherduck\", \"--db-path\", \"md:\", \"--motherduck-token\", \"{{MOTHERDUCK_TOKEN}}\", \"--saas-mode\"]\n}\n"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "MotherDuck Token",
+      "key": "MOTHERDUCK_TOKEN",
+      "placeholder": "your_motherduck_token_here"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

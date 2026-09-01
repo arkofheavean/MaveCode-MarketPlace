@@ -1,0 +1,68 @@
+{
+  "id": "time",
+  "name": "Time",
+  "description": "Provides time and timezone conversion capabilities using IANA timezone names, with automatic system timezone detection and support for current time queries.",
+  "author": "modelcontextprotocol",
+  "url": "https://github.com/modelcontextprotocol/servers/tree/main/src/time",
+  "tags": [
+    "timezone",
+    "time-conversion",
+    "datetime",
+    "scheduling",
+    "automation"
+  ],
+  "content": [
+    {
+      "name": "UVX",
+      "prerequisites": [
+        "Python and uv"
+      ],
+      "content": "{\n  \"command\": \"uvx\",\n  \"args\": [\"mcp-server-time\"]\n}\n"
+    },
+    {
+      "name": "Python/Pip",
+      "prerequisites": [
+        "Python"
+      ],
+      "content": "{\n  \"command\": \"python\",\n  \"args\": [\"-m\", \"mcp_server_time\"]\n}\n"
+    },
+    {
+      "name": "Docker",
+      "prerequisites": [
+        "Docker"
+      ],
+      "content": "{\n  \"command\": \"docker\",\n  \"args\": [\"run\", \"-i\", \"--rm\", \"mcp/time\"]\n}\n"
+    },
+    {
+      "name": "UVX with Custom Timezone",
+      "prerequisites": [
+        "Python and uv"
+      ],
+      "content": "{\n  \"command\": \"uvx\",\n  \"args\": [\"mcp-server-time\", \"--local-timezone={{LOCAL_TIMEZONE}}\"]\n}\n",
+      "parameters": [
+        {
+          "name": "Local Timezone",
+          "key": "LOCAL_TIMEZONE",
+          "placeholder": "America/New_York"
+        }
+      ]
+    },
+    {
+      "name": "Python/Pip with Custom Timezone",
+      "prerequisites": [
+        "Python"
+      ],
+      "content": "{\n  \"command\": \"python\",\n  \"args\": [\"-m\", \"mcp_server_time\", \"--local-timezone={{LOCAL_TIMEZONE}}\"]\n}\n",
+      "parameters": [
+        {
+          "name": "Local Timezone",
+          "key": "LOCAL_TIMEZONE",
+          "placeholder": "America/New_York"
+        }
+      ]
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

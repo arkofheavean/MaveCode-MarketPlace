@@ -1,0 +1,43 @@
+{
+  "id": "youtube",
+  "name": "YouTube Subtitles",
+  "description": "Downloads and extracts YouTube video subtitles using yt-dlp, enabling AI assistants to analyze and summarize video content through subtitle text.",
+  "author": "anaisbetts",
+  "url": "https://github.com/anaisbetts/mcp-youtube",
+  "tags": [
+    "youtube",
+    "subtitles",
+    "video-analysis",
+    "content-summarization",
+    "yt-dlp"
+  ],
+  "prerequisites": [
+    "yt-dlp (install via Homebrew or WinGet)"
+  ],
+  "content": [
+    {
+      "name": "MCP Installer",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@anaisbetts/mcp-installer\", \"@anaisbetts/mcp-youtube\"]\n}\n"
+    },
+    {
+      "name": "NPX",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@anaisbetts/mcp-youtube\"]\n}\n"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Prerequisites",
+      "key": "PREREQUISITES",
+      "placeholder": "Install yt-dlp via Homebrew or WinGet first"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

@@ -18,6 +18,7 @@ const stable = (value) => {
 const canonical = (value) => JSON.stringify(stable(value))
 const withoutSignature = ({ signature, ...value }) => value
 const serialize = (value) => `${JSON.stringify(value, null, 2)}\n`
+const publishedAt = "2026-08-31T00:00:00.000Z"
 
 const loadSigningKey = async () => {
   const configured = process.env.MARKETPLACE_PRIVATE_KEY_PEM
@@ -52,6 +53,25 @@ const readTextFiles = async (directory) => {
     files.push({ path: path.relative(path.dirname(directory), filePath).replaceAll(path.sep, "/"), content: await readFile(filePath, "utf8") })
   }
   return files
+}
+
+const readMcpItems = async () => {
+  const itemsRoot = path.join(root, "mcps", "items")
+  const directories = (await readdir(itemsRoot, { withFileTypes: true }).catch(() => []))
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort((left, right) => left.localeCompare(right))
+  const items = []
+  for (const directory of directories) {
+    const item = JSON.parse(await readFile(path.join(itemsRoot, directory, "mcp.json"), "utf8"))
+    items.push({
+      ...item,
+      type: "mcp",
+      version: item.version ?? "1.0.0",
+      updatedAt: item.updatedAt ?? publishedAt,
+    })
+  }
+  return items
 }
 
 const parseSimplePersonaYaml = (value) => {
@@ -104,7 +124,7 @@ const [standard, enphase] = await Promise.all([
 const personasCatalog = signDocument(
   {
     schemaVersion: 1,
-    publishedAt: "2026-08-31T00:00:00.000Z",
+    publishedAt,
     sourceCommit: "local-development-placeholder",
     items: [
       {
@@ -113,7 +133,7 @@ const personasCatalog = signDocument(
         type: "persona",
         description: "Universal client-agnostic email development persona for any brand",
         version: "1.2.12",
-        updatedAt: "2026-08-31T00:00:00.000Z",
+        updatedAt: publishedAt,
         packageUrl: "personas/standard/package.mavepersona.json",
         sha256: standard.sha256,
         packageSize: standard.packageSize,
@@ -127,7 +147,7 @@ const personasCatalog = signDocument(
         type: "persona",
         description: "Self-contained Enphase project engineering persona",
         version: "1.3.10",
-        updatedAt: "2026-08-31T00:00:00.000Z",
+        updatedAt: publishedAt,
         packageUrl: "personas/enphase/package.mavepersona.json",
         sha256: enphase.sha256,
         packageSize: enphase.packageSize,
@@ -145,10 +165,10 @@ await writeFile(path.join(root, "personas", "personas.json"), serialize(personas
 const mcpCatalog = signDocument(
   {
     schemaVersion: 1,
-    publishedAt: "2026-08-31T00:00:00.000Z",
+    publishedAt,
     sourceCommit: "local-development-placeholder",
     minimumMaveCodeVersion: "0.0.0",
-    items: [],
+    items: await readMcpItems(),
     signingKeyId: keyId,
   },
   privateKeyPem,
@@ -161,7 +181,7 @@ const rootManifest = signDocument(
     id: "official-mavecode",
     name: "MaveCode-MarketPlace",
     publisher: "MaveCode",
-    publishedAt: "2026-08-31T00:00:00.000Z",
+    publishedAt,
     personasCatalogUrl: "personas/personas.json",
     mcpsCatalogUrl: "mcps/mcps.json",
     signingKeyId: keyId,

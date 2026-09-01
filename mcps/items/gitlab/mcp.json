@@ -1,0 +1,55 @@
+{
+  "id": "gitlab",
+  "name": "GitLab",
+  "description": "Enables comprehensive GitLab project management including file operations, issue tracking, merge requests, and repository management through the GitLab API.",
+  "author": "modelcontextprotocol",
+  "url": "https://github.com/modelcontextprotocol/servers/tree/main/src/gitlab",
+  "tags": [
+    "gitlab",
+    "git",
+    "repository-management",
+    "collaboration",
+    "ci-cd"
+  ],
+  "prerequisites": [
+    "GitLab account"
+  ],
+  "content": [
+    {
+      "name": "UVX",
+      "prerequisites": [
+        "Python and uv"
+      ],
+      "content": "{\n  \"command\": \"uvx\",\n  \"args\": [\"mcp-server-gitlab\"],\n  \"env\": {\n    \"GITLAB_PERSONAL_ACCESS_TOKEN\": \"{{GITLAB_PERSONAL_ACCESS_TOKEN}}\",\n    \"GITLAB_API_URL\": \"{{GITLAB_API_URL}}\"\n  }\n}\n"
+    },
+    {
+      "name": "Python/Pip",
+      "prerequisites": [
+        "Python"
+      ],
+      "content": "{\n  \"command\": \"python\",\n  \"args\": [\"-m\", \"mcp_server_gitlab\"],\n  \"env\": {\n    \"GITLAB_PERSONAL_ACCESS_TOKEN\": \"{{GITLAB_PERSONAL_ACCESS_TOKEN}}\",\n    \"GITLAB_API_URL\": \"{{GITLAB_API_URL}}\"\n  }\n}\n"
+    },
+    {
+      "name": "Docker",
+      "prerequisites": [
+        "Docker"
+      ],
+      "content": "{\n  \"command\": \"docker\",\n  \"args\": [\"run\", \"-i\", \"--rm\", \"mcp/gitlab\"],\n  \"env\": {\n    \"GITLAB_PERSONAL_ACCESS_TOKEN\": \"{{GITLAB_PERSONAL_ACCESS_TOKEN}}\",\n    \"GITLAB_API_URL\": \"{{GITLAB_API_URL}}\"\n  }\n}\n"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "GitLab Personal Access Token",
+      "key": "GITLAB_PERSONAL_ACCESS_TOKEN",
+      "placeholder": "your_gitlab_personal_access_token"
+    },
+    {
+      "name": "GitLab API URL",
+      "key": "GITLAB_API_URL",
+      "placeholder": "https://gitlab.com/api/v4"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

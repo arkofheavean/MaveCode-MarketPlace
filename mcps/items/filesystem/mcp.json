@@ -1,0 +1,40 @@
+{
+  "id": "filesystem",
+  "name": "File System",
+  "description": "Provides comprehensive filesystem operations including reading, writing, moving files, directory management, and advanced file editing with pattern matching and formatting capabilities.",
+  "author": "modelcontextprotocol",
+  "url": "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem",
+  "tags": [
+    "filesystem",
+    "file-management",
+    "directory-operations",
+    "file-search",
+    "file-editing"
+  ],
+  "content": [
+    {
+      "name": "NPX",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-filesystem\", \"{{ALLOWED_DIRECTORY}}\"]\n}\n"
+    },
+    {
+      "name": "Docker",
+      "prerequisites": [
+        "Docker"
+      ],
+      "content": "{\n  \"command\": \"docker\",\n  \"args\": [\"run\", \"-i\", \"--rm\", \"--mount\", \"type=bind,src={{ALLOWED_DIRECTORY}},dst=/projects\", \"mcp/filesystem\", \"/projects\"]\n}\n"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Allowed Directory",
+      "key": "ALLOWED_DIRECTORY",
+      "placeholder": "/Users/username/Documents"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

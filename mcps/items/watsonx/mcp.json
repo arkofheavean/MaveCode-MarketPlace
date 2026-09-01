@@ -1,0 +1,45 @@
+{
+  "id": "watsonx",
+  "name": "WatsonX Flows",
+  "description": "Enables integration with watsonx.ai Flows Engine, providing tools for Google Books and Wikipedia searches through a TypeScript-based MCP server implementation.",
+  "author": "IBM",
+  "url": "https://github.com/IBM/wxflows/tree/main/examples/mcp/javascript",
+  "tags": [
+    "watsonx",
+    "flows-engine",
+    "tool-integration",
+    "search-tools",
+    "ibm-cloud"
+  ],
+  "content": [
+    {
+      "name": "Node.js",
+      "content": "{\n  \"command\": \"node\",\n  \"args\": [\"{{WXFLOWS_PATH}}/build/index.js\"],\n  \"env\": {\n    \"WXFLOWS_APIKEY\": \"{{WXFLOWS_APIKEY}}\",\n    \"WXFLOWS_ENDPOINT\": \"{{WXFLOWS_ENDPOINT}}\"\n  }\n}\n"
+    },
+    {
+      "name": "NPM Development",
+      "content": "{\n  \"command\": \"npm\",\n  \"args\": [\"start\"],\n  \"cwd\": \"{{WXFLOWS_PATH}}\",\n  \"env\": {\n    \"WXFLOWS_APIKEY\": \"{{WXFLOWS_APIKEY}}\",\n    \"WXFLOWS_ENDPOINT\": \"{{WXFLOWS_ENDPOINT}}\"\n  }\n}\n"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "WatsonX API Key",
+      "key": "WXFLOWS_APIKEY",
+      "placeholder": "your_wxflows_api_key"
+    },
+    {
+      "name": "WatsonX Endpoint",
+      "key": "WXFLOWS_ENDPOINT",
+      "placeholder": "your_wxflows_endpoint"
+    },
+    {
+      "name": "WatsonX Flows Path",
+      "key": "WXFLOWS_PATH",
+      "placeholder": "/path/to/wxflows/examples/mcp/javascript",
+      "optional": true
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

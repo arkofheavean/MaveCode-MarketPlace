@@ -1,0 +1,33 @@
+{
+  "id": "puppeteer",
+  "name": "Puppeteer",
+  "description": "Provides browser automation capabilities using Puppeteer, enabling web page interaction, screenshots, and JavaScript execution in a real browser environment.",
+  "author": "modelcontextprotocol",
+  "url": "https://github.com/modelcontextprotocol/servers-archived/tree/main/src/puppeteer",
+  "tags": [
+    "web-automation",
+    "screenshots",
+    "browser-control",
+    "javascript",
+    "testing"
+  ],
+  "content": [
+    {
+      "name": "NPX",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-puppeteer\"]\n}\n"
+    },
+    {
+      "name": "Docker",
+      "prerequisites": [
+        "Docker"
+      ],
+      "content": "{\n  \"command\": \"docker\",\n  \"args\": [\"run\", \"-i\", \"--rm\", \"--init\", \"-e\", \"DOCKER_CONTAINER=true\", \"mcp/puppeteer\"]\n}\n"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

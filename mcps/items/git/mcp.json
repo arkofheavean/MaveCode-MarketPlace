@@ -1,0 +1,54 @@
+{
+  "id": "git",
+  "name": "Git Tools",
+  "description": "Provides Git repository interaction and automation tools for reading, searching, and manipulating Git repositories through commands like status, diff, commit, branch management, and more.",
+  "author": "modelcontextprotocol",
+  "url": "https://github.com/modelcontextprotocol/servers/tree/main/src/git",
+  "tags": [
+    "git",
+    "version-control",
+    "repository-management",
+    "source-control",
+    "development"
+  ],
+  "content": [
+    {
+      "name": "UVX",
+      "prerequisites": [
+        "Python and uv"
+      ],
+      "content": "{\n  \"command\": \"uvx\",\n  \"args\": [\"mcp-server-git\", \"--repository\", \"{{REPOSITORY_PATH}}\"]\n}\n"
+    },
+    {
+      "name": "NPX",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/inspector\", \"uvx\", \"mcp-server-git\", \"--repository\", \"{{REPOSITORY_PATH}}\"]\n}\n"
+    },
+    {
+      "name": "Python/Pip",
+      "prerequisites": [
+        "Python"
+      ],
+      "content": "{\n  \"command\": \"python\",\n  \"args\": [\"-m\", \"mcp_server_git\", \"--repository\", \"{{REPOSITORY_PATH}}\"]\n}\n"
+    },
+    {
+      "name": "Docker",
+      "prerequisites": [
+        "Docker"
+      ],
+      "content": "{\n  \"command\": \"docker\",\n  \"args\": [\"run\", \"--rm\", \"-i\", \"--mount\", \"type=bind,src={{REPOSITORY_PATH}},dst=/workspace\", \"mcp/git\"]\n}\n"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Repository Path",
+      "key": "REPOSITORY_PATH",
+      "placeholder": "/path/to/git/repo"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

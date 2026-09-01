@@ -1,0 +1,33 @@
+{
+  "id": "github",
+  "name": "GitHub",
+  "description": "GitHub's official MCP Server that provides seamless integration with GitHub APIs, enabling advanced automation and interaction capabilities for developers and tools.",
+  "author": "github",
+  "url": "https://github.com/github/github-mcp-server",
+  "tags": [
+    "github",
+    "git",
+    "repository-management",
+    "issue-tracking",
+    "pull-requests",
+    "code-scanning",
+    "collaboration",
+    "api-integration"
+  ],
+  "prerequisites": [
+    "Node.js",
+    "GitHub account",
+    "Classic GitHub Personal Access Token (generate at https://github.com/settings/tokens/new)"
+  ],
+  "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-github\"],\n  \"env\": {\n    \"GITHUB_PERSONAL_ACCESS_TOKEN\": \"{{GITHUB_PERSONAL_ACCESS_TOKEN}}\"\n  }\n}\n",
+  "parameters": [
+    {
+      "name": "GitHub Personal Access Token",
+      "key": "GITHUB_PERSONAL_ACCESS_TOKEN",
+      "placeholder": "YOUR_GITHUB_PAT (classic PAT from https://github.com/settings/tokens/new)"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

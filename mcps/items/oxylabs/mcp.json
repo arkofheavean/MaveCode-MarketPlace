@@ -1,0 +1,58 @@
+{
+  "id": "oxylabs",
+  "name": "Oxylabs Scraper",
+  "description": "Advanced web scraping tool using Oxylabs Web Scraper API, supporting JavaScript rendering, HTML parsing, and content transformation with flexible parsing options.",
+  "author": "oxylabs",
+  "url": "https://github.com/oxylabs/oxylabs-mcp",
+  "tags": [
+    "web-scraping",
+    "content-extraction",
+    "javascript-rendering",
+    "html-parsing",
+    "data-collection"
+  ],
+  "content": [
+    {
+      "name": "UVX",
+      "prerequisites": [
+        "Python",
+        "uv"
+      ],
+      "content": "{\n  \"command\": \"uvx\",\n  \"args\": [\"oxylabs-mcp\"],\n  \"env\": {\n    \"OXYLABS_USERNAME\": \"{{OXYLABS_USERNAME}}\",\n    \"OXYLABS_PASSWORD\": \"{{OXYLABS_PASSWORD}}\"\n  }\n}\n"
+    },
+    {
+      "name": "Smithery Installation",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@smithery/cli\", \"install\", \"@oxylabs/oxylabs-mcp\", \"--client\", \"claude\"]\n}\n"
+    },
+    {
+      "name": "UV with Local Development",
+      "content": "{\n  \"command\": \"uv\",\n  \"args\": [\"--directory\", \"{{OXYLABS_PATH}}\", \"run\", \"oxylabs-mcp\"],\n  \"env\": {\n    \"OXYLABS_USERNAME\": \"{{OXYLABS_USERNAME}}\",\n    \"OXYLABS_PASSWORD\": \"{{OXYLABS_PASSWORD}}\"\n  }\n}\n",
+      "parameters": [
+        {
+          "name": "Oxylabs Path",
+          "key": "OXYLABS_PATH",
+          "placeholder": "/path/to/oxylabs-mcp",
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Oxylabs Username",
+      "key": "OXYLABS_USERNAME",
+      "placeholder": "your_oxylabs_username"
+    },
+    {
+      "name": "Oxylabs Password",
+      "key": "OXYLABS_PASSWORD",
+      "placeholder": "your_oxylabs_password"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

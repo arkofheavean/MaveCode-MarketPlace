@@ -1,0 +1,47 @@
+{
+  "id": "sentry",
+  "name": "Sentry",
+  "description": "Retrieves and analyzes error reports, stacktraces, and debugging information from Sentry.io, enabling AI assistants to inspect and understand application issues.",
+  "author": "modelcontextprotocol",
+  "url": "https://github.com/modelcontextprotocol/servers-archived/tree/main/src/sentry",
+  "tags": [
+    "error-tracking",
+    "debugging",
+    "stacktraces",
+    "issue-monitoring",
+    "application-monitoring"
+  ],
+  "content": [
+    {
+      "name": "UVX",
+      "prerequisites": [
+        "Python and uv"
+      ],
+      "content": "{\n  \"command\": \"uvx\",\n  \"args\": [\"mcp-server-sentry\", \"--auth-token\", \"{{SENTRY_AUTH_TOKEN}}\"]\n}\n"
+    },
+    {
+      "name": "Docker",
+      "prerequisites": [
+        "Docker"
+      ],
+      "content": "{\n  \"command\": \"docker\",\n  \"args\": [\"run\", \"-i\", \"--rm\", \"mcp/sentry\", \"--auth-token\", \"{{SENTRY_AUTH_TOKEN}}\"]\n}\n"
+    },
+    {
+      "name": "Python/Pip",
+      "prerequisites": [
+        "Python"
+      ],
+      "content": "{\n  \"command\": \"python\",\n  \"args\": [\"-m\", \"mcp_server_sentry\", \"--auth-token\", \"{{SENTRY_AUTH_TOKEN}}\"]\n}\n"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Sentry Auth Token",
+      "key": "SENTRY_AUTH_TOKEN",
+      "placeholder": "your_sentry_auth_token_here"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

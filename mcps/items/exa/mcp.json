@@ -1,0 +1,57 @@
+{
+  "id": "exa",
+  "name": "Exa Search",
+  "description": "Enables AI assistants to perform real-time web searches using Exa's AI Search API, providing structured results with titles, URLs, and content snippets.",
+  "author": "exa-labs",
+  "url": "https://github.com/exa-labs/exa-mcp-server",
+  "tags": [
+    "web-search",
+    "exa-api",
+    "real-time-data",
+    "content-discovery",
+    "information-retrieval"
+  ],
+  "prerequisites": [
+    "Exa account"
+  ],
+  "content": [
+    {
+      "name": "NPX",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"exa-mcp-server\"],\n  \"env\": {\n    \"EXA_API_KEY\": \"{{EXA_API_KEY}}\"\n  }\n}\n"
+    },
+    {
+      "name": "NPX with Specific Tools",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"exa-mcp-server\", \"--tools=web_search_exa,research_paper_search,company_research\"],\n  \"env\": {\n    \"EXA_API_KEY\": \"{{EXA_API_KEY}}\"\n  }\n}\n"
+    },
+    {
+      "name": "Remote MCP",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"mcp-remote\", \"https://mcp.exa.ai/mcp?exaApiKey={{EXA_API_KEY}}\"]\n}\n"
+    },
+    {
+      "name": "Smithery Installation",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@smithery/cli\", \"install\", \"exa\", \"--client\", \"claude\"]\n}\n"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Exa API Key",
+      "key": "EXA_API_KEY",
+      "placeholder": "your_exa_api_key_here"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

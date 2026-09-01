@@ -1,0 +1,47 @@
+{
+  "id": "memory",
+  "name": "Knowledge Graph Memory",
+  "description": "A persistent memory system using a local knowledge graph that enables AI assistants to remember information about users across conversations through entities, relations, and observations.",
+  "author": "modelcontextprotocol",
+  "url": "https://github.com/modelcontextprotocol/servers/tree/main/src/memory",
+  "tags": [
+    "knowledge-graph",
+    "persistent-memory",
+    "entity-management",
+    "graph-database",
+    "memory-storage"
+  ],
+  "content": [
+    {
+      "name": "NPX",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-memory\"]\n}\n"
+    },
+    {
+      "name": "Docker",
+      "prerequisites": [
+        "Docker"
+      ],
+      "content": "{\n  \"command\": \"docker\",\n  \"args\": [\"run\", \"-i\", \"-v\", \"claude-memory:/app/dist\", \"--rm\", \"mcp/memory\"]\n}\n"
+    },
+    {
+      "name": "NPX with Custom Memory File",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-memory\"],\n  \"env\": {\n    \"MEMORY_FILE_PATH\": \"{{MEMORY_FILE_PATH}}\"\n  }\n}\n",
+      "parameters": [
+        {
+          "name": "Memory File Path",
+          "key": "MEMORY_FILE_PATH",
+          "placeholder": "/path/to/custom/memory.json"
+        }
+      ]
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

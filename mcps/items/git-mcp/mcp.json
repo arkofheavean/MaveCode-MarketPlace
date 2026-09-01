@@ -1,0 +1,55 @@
+{
+  "id": "git-mcp",
+  "name": "GitMCP",
+  "description": "GitMCP is a free, open-source, remote MCP server that transforms any GitHub project (repositories or GitHub pages) into a documentation hub. It enables AI tools like Cursor to access up-to-date documentation and code, even if the LLM has never encountered them, thereby eliminating code hallucinations seamlessly.",
+  "author": "idosal",
+  "url": "https://github.com/idosal/git-mcp",
+  "tags": [
+    "git",
+    "github",
+    "documentation",
+    "code-search",
+    "repository-management",
+    "hallucination-reduction"
+  ],
+  "content": [
+    {
+      "name": "SSE",
+      "content": "{\n  \"type\": \"streamable-http\",\n  \"url\": \"https://gitmcp.io/{{OWNER}}/{{REPO}}\"\n}\n",
+      "parameters": [
+        {
+          "name": "Owner",
+          "key": "OWNER",
+          "placeholder": "microsoft"
+        },
+        {
+          "name": "Repo",
+          "key": "REPO",
+          "placeholder": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "NPX",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"mcp-remote@0.1.29\", \"https://gitmcp.io/{{OWNER}}/{{REPO}}\"]\n}\n",
+      "parameters": [
+        {
+          "name": "Owner",
+          "key": "OWNER",
+          "placeholder": "microsoft"
+        },
+        {
+          "name": "Repo",
+          "key": "REPO",
+          "placeholder": "typescript"
+        }
+      ]
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

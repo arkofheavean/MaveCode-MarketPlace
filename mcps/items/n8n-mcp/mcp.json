@@ -1,0 +1,74 @@
+{
+  "id": "n8n-mcp",
+  "name": "n8n-MCP",
+  "description": "A Model Context Protocol (MCP) server that provides AI assistants with comprehensive access to n8n node documentation, properties, and operations. Deploy in minutes to give Claude and other AI assistants deep knowledge about n8n's 525+ workflow automation nodes.",
+  "author": "czlonkowski",
+  "url": "https://github.com/czlonkowski/n8n-mcp",
+  "tags": [
+    "n8n",
+    "workflow-automation",
+    "devops",
+    "nodes",
+    "automation",
+    "ai-tools",
+    "no-code",
+    "low-code"
+  ],
+  "content": [
+    {
+      "name": "NPX (Docs only)",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"n8n-mcp@2.12.2\"],\n  \"env\": {\n    \"MCP_MODE\": \"stdio\",\n    \"LOG_LEVEL\": \"error\",\n    \"DISABLE_CONSOLE_OUTPUT\": \"true\"\n  }\n}\n"
+    },
+    {
+      "name": "NPX (Full)",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"n8n-mcp@2.12.2\"],\n  \"env\": {\n    \"MCP_MODE\": \"stdio\",\n    \"LOG_LEVEL\": \"error\",\n    \"DISABLE_CONSOLE_OUTPUT\": \"true\",\n    \"N8N_API_URL\": \"{{N8N_API_URL}}\",\n    \"N8N_API_KEY\": \"{{N8N_API_KEY}}\"\n  }\n}\n",
+      "parameters": [
+        {
+          "name": "n8n API URL",
+          "key": "N8N_API_URL",
+          "placeholder": "https://your-n8n-instance.com"
+        },
+        {
+          "name": "n8n API Key",
+          "key": "N8N_API_KEY",
+          "placeholder": "your-api-key"
+        }
+      ]
+    },
+    {
+      "name": "Docker (Docs only)",
+      "prerequisites": [
+        "Docker"
+      ],
+      "content": "{\n  \"command\": \"docker\",\n  \"args\": [\n    \"run\",\n    \"-i\",\n    \"--rm\",\n    \"--init\",\n    \"-e\", \"MCP_MODE=stdio\",\n    \"-e\", \"LOG_LEVEL=error\",\n    \"-e\", \"DISABLE_CONSOLE_OUTPUT=true\",\n    \"ghcr.io/czlonkowski/n8n-mcp@sha256:80613ac30c3fe39a7b9d343104603804edfbc34c1cdc27e95459b15b7c651dd2\"\n  ]\n}\n"
+    },
+    {
+      "name": "Docker (Full)",
+      "prerequisites": [
+        "Docker"
+      ],
+      "content": "{\n  \"command\": \"docker\",\n  \"args\": [\n    \"run\",\n    \"-i\",\n    \"--rm\",\n    \"--init\",\n    \"-e\", \"MCP_MODE=stdio\",\n    \"-e\", \"LOG_LEVEL=error\",\n    \"-e\", \"DISABLE_CONSOLE_OUTPUT=true\",\n    \"-e\", \"N8N_API_URL={{N8N_API_URL}}\",\n    \"-e\", \"N8N_API_KEY={{N8N_API_KEY}}\",\n    \"ghcr.io/czlonkowski/n8n-mcp@sha256:80613ac30c3fe39a7b9d343104603804edfbc34c1cdc27e95459b15b7c651dd2\"\n  ]\n}\n",
+      "parameters": [
+        {
+          "name": "n8n API URL",
+          "key": "N8N_API_URL",
+          "placeholder": "https://your-n8n-instance.com"
+        },
+        {
+          "name": "n8n API Key",
+          "key": "N8N_API_KEY",
+          "placeholder": "your-api-key"
+        }
+      ]
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

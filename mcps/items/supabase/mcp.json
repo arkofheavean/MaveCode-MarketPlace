@@ -1,0 +1,38 @@
+{
+  "id": "supabase",
+  "name": "Supabase",
+  "description": "The official Supabase MCP server connects your AI tools to Supabase to perform tasks like launching databases, managing tables, fetching config, and querying data on your behalf.",
+  "author": "supabase",
+  "url": "https://supabase.com/docs/guides/mcp",
+  "tags": [
+    "supabase",
+    "database",
+    "postgres",
+    "authentication",
+    "storage",
+    "realtime",
+    "official"
+  ],
+  "prerequisites": [
+    "Supabase account"
+  ],
+  "content": [
+    {
+      "name": "NPX",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@supabase/mcp-server-supabase@0.5.5\", \"--access-token\", \"{{SUPABASE_ACCESS_TOKEN}}\"]\n}\n"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Supabase Personal Access Token",
+      "key": "SUPABASE_ACCESS_TOKEN",
+      "placeholder": "sbp_your_supabase_pat"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

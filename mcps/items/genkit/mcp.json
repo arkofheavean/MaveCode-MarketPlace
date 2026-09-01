@@ -1,0 +1,41 @@
+{
+  "id": "genkit",
+  "name": "Genkit Integration",
+  "description": "Enables bi-directional integration with Model Context Protocol, allowing applications to both consume MCP tools/prompts as a client and expose Genkit tools/prompts as an MCP server.",
+  "author": "firebase",
+  "url": "https://github.com/firebase/genkit/tree/HEAD/js/plugins/mcp",
+  "tags": [
+    "mcp-integration",
+    "client-server",
+    "tools-prompts",
+    "plugin",
+    "genkit"
+  ],
+  "prerequisites": [
+    "Node.js 18+",
+    "Genkit SDK"
+  ],
+  "content": [
+    {
+      "name": "NPM Installation",
+      "prerequisites": [
+        "Node.js 18+"
+      ],
+      "content": "{\n  \"command\": \"npm\",\n  \"args\": [\"install\", \"@genkit-ai/mcp\"]\n}\n"
+    },
+    {
+      "name": "Custom MCP Server Setup",
+      "content": "{\n  \"command\": \"node\",\n  \"args\": [\"your-genkit-mcp-server.js\"]\n}\n"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Prerequisites",
+      "key": "PREREQUISITES",
+      "placeholder": "Requires Node.js 18+ and Genkit SDK installation"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

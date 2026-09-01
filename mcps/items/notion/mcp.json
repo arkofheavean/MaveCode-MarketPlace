@@ -1,0 +1,60 @@
+{
+  "id": "notion",
+  "name": "Notion",
+  "description": "Official Notion MCP Server that provides seamless integration with Notion APIs, enabling advanced automation and interaction capabilities for managing pages, databases, comments, and content within Notion workspaces.",
+  "author": "makenotion",
+  "url": "https://github.com/makenotion/notion-mcp-server",
+  "tags": [
+    "notion",
+    "productivity",
+    "note-taking",
+    "database-management",
+    "content-management",
+    "collaboration",
+    "workspace",
+    "api-integration"
+  ],
+  "prerequisites": [
+    "Notion account with integration access"
+  ],
+  "content": [
+    {
+      "name": "NPX",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@notionhq/notion-mcp-server\"],\n  \"env\": {\n    \"OPENAPI_MCP_HEADERS\": \"{\\\"Authorization\\\": \\\"Bearer {{NOTION_API_KEY}}\\\", \\\"Notion-Version\\\": \\\"2022-06-28\\\"}\"\n  }\n}\n"
+    },
+    {
+      "name": "Docker Hub Image",
+      "prerequisites": [
+        "Docker"
+      ],
+      "content": "{\n  \"command\": \"docker\",\n  \"args\": [\n    \"run\",\n    \"--rm\",\n    \"-i\",\n    \"-e\", \"OPENAPI_MCP_HEADERS\",\n    \"mcp/notion\"\n  ],\n  \"env\": {\n    \"OPENAPI_MCP_HEADERS\": \"{\\\"Authorization\\\": \\\"Bearer {{NOTION_API_KEY}}\\\", \\\"Notion-Version\\\": \\\"2022-06-28\\\"}\"\n  }\n}\n"
+    },
+    {
+      "name": "Docker Local Build",
+      "prerequisites": [
+        "Docker"
+      ],
+      "content": "{\n  \"command\": \"docker\",\n  \"args\": [\n    \"run\",\n    \"--rm\",\n    \"-i\",\n    \"-e\",\n    \"OPENAPI_MCP_HEADERS={\\\"Authorization\\\": \\\"Bearer {{NOTION_API_KEY}}\\\", \\\"Notion-Version\\\": \\\"2022-06-28\\\"}\",\n    \"notion-mcp-server\"\n  ]\n}\n"
+    },
+    {
+      "name": "Smithery Installation",
+      "prerequisites": [
+        "Node.js"
+      ],
+      "content": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@smithery/cli\", \"install\", \"@makenotion/notion-mcp-server\", \"--client\", \"claude\"]\n}\n"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Notion API Key",
+      "key": "NOTION_API_KEY",
+      "placeholder": "ntn_your_notion_integration_token"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}

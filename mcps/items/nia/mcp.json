@@ -1,0 +1,35 @@
+{
+  "id": "nia",
+  "name": "Nia",
+  "description": "Nia is an API and MCP layer that gives agents continuously updated context from libraries, research papers, and docs, so they don't hallucinate and you skip manual ingestion.",
+  "author": "Nozomio Labs",
+  "url": "https://docs.trynia.ai",
+  "tags": [
+    "documentation",
+    "knowledge-base",
+    "repository-indexing",
+    "semantic-search",
+    "research-papers",
+    "code-context",
+    "ai-research"
+  ],
+  "prerequisites": [
+    "Nia account (https://app.trynia.ai)"
+  ],
+  "content": [
+    {
+      "name": "Remote Server",
+      "content": "{\n  \"type\": \"streamable-http\",\n  \"url\": \"https://apigcp.trynia.ai/mcp\",\n  \"headers\": {\n    \"Authorization\": \"Bearer {{NIA_API_KEY}}\"\n  }\n}\n"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Nia API Key",
+      "key": "NIA_API_KEY",
+      "placeholder": "your_nia_api_key_here"
+    }
+  ],
+  "type": "mcp",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-31T00:00:00.000Z"
+}
