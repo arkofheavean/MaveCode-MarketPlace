@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "id": "standard",
-  "version": "1.2.17",
+  "version": "1.2.18",
   "definition": {
     "slug": "standard",
-    "name": "🧭 Standard",
+    "name": "🧭 Standard Email-Dev",
     "roleDefinition": ">-",
     "whenToUse": ">-",
     "description": "Universal client-agnostic email development persona for any brand",
@@ -68,5 +68,5 @@
     "repository": "https://github.com/arkofheavean/MaveCode-MarketPlace"
   },
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "AuKw7ReYpY+zH0IK3k1wfjo5jVrzBRDYFOSwmjRe9ArqaQ+VXObYLG7NkJWY2HHSBJiEcNsJ7XztCOCvBCz5AA=="
+  "signature": "ZEWmEAE1UO/tU3tfizZN2Zd9BR0wkJyWoyezQR+O4Rc+xK930tKEw1KU5hhVUcsY70n29yu/YGd3hQw+R2SJCw=="
 }

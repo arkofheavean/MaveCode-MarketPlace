@@ -130,8 +130,8 @@ const buildPersonaPackage = async (id, version, privateKeyPem) => {
 
 const privateKeyPem = await loadSigningKey()
 const [standard, enphase] = await Promise.all([
-  buildPersonaPackage("standard", "1.2.17", privateKeyPem),
-  buildPersonaPackage("enphase", "1.3.16", privateKeyPem),
+  buildPersonaPackage("standard", "1.2.18", privateKeyPem),
+  buildPersonaPackage("enphase", "1.3.17", privateKeyPem),
 ])
 
 const personasCatalog = signDocument(
@@ -142,31 +142,31 @@ const personasCatalog = signDocument(
     items: [
       {
         id: "standard",
-        name: "🧭 Standard",
+        name: "🧭 Standard Email-Dev",
         type: "persona",
         description: "Universal client-agnostic email development persona for any brand",
-        version: "1.2.17",
+        version: "1.2.18",
         updatedAt: publishedAt,
         packageUrl: "personas/standard/package.mavepersona.json",
         sha256: standard.sha256,
         packageSize: standard.packageSize,
         signingKeyId: keyId,
         minimumMaveCodeVersion: "0.0.0",
-        tags: ["email-development", "email-html", "responsive-email", "client-agnostic", "official"],
+        tags: ["Email-Dev"],
       },
       {
         id: "enphase",
-        name: "⚡ Enphase",
+        name: "⚡ Enphase Email-Dev",
         type: "persona",
         description: "Self-contained Enphase project engineering persona",
-        version: "1.3.16",
+        version: "1.3.17",
         updatedAt: publishedAt,
         packageUrl: "personas/enphase/package.mavepersona.json",
         sha256: enphase.sha256,
         packageSize: enphase.packageSize,
         signingKeyId: keyId,
         minimumMaveCodeVersion: "0.0.0",
-        tags: ["mavecode", "enphase", "email", "official"],
+        tags: ["Email-Dev"],
       },
     ],
     signingKeyId: keyId,
