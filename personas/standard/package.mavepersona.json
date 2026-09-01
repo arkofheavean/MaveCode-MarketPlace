@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "standard",
-  "version": "1.2.14",
+  "version": "1.2.15",
   "definition": {
     "slug": "standard",
     "name": "🧭 Standard",
@@ -43,7 +43,7 @@
   "validators": [
     {
       "path": "validators/figma-email-gate.json",
-      "content": "{\r\n  \"schemaVersion\": 1,\r\n  \"kind\": \"figma-email-html-gate\",\r\n  \"description\": \"Package-owned Standard completion-gate validators for Figma/email output.\",\r\n  \"validators\": [\r\n    \"unsupported-code\",\r\n    \"shared-email-markup\",\r\n    \"image-alt-and-height\",\r\n    \"content-td-height\",\r\n    \"text-only-td-width\",\r\n    \"reference-sample-leakage\",\r\n    \"standard-dark-mode\"\r\n  ],\r\n  \"sampleLeakageMarkers\": [\r\n    \"Prodigy Education\",\r\n    \"get.prodigygame.com\",\r\n    \"ProdigyGame\"\r\n  ]\r\n}\r\n"
+      "content": "{\r\n  \"schemaVersion\": 2,\r\n  \"kind\": \"figma-email-html-gate\",\r\n  \"description\": \"Package-owned Standard completion-gate validators and data-driven gate rules for Figma/email output.\",\r\n  \"validators\": [\r\n    \"unsupported-code\",\r\n    \"shared-email-markup\",\r\n    \"image-alt-and-height\",\r\n    \"content-td-height\",\r\n    \"text-only-td-width\",\r\n    \"reference-sample-leakage\"\r\n  ],\r\n  \"rules\": [\r\n    {\r\n      \"id\": \"standard-fixed-mobile-width\",\r\n      \"type\": \"forbidden-css-pattern\",\r\n      \"code\": \"STANDARD_FIXED_MOBILE_WIDTH\",\r\n      \"message\": \"Standard mobile em_main_table rules must remain width:100% !important, not fixed pixels.\",\r\n      \"pattern\": \"\\\\.em_main_table\\\\s*{[^}]*width\\\\s*:\\\\s*(?:375px|320px)\\\\s*!important\"\r\n    },\r\n    {\r\n      \"id\": \"standard-dark-mode-css\",\r\n      \"type\": \"required-css-signature\",\r\n      \"code\": \"STANDARD_DARK_MODE_CSS\",\r\n      \"message\": \"Standard output is missing required color-scheme declarations or approved dark-mode CSS.\",\r\n      \"patterns\": [\r\n        \"color-scheme\\\\s*:\\\\s*light dark\",\r\n        \"supported-color-schemes\\\\s*:\\\\s*light dark\",\r\n        \"<meta\\\\b[^>]*name\\\\s*=\\\\s*[\\\"']color-scheme[\\\"'][^>]*content\\\\s*=\\\\s*[\\\"']light dark[\\\"'][^>]*>\",\r\n        \"<meta\\\\b[^>]*name\\\\s*=\\\\s*[\\\"']supported-color-schemes[\\\"'][^>]*content\\\\s*=\\\\s*[\\\"']light dark[\\\"'][^>]*>\",\r\n        \"@media[^{}]*prefers-color-scheme\\\\s*:\\\\s*dark\",\r\n        \"\\\\.em_dm_txt_white\\\\b\",\r\n        \"\\\\.em_dm_txt_black\\\\b\",\r\n        \"\\\\.em_darkbg\\\\b\",\r\n        \"\\\\.em_lightbg\\\\b\"\r\n      ]\r\n    },\r\n    {\r\n      \"id\": \"standard-dark-mode-classes\",\r\n      \"type\": \"required-class-mapping\",\r\n      \"code\": \"STANDARD_DARK_MODE_CLASSES\",\r\n      \"message\": \"Standard output has qualifying surfaces, text, links, paragraphs, or CTA elements without approved mapped dark-mode utility classes.\",\r\n      \"mappings\": [\r\n        {\r\n          \"target\": \"surface\",\r\n          \"colorPattern\": \"#(?:fff|ffffff)\\\\b\",\r\n          \"requiredClass\": \"em_darkbg\"\r\n        },\r\n        {\r\n          \"target\": \"surface\",\r\n          \"colorPattern\": \"#(?:000|000000|191919|3c3c3c)\\\\b\",\r\n          \"requiredClass\": \"em_lightbg\"\r\n        },\r\n        {\r\n          \"target\": \"text\",\r\n          \"colorPattern\": \"#(?:000|000000|191919|3c3c3c)\\\\b\",\r\n          \"requiredClass\": \"em_dm_txt_white\"\r\n        },\r\n        {\r\n          \"target\": \"text\",\r\n          \"colorPattern\": \"#(?:fff|ffffff|f5f5f5|f7f7f7|fafafa)\\\\b\",\r\n          \"requiredClass\": \"em_dm_txt_black\"\r\n        }\r\n      ]\r\n    }\r\n  ],\r\n  \"sampleLeakageMarkers\": [\r\n    \"Prodigy Education\",\r\n    \"get.prodigygame.com\",\r\n    \"ProdigyGame\"\r\n  ]\r\n}\r\n"
     }
   ],
   "scripts": [],
@@ -72,5 +72,5 @@
     "repository": "https://github.com/arkofheavean/MaveCode-MarketPlace"
   },
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "BmAypy5grOqVAMGNSew4RkVYF/FcYFYU5dagj4VdF7AOWoBR0dTFdLFUAw1qq/fXxJ7CTZWtWI8iq+wrxX9SAg=="
+  "signature": "HibvqKEjO3t2bwt5ybhfXtlxbSVULnOlbHgeMDcKI8SX+w3Xs9mq+OksOCvftfHUly9MJY+D5dbk1d2mqWfCAA=="
 }

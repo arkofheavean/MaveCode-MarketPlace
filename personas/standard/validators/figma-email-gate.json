@@ -1,15 +1,68 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "kind": "figma-email-html-gate",
-  "description": "Package-owned Standard completion-gate validators for Figma/email output.",
+  "description": "Package-owned Standard completion-gate validators and data-driven gate rules for Figma/email output.",
   "validators": [
     "unsupported-code",
     "shared-email-markup",
     "image-alt-and-height",
     "content-td-height",
     "text-only-td-width",
-    "reference-sample-leakage",
-    "standard-dark-mode"
+    "reference-sample-leakage"
+  ],
+  "rules": [
+    {
+      "id": "standard-fixed-mobile-width",
+      "type": "forbidden-css-pattern",
+      "code": "STANDARD_FIXED_MOBILE_WIDTH",
+      "message": "Standard mobile em_main_table rules must remain width:100% !important, not fixed pixels.",
+      "pattern": "\\.em_main_table\\s*{[^}]*width\\s*:\\s*(?:375px|320px)\\s*!important"
+    },
+    {
+      "id": "standard-dark-mode-css",
+      "type": "required-css-signature",
+      "code": "STANDARD_DARK_MODE_CSS",
+      "message": "Standard output is missing required color-scheme declarations or approved dark-mode CSS.",
+      "patterns": [
+        "color-scheme\\s*:\\s*light dark",
+        "supported-color-schemes\\s*:\\s*light dark",
+        "<meta\\b[^>]*name\\s*=\\s*[\"']color-scheme[\"'][^>]*content\\s*=\\s*[\"']light dark[\"'][^>]*>",
+        "<meta\\b[^>]*name\\s*=\\s*[\"']supported-color-schemes[\"'][^>]*content\\s*=\\s*[\"']light dark[\"'][^>]*>",
+        "@media[^{}]*prefers-color-scheme\\s*:\\s*dark",
+        "\\.em_dm_txt_white\\b",
+        "\\.em_dm_txt_black\\b",
+        "\\.em_darkbg\\b",
+        "\\.em_lightbg\\b"
+      ]
+    },
+    {
+      "id": "standard-dark-mode-classes",
+      "type": "required-class-mapping",
+      "code": "STANDARD_DARK_MODE_CLASSES",
+      "message": "Standard output has qualifying surfaces, text, links, paragraphs, or CTA elements without approved mapped dark-mode utility classes.",
+      "mappings": [
+        {
+          "target": "surface",
+          "colorPattern": "#(?:fff|ffffff)\\b",
+          "requiredClass": "em_darkbg"
+        },
+        {
+          "target": "surface",
+          "colorPattern": "#(?:000|000000|191919|3c3c3c)\\b",
+          "requiredClass": "em_lightbg"
+        },
+        {
+          "target": "text",
+          "colorPattern": "#(?:000|000000|191919|3c3c3c)\\b",
+          "requiredClass": "em_dm_txt_white"
+        },
+        {
+          "target": "text",
+          "colorPattern": "#(?:fff|ffffff|f5f5f5|f7f7f7|fafafa)\\b",
+          "requiredClass": "em_dm_txt_black"
+        }
+      ]
+    }
   ],
   "sampleLeakageMarkers": [
     "Prodigy Education",

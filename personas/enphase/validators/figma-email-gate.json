@@ -1,24 +1,62 @@
 {
-  "schemaVersion": 1,
-  "kind": "figma-email-html-gate",
-  "description": "Package-owned Enphase completion-gate validators for Figma/email output.",
-  "validators": [
-    "unsupported-code",
-    "shared-email-markup",
-    "image-alt-and-height",
-    "content-td-height",
-    "text-only-td-width",
-    "reference-sample-leakage",
-    "enphase-sfmc-anchor-attributes",
-    "enphase-mail-sms-link",
-    "enphase-url-utm",
-    "enphase-phone-tracking"
-  ],
-  "sampleLeakageMarkers": [
-    "Early access to new smart charging features before anyone else",
-    "Verify your details and request a call from Enphase",
-    "Pricing and Financing Disclaimer",
-    "LOYAL CUSTOMER EXCLUSIVE",
-    "SUBVENCIÓN BALEARES 2026"
-  ]
+	"schemaVersion": 2,
+	"kind": "figma-email-html-gate",
+	"description": "Enphase Figma email completion gate: generic email checks plus Enphase SFMC anchor, UTM, and phone-tracking rules.",
+	"validators": [
+		"unsupported-code",
+		"shared-email-markup",
+		"image-alt-and-height",
+		"content-td-height",
+		"text-only-td-width",
+		"reference-sample-leakage"
+	],
+	"rules": [
+		{
+			"id": "enphase-sfmc-anchor-attributes",
+			"type": "anchor-attribute-policy",
+			"code": "ENPHASE_ANCHOR_ATTRIBUTES",
+			"message": "Every Enphase anchor needs SFMC metadata; web links also need target=\"_blank\".",
+			"requiredAttributes": ["conversion", "data-linkto", "href", "title", "alias"],
+			"requireTargetBlankOnWebLinks": true
+		},
+		{
+			"id": "enphase-mail-sms-link",
+			"type": "link-scheme-policy",
+			"code": "ENPHASE_MAIL_SMS_LINK",
+			"message": "Enphase mailto and sms links must use conversion=\"false\" and data-linkto=\"other\".",
+			"schemes": ["mailto", "sms"],
+			"requiredAttributeValues": [
+				{ "attribute": "conversion", "value": "false" },
+				{ "attribute": "data-linkto", "value": "other" }
+			]
+		},
+		{
+			"id": "enphase-url-utm",
+			"type": "url-query-policy",
+			"code": "ENPHASE_URL_UTM",
+			"message": "Enphase static web links must include campaign UTM.",
+			"hrefPattern": "^(?:https?://|#)",
+			"requiredQueryPattern": "[?&]utm_campaign=%%=v\\(@utm_campaign\\)=%%",
+			"duplicateQueryPattern": "[?&]utm_campaign=.*[?&]utm_campaign="
+		},
+		{
+			"id": "enphase-phone-tracking",
+			"type": "phone-tracking-policy",
+			"code": "ENPHASE_PHONE_TRACKING",
+			"message": "Enphase phone numbers require @CallCTA CloudPagesURL and RedirectTo(@CallCTA) anchors.",
+			"stripPatterns": ["https?://[^\\s\"'<>]+", "#[0-9a-f]{3,6}\\b"],
+			"phonePattern": "(?:\\+\\d{1,3}[\\s().-]*)?\\d(?:[\\s().-]*\\d){7,}",
+			"requiredSignatures": [
+				"SET\\s+@CallCTA\\s*=\\s*CloudPagesURL\\s*\\(",
+				"href\\s*=\\s*[\"']%%=RedirectTo\\(@CallCTA\\)=%%[\"']"
+			]
+		}
+	],
+	"sampleLeakageMarkers": [
+		"Early access to new smart charging features before anyone else",
+		"Verify your details and request a call from Enphase",
+		"Pricing and Financing Disclaimer",
+		"LOYAL CUSTOMER EXCLUSIVE",
+		"SUBVENCIÓN BALEARES 2026"
+	]
 }

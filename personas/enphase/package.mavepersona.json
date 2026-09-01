@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "enphase",
-  "version": "1.3.12",
+  "version": "1.3.13",
   "definition": {
     "slug": "enphase",
     "name": "⚡ Enphase",
@@ -43,7 +43,7 @@
   "validators": [
     {
       "path": "validators/figma-email-gate.json",
-      "content": "{\r\n  \"schemaVersion\": 1,\r\n  \"kind\": \"figma-email-html-gate\",\r\n  \"description\": \"Package-owned Enphase completion-gate validators for Figma/email output.\",\r\n  \"validators\": [\r\n    \"unsupported-code\",\r\n    \"shared-email-markup\",\r\n    \"image-alt-and-height\",\r\n    \"content-td-height\",\r\n    \"text-only-td-width\",\r\n    \"reference-sample-leakage\",\r\n    \"enphase-sfmc-anchor-attributes\",\r\n    \"enphase-mail-sms-link\",\r\n    \"enphase-url-utm\",\r\n    \"enphase-phone-tracking\"\r\n  ],\r\n  \"sampleLeakageMarkers\": [\r\n    \"Early access to new smart charging features before anyone else\",\r\n    \"Verify your details and request a call from Enphase\",\r\n    \"Pricing and Financing Disclaimer\",\r\n    \"LOYAL CUSTOMER EXCLUSIVE\",\r\n    \"SUBVENCIÓN BALEARES 2026\"\r\n  ]\r\n}\r\n"
+      "content": "{\r\n\t\"schemaVersion\": 2,\r\n\t\"kind\": \"figma-email-html-gate\",\r\n\t\"description\": \"Enphase Figma email completion gate: generic email checks plus Enphase SFMC anchor, UTM, and phone-tracking rules.\",\r\n\t\"validators\": [\r\n\t\t\"unsupported-code\",\r\n\t\t\"shared-email-markup\",\r\n\t\t\"image-alt-and-height\",\r\n\t\t\"content-td-height\",\r\n\t\t\"text-only-td-width\",\r\n\t\t\"reference-sample-leakage\"\r\n\t],\r\n\t\"rules\": [\r\n\t\t{\r\n\t\t\t\"id\": \"enphase-sfmc-anchor-attributes\",\r\n\t\t\t\"type\": \"anchor-attribute-policy\",\r\n\t\t\t\"code\": \"ENPHASE_ANCHOR_ATTRIBUTES\",\r\n\t\t\t\"message\": \"Every Enphase anchor needs SFMC metadata; web links also need target=\\\"_blank\\\".\",\r\n\t\t\t\"requiredAttributes\": [\"conversion\", \"data-linkto\", \"href\", \"title\", \"alias\"],\r\n\t\t\t\"requireTargetBlankOnWebLinks\": true\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"id\": \"enphase-mail-sms-link\",\r\n\t\t\t\"type\": \"link-scheme-policy\",\r\n\t\t\t\"code\": \"ENPHASE_MAIL_SMS_LINK\",\r\n\t\t\t\"message\": \"Enphase mailto and sms links must use conversion=\\\"false\\\" and data-linkto=\\\"other\\\".\",\r\n\t\t\t\"schemes\": [\"mailto\", \"sms\"],\r\n\t\t\t\"requiredAttributeValues\": [\r\n\t\t\t\t{ \"attribute\": \"conversion\", \"value\": \"false\" },\r\n\t\t\t\t{ \"attribute\": \"data-linkto\", \"value\": \"other\" }\r\n\t\t\t]\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"id\": \"enphase-url-utm\",\r\n\t\t\t\"type\": \"url-query-policy\",\r\n\t\t\t\"code\": \"ENPHASE_URL_UTM\",\r\n\t\t\t\"message\": \"Enphase static web links must include campaign UTM.\",\r\n\t\t\t\"hrefPattern\": \"^(?:https?://|#)\",\r\n\t\t\t\"requiredQueryPattern\": \"[?&]utm_campaign=%%=v\\\\(@utm_campaign\\\\)=%%\",\r\n\t\t\t\"duplicateQueryPattern\": \"[?&]utm_campaign=.*[?&]utm_campaign=\"\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"id\": \"enphase-phone-tracking\",\r\n\t\t\t\"type\": \"phone-tracking-policy\",\r\n\t\t\t\"code\": \"ENPHASE_PHONE_TRACKING\",\r\n\t\t\t\"message\": \"Enphase phone numbers require @CallCTA CloudPagesURL and RedirectTo(@CallCTA) anchors.\",\r\n\t\t\t\"stripPatterns\": [\"https?://[^\\\\s\\\"'<>]+\", \"#[0-9a-f]{3,6}\\\\b\"],\r\n\t\t\t\"phonePattern\": \"(?:\\\\+\\\\d{1,3}[\\\\s().-]*)?\\\\d(?:[\\\\s().-]*\\\\d){7,}\",\r\n\t\t\t\"requiredSignatures\": [\r\n\t\t\t\t\"SET\\\\s+@CallCTA\\\\s*=\\\\s*CloudPagesURL\\\\s*\\\\(\",\r\n\t\t\t\t\"href\\\\s*=\\\\s*[\\\"']%%=RedirectTo\\\\(@CallCTA\\\\)=%%[\\\"']\"\r\n\t\t\t]\r\n\t\t}\r\n\t],\r\n\t\"sampleLeakageMarkers\": [\r\n\t\t\"Early access to new smart charging features before anyone else\",\r\n\t\t\"Verify your details and request a call from Enphase\",\r\n\t\t\"Pricing and Financing Disclaimer\",\r\n\t\t\"LOYAL CUSTOMER EXCLUSIVE\",\r\n\t\t\"SUBVENCIÓN BALEARES 2026\"\r\n\t]\r\n}\r\n"
     }
   ],
   "scripts": [],
@@ -72,5 +72,5 @@
     "repository": "https://github.com/arkofheavean/MaveCode-MarketPlace"
   },
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "FmdA6QL/EbIGyHDNZTdVhxMBbq7JMETU8uXp4h9DUZ/k3+v4QT1wCEJ+eSAj0bdGYZdRN7BQBJhLZwjf50yADg=="
+  "signature": "eSiNete+U3g35lWj1arJLCvytG6Xw8vA+fFh+oXsJJh2HgX5+rkJlSzk8pfe5kQ4lbtSpWoLFHTUIcl4YFm/Bw=="
 }

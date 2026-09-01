@@ -72,12 +72,105 @@ const allowedFigmaEmailValidators = new Set([
   "content-td-height",
   "text-only-td-width",
   "reference-sample-leakage",
-  "standard-dark-mode",
-  "enphase-sfmc-anchor-attributes",
-  "enphase-mail-sms-link",
-  "enphase-url-utm",
-  "enphase-phone-tracking",
 ])
+
+const allowedFigmaEmailGateRuleTypes = new Set([
+  "forbidden-css-pattern",
+  "required-css-signature",
+  "required-class-mapping",
+  "anchor-attribute-policy",
+  "link-scheme-policy",
+  "url-query-policy",
+  "phone-tracking-policy",
+  "content-marker-leakage",
+])
+const maximumGateRuleRegexLength = 2000
+const assertGateRegex = (value, label) => {
+  if (typeof value !== "string" || value.length === 0) throw new Error(`${label} must be a non-empty regex string`)
+  if (value.length > maximumGateRuleRegexLength) throw new Error(`${label} exceeds ${maximumGateRuleRegexLength} characters`)
+  try {
+    new RegExp(value)
+  } catch (error) {
+    throw new Error(`${label} is not a valid regex: ${error instanceof Error ? error.message : String(error)}`)
+  }
+}
+const assertStringArray = (value, label) => {
+  if (!Array.isArray(value) || value.length === 0 || value.some((entry) => typeof entry !== "string" || entry.length === 0)) {
+    throw new Error(`${label} must be a non-empty string array`)
+  }
+}
+const validateGateRule = (rule, label) => {
+  if (!rule || typeof rule !== "object") throw new Error(`${label} must be an object`)
+  requiredString(rule.id, `${label}.id`)
+  requiredString(rule.code, `${label}.code`)
+  requiredString(rule.message, `${label}.message`)
+  if (!allowedFigmaEmailGateRuleTypes.has(rule.type)) throw new Error(`${label} has unknown rule type ${rule.type}`)
+  switch (rule.type) {
+    case "forbidden-css-pattern": {
+      assertGateRegex(rule.pattern, `${label}.pattern`)
+      break
+    }
+    case "required-css-signature": {
+      assertStringArray(rule.patterns, `${label}.patterns`)
+      for (const [index, pattern] of rule.patterns.entries()) assertGateRegex(pattern, `${label}.patterns[${index}]`)
+      break
+    }
+    case "required-class-mapping": {
+      if (!Array.isArray(rule.mappings) || rule.mappings.length === 0) throw new Error(`${label}.mappings must be a non-empty array`)
+      for (const [index, mapping] of rule.mappings.entries()) {
+        if (!mapping || (mapping.target !== "surface" && mapping.target !== "text")) {
+          throw new Error(`${label}.mappings[${index}].target must be "surface" or "text"`)
+        }
+        assertGateRegex(mapping.colorPattern, `${label}.mappings[${index}].colorPattern`)
+        requiredString(mapping.requiredClass, `${label}.mappings[${index}].requiredClass`)
+      }
+      break
+    }
+    case "anchor-attribute-policy": {
+      assertStringArray(rule.requiredAttributes, `${label}.requiredAttributes`)
+      if (rule.requireTargetBlankOnWebLinks !== undefined && typeof rule.requireTargetBlankOnWebLinks !== "boolean") {
+        throw new Error(`${label}.requireTargetBlankOnWebLinks must be a boolean`)
+      }
+      break
+    }
+    case "link-scheme-policy": {
+      assertStringArray(rule.schemes, `${label}.schemes`)
+      if (!Array.isArray(rule.requiredAttributeValues) || rule.requiredAttributeValues.length === 0) {
+        throw new Error(`${label}.requiredAttributeValues must be a non-empty array`)
+      }
+      for (const [index, requirement] of rule.requiredAttributeValues.entries()) {
+        requiredString(requirement?.attribute, `${label}.requiredAttributeValues[${index}].attribute`)
+        requiredString(requirement?.value, `${label}.requiredAttributeValues[${index}].value`)
+      }
+      break
+    }
+    case "url-query-policy": {
+      assertGateRegex(rule.hrefPattern, `${label}.hrefPattern`)
+      assertGateRegex(rule.requiredQueryPattern, `${label}.requiredQueryPattern`)
+      if (rule.duplicateQueryPattern !== undefined) assertGateRegex(rule.duplicateQueryPattern, `${label}.duplicateQueryPattern`)
+      break
+    }
+    case "phone-tracking-policy": {
+      assertGateRegex(rule.phonePattern, `${label}.phonePattern`)
+      assertStringArray(rule.requiredSignatures, `${label}.requiredSignatures`)
+      for (const [index, pattern] of rule.requiredSignatures.entries()) assertGateRegex(pattern, `${label}.requiredSignatures[${index}]`)
+      if (rule.stripPatterns !== undefined) {
+        assertStringArray(rule.stripPatterns, `${label}.stripPatterns`)
+        for (const [index, pattern] of rule.stripPatterns.entries()) assertGateRegex(pattern, `${label}.stripPatterns[${index}]`)
+      }
+      break
+    }
+    case "content-marker-leakage": {
+      if (!Array.isArray(rule.markers) || rule.markers.length === 0) throw new Error(`${label}.markers must be a non-empty array`)
+      for (const marker of rule.markers) {
+        if (typeof marker !== "string" || marker.trim().length < 4) {
+          throw new Error(`${label} has a marker shorter than 4 characters`)
+        }
+      }
+      break
+    }
+  }
+}
 
 const officialFigmaPersonas = new Set(["standard", "enphase"])
 const maximumFigmaSkeletonBytes = 512 * 1024
@@ -158,16 +251,28 @@ const validatePersonaQaAssets = (personaPackage, label) => {
       throw new Error(`${label}.${file.path} must be a validators/*.json asset`)
     }
     const parsed = JSON.parse(file.content)
-    if (parsed.schemaVersion !== 1 || parsed.kind !== "figma-email-html-gate") {
+    if ((parsed.schemaVersion !== 1 && parsed.schemaVersion !== 2) || parsed.kind !== "figma-email-html-gate") {
       throw new Error(`${label}.${file.path} has an unsupported validator schema`)
     }
-    if (!Array.isArray(parsed.validators) || parsed.validators.length === 0) {
-      throw new Error(`${label}.${file.path} must declare validators`)
+    const declaredValidators = parsed.validators ?? []
+    const declaredRules = parsed.rules ?? []
+    if (!Array.isArray(declaredValidators) || !Array.isArray(declaredRules)) {
+      throw new Error(`${label}.${file.path} validators and rules must be arrays`)
     }
-    for (const validator of parsed.validators) {
+    if (declaredValidators.length === 0 && declaredRules.length === 0) {
+      throw new Error(`${label}.${file.path} must declare validators or rules`)
+    }
+    for (const validator of declaredValidators) {
       if (!allowedFigmaEmailValidators.has(validator)) throw new Error(`${label}.${file.path} has unknown validator ${validator}`)
     }
-    if (parsed.validators.includes("reference-sample-leakage") && !Array.isArray(parsed.sampleLeakageMarkers)) {
+    if (parsed.schemaVersion === 1 && declaredRules.length > 0) {
+      throw new Error(`${label}.${file.path} declares rules but schemaVersion 1 does not support rules`)
+    }
+    assertNoDuplicate(declaredRules.map((rule) => rule?.id), `${label}.${file.path} rule id`)
+    for (const [index, rule] of declaredRules.entries()) {
+      validateGateRule(rule, `${label}.${file.path}.rules[${index}]`)
+    }
+    if (declaredValidators.includes("reference-sample-leakage") && !Array.isArray(parsed.sampleLeakageMarkers)) {
       throw new Error(`${label}.${file.path} must declare sampleLeakageMarkers`)
     }
     for (const marker of parsed.sampleLeakageMarkers ?? []) {
