@@ -16,12 +16,34 @@ Before coding, read [`rules/main_config.md`](main_config.md) and the approved re
 
 Use `px` on every nonzero CSS length in a padding declaration. Write zero as `0px`.
 Use `target="_blank"` for links intended to open a new window.
-Give every anchor meaningful `alias` and `title` values matching its visible label. Every Enphase anchor must include `conversion`, `data-linkto`, `href`, `title`, and `alias`; web links also require `target="_blank"`.
+Give every anchor meaningful `alias` and `title` values matching its visible label. Every Enphase anchor must include `conversion`, `data-linkto`, `href`, `title`, and `alias`; web links also require `target="_blank"`. These anchor rules apply in every workflow, Figma or not. Canonical example:
+
+```html
+<a alias="cta_name" title="cta_name" conversion="true" data-linkto="https://" href="#?utm_campaign=%%=v(@utm_campaign)=%%" style="color:#000000;text-decoration:none;" target="_blank">CTA Text</a>
+```
+
 Do not use `letter-spacing` in Enphase reference-derived markup.
 Construct each static tracked URL with one query string and no duplicate `utm_campaign` parameter.
-Static web URLs must append `utm_campaign=%%=v(@utm_campaign)=%%` with `?` when no query exists and `&` when a query already exists. Do not append campaign UTM values to `mailto:` or `sms:` links; those links use `conversion="false"` and `data-linkto="other"`.
-If any phone number appears in an Enphase email, declare `@CallCTA` with `CloudPagesURL()` before HTML and use `href="%%=RedirectTo(@CallCTA)=%%"` on the phone anchor with `conversion="true"` and `data-linkto="https://"`.
-Spans may use numerical styling such as `font-weight:700`, italic, underline, colour, or nowrap, but spans must not carry `font-family`; the parent text cell owns the Enphase font family, font size, and line height.
+When a real destination URL exists, use it; when none is provided, use `#`. Static web URLs must append `utm_campaign=%%=v(@utm_campaign)=%%` with `?` when no query exists and `&` when a query already exists. Do not append campaign UTM values to `mailto:` or `sms:` links; those links use `conversion="false"` and `data-linkto="other"`.
+If any phone number appears anywhere in an Enphase email, declare `@CallCTA` in AMPscript before the HTML document starts (topmost), using this exact pattern with the actual phone number:
+
+```
+%%[
+SET @CallCTA = CloudPagesURL(2683, "phone", URLEncode("+15109456752"), "utm_campaign", v(@utm_campaign))
+]%%
+```
+
+Then every phone-number anchor must use `href="%%=RedirectTo(@CallCTA)=%%"` with `conversion="true"` and `data-linkto="https://"`, for example:
+
+```html
+<a alias="+31(0)85 20 823 05" conversion="true" data-linkto="https://" href="%%=RedirectTo(@CallCTA)=%%" style="color:#000000; text-decoration:underline;" title="+31(0)85 20 823 05">+31(0)85 20 823 05</a>
+```
+
+Spans may use numerical styling such as `font-weight:700`, italic, underline, colour, or nowrap, but spans must never carry a `font-family` declaration in any workflow — for example `font-family:'enphase-visuelt-semibold', Arial, sans-serif;` on a span is a blocking defect. The parent text cell owns the Enphase font family, font size, and line height.
+
+## Header and Footer Country Selection
+
+[`references/Header and Footer Blocks.md`](../references/Header%20and%20Footer%20Blocks.md) is the source of truth for header/footer `ContentBlockbyID` values. Detect the target country/language from the user's instructions or content, then select the matching header and its corresponding footer as a pair from that reference. Update BOTH the `%%=ContentBlockbyID("ID")=%%` value AND the paired comment names so the comments name the exact block used (e.g. `<!-- Header_Dark_Version1_FR Content Block Below -->` ... `<!-- //Header_Dark_Version1_FR Content Block below -->`). If the requested country/language has no matching block (or a header exists but no footer, e.g. Greece/Malta), fall back to the US pair: `Header_Dark_Version1_EN` (196561) and `NA_Footer_Section` (171497). Never mix one country's header with a different country's footer outside this fallback. Set the `@utm_campaign` AMPscript value per the user's instructions; keep the `'UTM_Here'` placeholder only when no campaign value is given.
 Do not inspect or learn from same-folder outputs, sibling files, previous generated HTML, local examples, broad workspace files, or local templates unless the user explicitly permits that source.
 
 ## Mandatory Table-Cell Coding and QA Rules

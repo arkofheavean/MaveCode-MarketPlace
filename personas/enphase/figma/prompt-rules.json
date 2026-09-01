@@ -7,6 +7,8 @@
     "Enphase persona requirement: every anchor must include conversion, data-linkto, href, title, and alias; web links also require target=\"_blank\".",
     "Enphase static web URLs must append utm_campaign=%%=v(@utm_campaign)=%% using ? when no query exists and & when a query already exists; never duplicate utm_campaign.",
     "Enphase mailto and sms links use conversion=\"false\" and data-linkto=\"other\" and must not receive campaign UTM parameters.",
-    "If any phone number appears in an Enphase email, declare @CallCTA with CloudPagesURL before HTML and use href=\"%%=RedirectTo(@CallCTA)=%%\" on phone-number anchors with conversion=\"true\" and data-linkto=\"https://\"."
+    "If any phone number appears in an Enphase email, declare @CallCTA before HTML (topmost) using the exact signature SET @CallCTA = CloudPagesURL(2683, \"phone\", URLEncode(\"<phone-number>\"), \"utm_campaign\", v(@utm_campaign)) and use href=\"%%=RedirectTo(@CallCTA)=%%\" on phone-number anchors with conversion=\"true\" and data-linkto=\"https://\".",
+    "Enphase anchors with no provided destination URL use href=\"#\" and still append the utm_campaign parameter.",
+    "Enphase header/footer country selection: use references/Header and Footer Blocks.md as the source of truth. Detect the target country/language from user instructions or content, then insert the matching header and its corresponding footer as a pair, updating both the %%=ContentBlockbyID(\"ID\")=%% value and the paired comment names to the exact block names used. If no matching block exists (or a country has a header but no footer, e.g. Greece/Malta), fall back to the US pair: Header_Dark_Version1_EN (196561) and NA_Footer_Section (171497). Never mix different countries' header and footer outside this fallback. Set @utm_campaign per user instructions; keep the 'UTM_Here' placeholder only when no campaign value is given."
   ]
 }

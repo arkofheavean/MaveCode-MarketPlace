@@ -131,7 +131,7 @@ const buildPersonaPackage = async (id, version, privateKeyPem) => {
 const privateKeyPem = await loadSigningKey()
 const [standard, enphase] = await Promise.all([
   buildPersonaPackage("standard", "1.2.17", privateKeyPem),
-  buildPersonaPackage("enphase", "1.3.15", privateKeyPem),
+  buildPersonaPackage("enphase", "1.3.16", privateKeyPem),
 ])
 
 const personasCatalog = signDocument(
@@ -159,7 +159,7 @@ const personasCatalog = signDocument(
         name: "⚡ Enphase",
         type: "persona",
         description: "Self-contained Enphase project engineering persona",
-        version: "1.3.15",
+        version: "1.3.16",
         updatedAt: publishedAt,
         packageUrl: "personas/enphase/package.mavepersona.json",
         sha256: enphase.sha256,
