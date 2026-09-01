@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "standard",
-  "version": "1.2.13",
+  "version": "1.2.14",
   "definition": {
     "slug": "standard",
     "name": "🧭 Standard",
@@ -53,9 +53,24 @@
       "content": "{\r\n  \"schemaVersion\": 1,\r\n  \"kind\": \"figma-email-qa-instructions\",\r\n  \"description\": \"Standard package QA ownership for Figma/email generation.\",\r\n  \"instructions\": [\r\n    \"Use active Standard persona rules and approved Standard references as the only persona-pattern sources.\",\r\n    \"Preserve source boundaries: do not copy sample content, URLs, legal text, blocks, or tracking values from references unless present in Figma primary reference/metadata or explicitly requested.\",\r\n    \"Apply shared email constraints: table-first HTML, role=\\\"presentation\\\" on layout tables, td align/valign attributes, no colspan, no unsupported tags/CSS, no image height attributes or inline image height CSS, no content td heights except CTA button and empty spacer cells, no paragraph-only td width, no span font-family, and span font-size/line-height only for intentional inline differences.\",\r\n    \"Apply Standard dark-mode requirements: complete approved stylesheet, color-scheme declarations, both dark-mode meta tags, approved prefers-color-scheme dark media query, fluid mobile em_main_table width:100% !important, and approved em_darkbg/em_lightbg/em_dm_txt_white/em_dm_txt_black mappings on qualifying surfaces, text, links, paragraphs, and CTAs.\",\r\n    \"After editing, do one concise output-only source/persona review and let the automated completion gate report mechanical blockers.\"\r\n  ]\r\n}\r\n"
     }
   ],
+  "figma": [
+    {
+      "path": "figma/capability.json",
+      "content": "{\r\n  \"schemaVersion\": 1,\r\n  \"kind\": \"figma-capability\",\r\n  \"description\": \"Standard persona Figma workflow capability declaration.\",\r\n  \"supportsFigma\": true,\r\n  \"features\": [\r\n    \"email-html-generation\",\r\n    \"persona-prompt-rules\",\r\n    \"persona-skeleton\",\r\n    \"completion-qa-gate\"\r\n  ]\r\n}\r\n"
+    },
+    {
+      "path": "figma/prompt-rules.json",
+      "content": "{\r\n  \"schemaVersion\": 1,\r\n  \"kind\": \"figma-prompt-rules\",\r\n  \"description\": \"Standard persona-specific Figma email prompt rules (dark mode).\",\r\n  \"rules\": [\r\n    \"Standard persona requirement: copy the complete approved stylesheet, including color-scheme declarations and the approved prefers-color-scheme dark media query.\",\r\n    \"Standard persona requirement: include both dark-mode meta tags before the style block and keep every mobile em_main_table rule fluid with width:100% !important; never force 375px or 320px mobile main-table widths.\",\r\n    \"Figma colors describe normal/light mode only. Apply only the approved Standard dark-mode classes to qualifying backgrounds, text, links, and CTAs.\",\r\n    \"Standard dark-mode class mapping: light/white surfaces use em_darkbg; dark/black text uses em_dm_txt_white; white/light text uses em_dm_txt_black when it must stay readable after Standard inversion; dark surfaces that must invert to light use em_lightbg.\",\r\n    \"Apply the Standard mapping directly to colored links, CTA anchors, and CTA button cells when those elements have their own inline color or background; do not rely only on a parent class for directly colored CTA/link text.\",\r\n    \"Apply Standard dark mode from installed Standard package rules/references only; do not search local folders, sibling files, old outputs, or local examples to discover dark-mode patterns unless the user explicitly permits it.\"\r\n  ]\r\n}\r\n"
+    },
+    {
+      "path": "figma/skeleton.html",
+      "content": "<!doctype html>\r\n<html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n\t<meta charset=\"utf-8\">\r\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n\t<meta name=\"x-apple-disable-message-reformatting\">\r\n\t<meta http-equiv=\"x-ua-compatible\" content=\"ie=edge\">\r\n\t<title>{{TITLE}}</title>\r\n\t<style>\r\n\t\tbody { margin:0; padding:0; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }\r\n\t\ttable, td { border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; }\r\n\t\timg { border:0; display:block; line-height:100%; outline:none; text-decoration:none; -ms-interpolation-mode:bicubic; }\r\n\t\tp { margin:0; padding:0; }\r\n\t\t@media only screen and (max-width: 599px) {\r\n\t\t\t.em_main_table { width:100% !important; }\r\n\t\t\t.em_wrapper { width:100% !important; }\r\n\t\t\t.em_full_img img { width:100% !important; height:auto !important; }\r\n\t\t\t.em_center { text-align:center !important; }\r\n\t\t}\r\n\r\n\t\t:root { color-scheme: light dark; supported-color-schemes: light dark; }\r\n\t\t@media screen and (prefers-color-scheme: dark) {\r\n\t\t\t.em_dm_txt_white, .em_dm_txt_white a { color: #ffffff !important; }\r\n\t\t\t.em_dm_txt_black, .em_dm_txt_black a { color: #000000 !important; }\r\n\t\t\t.em_body, .em_full_wrap, .em_main_table, .em_main_tableA { background-color: #000000 !important; }\r\n\t\t\t.em_full_wrapA { background-color: #000000 !important; color: #ffffff !important; }\r\n\t\t\t.em_darkbg { background-color: #000000 !important; }\r\n\t\t\t.em_lightbg { background-color: #ffffff !important; }\r\n\t\t\t.em_dark_color { color: #000000 !important; }\r\n\t\t\t.em_light_color { color: #ffffff !important; }\r\n\t\t}\r\n\t</style>\r\n</head>\r\n<body class=\"em_body\" style=\"margin:0; padding:0; background-color:#ffffff;\">\r\n\t<table role=\"presentation\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" bgcolor=\"#ffffff\" class=\"em_full_wrap em_darkbg\">\r\n\t\t<tr>\r\n\t\t\t<td align=\"center\" valign=\"top\">\r\n\t\t\t\t<table role=\"presentation\" width=\"{{WIDTH}}\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" class=\"em_main_table em_darkbg\" style=\"width:{{WIDTH}}px; max-width:{{WIDTH}}px;\">\r\n\t\t\t\t</table>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t</table>\r\n</body>\r\n</html>\r\n"
+    }
+  ],
+  "supportsFigma": true,
   "source": {
     "repository": "https://github.com/arkofheavean/MaveCode-MarketPlace"
   },
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "MicSX3my1aN4pEI2vClgDA4r3VvhiAKl2BjcdyQhtTJ5os5v+KdQQBalIvJnVtXI0h+j9UxFtXPeLiwX7ZkbDg=="
+  "signature": "BmAypy5grOqVAMGNSew4RkVYF/FcYFYU5dagj4VdF7AOWoBR0dTFdLFUAw1qq/fXxJ7CTZWtWI8iq+wrxX9SAg=="
 }

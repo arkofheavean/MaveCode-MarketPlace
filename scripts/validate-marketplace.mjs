@@ -79,6 +79,75 @@ const allowedFigmaEmailValidators = new Set([
   "enphase-phone-tracking",
 ])
 
+const officialFigmaPersonas = new Set(["standard", "enphase"])
+const maximumFigmaSkeletonBytes = 512 * 1024
+const maximumFigmaPromptRules = 100
+const maximumFigmaPromptRuleLength = 2000
+
+const validatePersonaFigmaAssets = (personaPackage, label) => {
+  const figma = personaPackage.figma ?? []
+  if (personaPackage.supportsFigma !== true && personaPackage.supportsFigma !== false) {
+    throw new Error(`${label} must declare a boolean supportsFigma`)
+  }
+  if (personaPackage.supportsFigma && !officialFigmaPersonas.has(personaPackage.id)) {
+    throw new Error(`${label} may not declare supportsFigma; only official Figma personas may`)
+  }
+  if (!personaPackage.supportsFigma) {
+    if (figma.length > 0) throw new Error(`${label} has figma assets but supportsFigma is false`)
+    return
+  }
+  const byPath = new Map(figma.map((file) => [file.path, file]))
+  for (const file of figma) {
+    if (!file.path.startsWith("figma/")) throw new Error(`${label}.${file.path} must be a figma/* asset`)
+  }
+  const capabilityFile = byPath.get("figma/capability.json")
+  if (!capabilityFile) throw new Error(`${label} must include figma/capability.json`)
+  const capability = JSON.parse(capabilityFile.content)
+  if (capability.schemaVersion !== 1 || capability.kind !== "figma-capability") {
+    throw new Error(`${label} figma/capability.json has an unsupported schema`)
+  }
+  if (capability.supportsFigma !== personaPackage.supportsFigma) {
+    throw new Error(`${label} figma/capability.json supportsFigma does not match package supportsFigma`)
+  }
+  if (!Array.isArray(capability.features) || capability.features.some((feature) => typeof feature !== "string" || feature.length === 0)) {
+    throw new Error(`${label} figma/capability.json must declare non-empty string features`)
+  }
+  const rulesFile = byPath.get("figma/prompt-rules.json")
+  if (!rulesFile) throw new Error(`${label} must include figma/prompt-rules.json`)
+  const promptRules = JSON.parse(rulesFile.content)
+  if (promptRules.schemaVersion !== 1 || promptRules.kind !== "figma-prompt-rules") {
+    throw new Error(`${label} figma/prompt-rules.json has an unsupported schema`)
+  }
+  if (!Array.isArray(promptRules.rules) || promptRules.rules.length === 0) {
+    throw new Error(`${label} figma/prompt-rules.json must declare rules`)
+  }
+  if (promptRules.rules.length > maximumFigmaPromptRules) {
+    throw new Error(`${label} figma/prompt-rules.json exceeds ${maximumFigmaPromptRules} rules`)
+  }
+  for (const rule of promptRules.rules) {
+    if (typeof rule !== "string" || rule.length === 0) throw new Error(`${label} figma/prompt-rules.json has an empty rule`)
+    if (rule.length > maximumFigmaPromptRuleLength) {
+      throw new Error(`${label} figma/prompt-rules.json has a rule longer than ${maximumFigmaPromptRuleLength} characters`)
+    }
+  }
+  const skeletonFile = byPath.get("figma/skeleton.html")
+  if (!skeletonFile) throw new Error(`${label} must include figma/skeleton.html`)
+  if (Buffer.byteLength(skeletonFile.content, "utf8") > maximumFigmaSkeletonBytes) {
+    throw new Error(`${label} figma/skeleton.html exceeds ${maximumFigmaSkeletonBytes} bytes`)
+  }
+  for (const placeholder of ["{{TITLE}}", "{{WIDTH}}"]) {
+    if (!skeletonFile.content.includes(placeholder)) {
+      throw new Error(`${label} figma/skeleton.html is missing the ${placeholder} placeholder`)
+    }
+  }
+  const invalidPlaceholders = [...skeletonFile.content.matchAll(/\{\{([^}]+)\}\}/g)]
+    .map((match) => match[1])
+    .filter((placeholder) => !/^[A-Z0-9_]+$/.test(placeholder))
+  if (invalidPlaceholders.length > 0) {
+    throw new Error(`${label} figma/skeleton.html has invalid placeholders: ${invalidPlaceholders.join(", ")}`)
+  }
+}
+
 const validatePersonaQaAssets = (personaPackage, label) => {
   const validators = personaPackage.validators ?? []
   const qa = personaPackage.qa ?? []
@@ -100,6 +169,11 @@ const validatePersonaQaAssets = (personaPackage, label) => {
     }
     if (parsed.validators.includes("reference-sample-leakage") && !Array.isArray(parsed.sampleLeakageMarkers)) {
       throw new Error(`${label}.${file.path} must declare sampleLeakageMarkers`)
+    }
+    for (const marker of parsed.sampleLeakageMarkers ?? []) {
+      if (typeof marker !== "string" || marker.trim().length < 4) {
+        throw new Error(`${label}.${file.path} has a sample-leakage marker shorter than 4 characters`)
+      }
     }
   }
   for (const file of qa) {
@@ -159,4 +233,5 @@ for (const item of personas.items) {
     throw new Error(`${item.id} package identity does not match catalog`)
   }
   validatePersonaQaAssets(personaPackage, item.id)
+  validatePersonaFigmaAssets(personaPackage, item.id)
 }

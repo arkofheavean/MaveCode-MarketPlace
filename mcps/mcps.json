@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "publishedAt": "2026-08-31T00:00:00.000Z",
+  "publishedAt": "2026-09-01T00:00:00.000Z",
   "sourceCommit": "local-development-placeholder",
   "minimumMaveCodeVersion": "0.0.0",
   "items": [
@@ -3219,5 +3219,5 @@
     }
   ],
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "Y1Y54HGa3lWFkQgfGy0Kc8rRBf11mhN55Ms7zxslmL7TV8QxX1x8GB4+OLuzELonnPIPT6GslY5IaIw1fPLyBw=="
+  "signature": "LIK2B0or9R7HccdKdG6nhKAxxW9AFyXNjrMKWsZXcJLY4uORr0HCf6H+ljseRBamUp9VFKjdZsz2KjgqeTX2Cw=="
 }

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "kind": "figma-prompt-rules",
+  "description": "Standard persona-specific Figma email prompt rules (dark mode).",
+  "rules": [
+    "Standard persona requirement: copy the complete approved stylesheet, including color-scheme declarations and the approved prefers-color-scheme dark media query.",
+    "Standard persona requirement: include both dark-mode meta tags before the style block and keep every mobile em_main_table rule fluid with width:100% !important; never force 375px or 320px mobile main-table widths.",
+    "Figma colors describe normal/light mode only. Apply only the approved Standard dark-mode classes to qualifying backgrounds, text, links, and CTAs.",
+    "Standard dark-mode class mapping: light/white surfaces use em_darkbg; dark/black text uses em_dm_txt_white; white/light text uses em_dm_txt_black when it must stay readable after Standard inversion; dark surfaces that must invert to light use em_lightbg.",
+    "Apply the Standard mapping directly to colored links, CTA anchors, and CTA button cells when those elements have their own inline color or background; do not rely only on a parent class for directly colored CTA/link text.",
+    "Apply Standard dark mode from installed Standard package rules/references only; do not search local folders, sibling files, old outputs, or local examples to discover dark-mode patterns unless the user explicitly permits it."
+  ]
+}

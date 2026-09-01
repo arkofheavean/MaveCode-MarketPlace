@@ -1346,3 +1346,97 @@ Remove and cleanup behavior:
 - Cleanup calls persona managed-storage removal and MCP source-cache removal for the source, then invalidates persona cache.
 - Cleanup does not block Settings save, Marketplace refresh, chat, or extension startup. Failures are logged as cleanup failures.
 - Standard and Enphase marketplace-managed copies are removed only from marketplace-managed storage; bundled fallback remains available for required/default behavior.
+
+## 1 Aug 2026 plans
+
+Planned direction: remove bundled persona fallbacks, bootstrap Standard/Enphase from the marketplace at install, move ALL persona behavior (prompts, skeletons, validators, QA, leakage markers) into marketplace persona packages only, keep the Figma workflow fully generic, and add a `supportsFigma` persona capability. Each edge case below includes its resolution. Where this heading conflicts with earlier bundled-fallback sections above, this heading is the newer intent.
+
+### Phase 0: Frozen package contracts
+
+Per-persona optional Figma assets inside each marketplace persona package:
+
+- `figma/capability.json`: `{ "schemaVersion": 1, "supportsFigma": true, "features": { "emailSkeleton": true, "promptRules": true, "emailQa": true } }`
+- `figma/prompt-rules.json`: `{ "schemaVersion": 1, "rules": ["...persona constraint prose..."] }` (max 100 rules, 2,000 chars each)
+- `figma/skeleton.html`: template with fixed placeholders (`{{SUBJECT}}`, `{{PREHEADER}}`, `{{WIDTH}}`, `{{SECTIONS}}`), max 512 KB
+- `validators/figma-email-gate.json`: rule instances of a closed engine rule-type set: `forbidden-css-pattern`, `required-css-signature`, `required-class-mapping`, `anchor-attribute-policy`, `url-query-policy`, `link-scheme-policy`, `content-marker-leakage`, `phone-tracking-policy`
+- `qa/figma-email-gate.json`: QA instructions (max 50 x 2,000 chars) + `sampleLeakageMarkers` (max 200, each 4-500 chars)
+
+Contract edge cases (resolved):
+
+- Missing capability file / missing or non-boolean `supportsFigma` -> resolve to `false`; never throw; log once per persona per session.
+- Unknown `schemaVersion` newer than extension -> treat capability as unsupported and surface "persona requires a newer extension"; never crash.
+- Over-cap prompt rules -> truncate with logged warning; generation continues.
+- Unknown placeholder in skeleton -> fill empty + warning; missing skeleton -> generic base skeleton.
+- Unknown validator rule `type` -> skip rule, record in `skippedRules` in the QA summary; never claim it ran.
+- Regex rule params -> publish-time lint (length cap 2,000 chars, no catastrophic patterns) plus runtime compile guard with 1s per-rule budget; compile failure -> skip rule + warning.
+- Duplicate rule ids in one package -> publish-time error; runtime last-one-wins + warning.
+- Leakage markers shorter than 4 chars -> rejected at publish (false-positive prevention).
+
+### Phase 1: Marketplace repo changes (who gets what)
+
+- Standard: capability(true), dark-mode prompt rules (approved stylesheet + color-scheme, dark-mode meta tags, fluid `em_main_table` width:100% !important, class mapping `em_darkbg`/`em_dm_txt_white`/`em_dm_txt_black`/`em_lightbg`, CTA/link mapping, no local-folder discovery), Standard skeleton (with dark-mode CSS), shared validators + `standard-fixed-mobile-width`/`standard-dark-mode-css`/`standard-dark-mode-classes` rule instances, Prodigy leakage markers ("Prodigy Education", "get.prodigygame.com", "ProdigyGame").
+- Enphase: capability(true), SFMC prompt rules (anchor conversion/data-linkto/title/alias + target="_blank" for web links, `utm_campaign=%%=v(@utm_campaign)=%%` with ?/& rules and no duplicates, mailto/sms conversion="false" data-linkto="other", `@CallCTA` CloudPagesURL + RedirectTo phone tracking), Enphase skeleton (no Standard dark-mode CSS), shared validators + `enphase-sfmc-anchor-attributes`/`enphase-mail-sms-link`/`enphase-url-utm`/`enphase-phone-tracking` rule instances, Enphase campaign leakage markers.
+- All other/future personas: no Figma assets; `supportsFigma` false by default; Figma option disabled; enabling later requires only a marketplace package, no extension release.
+- `validate-marketplace.mjs`: schema-validate all assets, enforce official whitelist (`supportsFigma: true` only for standard/enphase in official CI), regex-lint rule params, fail unknown rule types against `schemas/rule-types.json`.
+- Versions: Standard -> 1.2.14, Enphase -> 1.3.12; rebuild, re-sign packages/catalog/root; commit child main.
+
+Edge cases (resolved): package declares `emailQa: true` but ships no validators -> publish-time error. `supportsFigma: true` with no skeleton/prompt-rules -> allowed (feature flags describe what is present). Third-party source setting `supportsFigma: true` -> allowed for that source's signed catalog; official whitelist applies to official CI only; user trust decision was made when adding the source.
+
+### Phase 2: No-fallback bootstrap
+
+- On activation, if `managed-personas/installed/official/{standard,enphase}/current.mavepersona` are missing, run a background bootstrap: forced refresh (bypasses 2h throttle once), verified install of both, enable both, post refreshed state to webview. Never blocks activation.
+- Delete `src/assets/personas/` and `BundledPersonaManager`; remove `BUNDLED_PERSONAS` and `bundledFallback` fields/badges. Supersedes prior bundled-fallback rules in this document.
+
+Edge cases (resolved):
+
+- First run offline -> mode picker shows "Standard (downloading...)" placeholder; provider mode fallback tolerates zero personas by degrading to a built-in generic mode; retry backoff 30s -> 2m -> 10m -> normal 2h cycle; re-attempt on webview launch and Marketplace open.
+- Partial bootstrap (one persona installs, the other fails) -> enable the successful one, keep retrying the other, never block.
+- Signature/digest failure -> treated as fetch failure with distinct error code; never install unverified bytes; retry later.
+- Corrupted `current.mavepersona` on disk -> validate JSON+digest on read; restore `.previous.rollback` if valid, else delete and re-bootstrap.
+- Official source removal -> blocked in Settings (Standard is required); inconsistent state re-adds the default official source on next activation.
+- Concurrent activations -> single-flight promise guard; staged `.next.tmp` writes make races non-corrupting.
+- Update during active task -> active tasks keep their pinned persona snapshot; bootstrap/updates apply to future tasks only.
+
+### Phase 2.5: supportsFigma capability
+
+Goal: every persona declares Figma support; default `false`; only Standard and Enphase ship `true`; `false` makes the Figma option and workflow unusable with that persona.
+
+- Declaration: `figma/capability.json` compiled into a top-level optional boolean on `package.mavepersona.json`; boolean type enforced at publish; runtime non-boolean coerces to `false` + warning.
+- Propagation: `ModeConfig.supportsFigma?` from the verified package -> mode state -> webview extension state modes.
+- Enforcement (defense in depth, in order): (1) webview hides/disables the Figma option with tooltip; (2) Figma selection message hard-rejects for unsupported personas (stale-webview backstop); (3) Figma context resolution/injection returns nothing and clears lingering selection; (4) generation gate/mention flow blocks; (5) completion Figma QA is skipped entirely for unsupported personas. The flag is always read from the task-pinned persona snapshot.
+
+Edge cases (resolved):
+
+- Absent file/field or pre-schema package -> `false`; no warning spam.
+- Custom/imported/.roomodes modes never default to `true`; a user hand-adding `supportsFigma: true` to their own custom mode is allowed (same trust level as any custom mode) and unlocks only generic Figma behavior without persona assets.
+- Pending bootstrap -> flag unknown is gated like `false` but with the message "persona is still downloading" instead of "does not support Figma"; option enables live once bootstrap completes via state repost.
+- Corrupt capability.json inside a signed package -> coerce `false`, log distinct error, hint Manual Refresh repair.
+- Mode switch with pending Figma selection to an unsupported persona -> selection cleared with notice.
+- Mid-task switch supported -> unsupported: already-injected context stays in pinned history; new Figma actions and completion QA follow the active persona; dedupe marker prevents duplicates. Unsupported -> supported re-enables normally.
+- Persona update flips true -> false: future tasks lose Figma; active tasks keep the pinned snapshot until completion.
+- Rollback restores whichever snapshot is active; the flag always reads from the loaded snapshot.
+- Duplicate persona id across sources -> source precedence (official > custom) decides; losing package's flag is never merged.
+- Export/import of modes carries the field verbatim; it unlocks only generic plumbing.
+
+### Phase 3: Generic Figma engine in the extension
+
+- Validator keeps only always-on generic safety (global email markup + unsupported-code checks) plus a parameterized `runPackageRules(html, rules)` engine implementing the closed rule-type set. Delete `validateStandardDarkMode`, `validateEnphaseMarkup`, `hasEnphasePhoneTracking`, `FALLBACK_PERSONA_SAMPLE_MARKERS`, `fallbackPackageQa`.
+- `package-qa.ts` drops hardcoded persona-id unions; validates by rule type; loads capability/prompt-rules/skeleton with caps; keeps size+sha256 verification.
+- AI context and plugin-local artifact builders drop `"standard"` defaults and persona prose; emit generic shared rules + package prompt-rules verbatim.
+- Persona email skeleton becomes a single generic builder with optional package template fill.
+- Gate order on Figma trigger: persona active? -> package installed (bootstrap done)? -> `supportsFigma === true`? -> QA assets parse? Corrupt QA assets in a valid package fail closed (block generation; never generate with weaker QA).
+
+Edge cases (resolved): mid-task persona update cannot change rules (QA reads the pinned package); `supportsFigma: true` with no validators runs generic checks only and states so in the QA summary; enormous HTML bounded by a 5s total regex budget with over-budget rules reported as skipped; same-chat Figma follow-ups keep the dedupe marker so context and prompt-rules inject once.
+
+### Phase 4: Parity gate before deletion
+
+- Snapshot today's issue codes for existing Standard/Enphase validator test samples; package-driven engine with real package fixtures must produce identical codes before fallback deletion.
+- Engine unit tests per rule type (match/no-match, malformed params, unknown-type skip, regex timeout, duplicate ids); loader tests (corrupt package, oversized assets, unknown schemaVersion, missing capability); bootstrap tests (fresh, offline retry, partial, corrupt+rollback, single-flight); UI tests (hidden option, downloading placeholder, blocked messages); round-trip tests for the flag with both `true` and unset personas.
+
+### Phase 5: Rollout order (main only, no branches)
+
+1. Child: new assets + script support + version bumps.
+2. Parent: loaders + engine added beside existing fallback (engine preferred when assets present).
+3. Parent: bootstrap + remove bundled assets/BundledPersonaManager.
+4. Parent: delete persona fallback logic + tighten package-qa types + fail-closed gating (only after parity suite is green; separate final commit for bisectability).
+5. Both: update this heading in `marketplace.md` and `marketplace info.md` as phases land.

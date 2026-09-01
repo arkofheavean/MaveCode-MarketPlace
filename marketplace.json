@@ -3,9 +3,9 @@
   "id": "official-mavecode",
   "name": "MaveCode-MarketPlace",
   "publisher": "MaveCode",
-  "publishedAt": "2026-08-31T00:00:00.000Z",
+  "publishedAt": "2026-09-01T00:00:00.000Z",
   "personasCatalogUrl": "personas/personas.json",
   "mcpsCatalogUrl": "mcps/mcps.json",
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "mwkYqrrjNUQHXpaXklqovYwveV5R2Zm6pimtzu2G2JSMQfC4ZV3EEc61XsCdp5Wb5ktDtlHQm2VXquDhRTCoCg=="
+  "signature": "LtftaxX+Uv2kQkviq9WkvyiBbMr+zTXLXTJVyDy4QBmb9UDUxvvt2oqiI9kOSBgZeh3k5AxSX5ZuLJ9+XcQeDg=="
 }

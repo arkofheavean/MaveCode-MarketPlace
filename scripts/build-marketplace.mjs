@@ -18,7 +18,7 @@ const stable = (value) => {
 const canonical = (value) => JSON.stringify(stable(value))
 const withoutSignature = ({ signature, ...value }) => value
 const serialize = (value) => `${JSON.stringify(value, null, 2)}\n`
-const publishedAt = "2026-08-31T00:00:00.000Z"
+const publishedAt = "2026-09-01T00:00:00.000Z"
 
 const loadSigningKey = async () => {
   const configured = process.env.MARKETPLACE_PRIVATE_KEY_PEM
@@ -93,9 +93,20 @@ const parseSimplePersonaYaml = (value) => {
   return definition
 }
 
+const readFigmaCapability = (figmaFiles, id) => {
+  const capabilityFile = figmaFiles.find((file) => file.path === "figma/capability.json")
+  if (!capabilityFile) return false
+  const capability = JSON.parse(capabilityFile.content)
+  if (capability.schemaVersion !== 1 || capability.kind !== "figma-capability") {
+    throw new Error(`${id} figma/capability.json has an unsupported schema`)
+  }
+  return capability.supportsFigma === true
+}
+
 const buildPersonaPackage = async (id, version, privateKeyPem) => {
   const personaRoot = path.join(root, "personas", id)
 	const definition = await readFile(path.join(personaRoot, "persona.yaml"), "utf8")
+  const figma = await readTextFiles(path.join(personaRoot, "figma"))
 	const unsignedPackage = {
 		schemaVersion: 1,
 		id,
@@ -106,6 +117,8 @@ const buildPersonaPackage = async (id, version, privateKeyPem) => {
     validators: await readTextFiles(path.join(personaRoot, "validators")),
     scripts: await readTextFiles(path.join(personaRoot, "scripts")),
     qa: await readTextFiles(path.join(personaRoot, "qa")),
+    figma,
+    supportsFigma: readFigmaCapability(figma, id),
     source: { repository: "https://github.com/arkofheavean/MaveCode-MarketPlace" },
     signingKeyId: keyId,
   }
@@ -117,8 +130,8 @@ const buildPersonaPackage = async (id, version, privateKeyPem) => {
 
 const privateKeyPem = await loadSigningKey()
 const [standard, enphase] = await Promise.all([
-  buildPersonaPackage("standard", "1.2.13", privateKeyPem),
-  buildPersonaPackage("enphase", "1.3.11", privateKeyPem),
+  buildPersonaPackage("standard", "1.2.14", privateKeyPem),
+  buildPersonaPackage("enphase", "1.3.12", privateKeyPem),
 ])
 
 const personasCatalog = signDocument(
@@ -132,7 +145,7 @@ const personasCatalog = signDocument(
         name: "🧭 Standard",
         type: "persona",
         description: "Universal client-agnostic email development persona for any brand",
-        version: "1.2.13",
+        version: "1.2.14",
         updatedAt: publishedAt,
         packageUrl: "personas/standard/package.mavepersona.json",
         sha256: standard.sha256,
@@ -146,7 +159,7 @@ const personasCatalog = signDocument(
         name: "⚡ Enphase",
         type: "persona",
         description: "Self-contained Enphase project engineering persona",
-        version: "1.3.11",
+        version: "1.3.12",
         updatedAt: publishedAt,
         packageUrl: "personas/enphase/package.mavepersona.json",
         sha256: enphase.sha256,
