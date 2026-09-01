@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>MaveCode Marketplace</title>
+	<meta name="description" content="Official MaveCode marketplace feed — personas and MCP servers." />
+	<style>
+		:root {
+			--bg: #faf7f2;
+			--card: #ffffff;
+			--ink: #2b2926;
+			--muted: #7a756d;
+			--accent: #c05b2c;
+			--accent-soft: #f5e3d7;
+			--border: #e8e2d8;
+			--shadow: 0 1px 3px rgba(43, 41, 38, 0.08), 0 8px 24px rgba(43, 41, 38, 0.06);
+		}
+
+		* { box-sizing: border-box; }
+
+		body {
+			margin: 0;
+			background: var(--bg);
+			color: var(--ink);
+			font-family: Georgia, "Times New Roman", serif;
+			line-height: 1.6;
+		}
+
+		.masthead {
+			text-align: center;
+			padding: 56px 20px 36px;
+			border-bottom: 3px double var(--border);
+			background: linear-gradient(180deg, #fffdf9 0%, var(--bg) 100%);
+		}
+
+		.masthead h1 {
+			margin: 0;
+			font-size: clamp(2rem, 5vw, 3.2rem);
+			font-weight: 700;
+			letter-spacing: 0.5px;
+		}
+
+		.masthead h1 a { color: var(--ink); text-decoration: none; }
+
+		.masthead .tagline {
+			margin: 10px auto 0;
+			max-width: 560px;
+			color: var(--muted);
+			font-style: italic;
+			font-size: 1.05rem;
+		}
+
+		.masthead .meta {
+			margin-top: 18px;
+			font-family: "Trebuchet MS", Verdana, sans-serif;
+			font-size: 0.78rem;
+			letter-spacing: 2px;
+			text-transform: uppercase;
+			color: var(--muted);
+		}
+
+		main {
+			max-width: 860px;
+			margin: 0 auto;
+			padding: 36px 20px 72px;
+		}
+
+		.section-title {
+			display: flex;
+			align-items: center;
+			gap: 14px;
+			margin: 44px 0 20px;
+			font-family: "Trebuchet MS", Verdana, sans-serif;
+			font-size: 0.85rem;
+			letter-spacing: 3px;
+			text-transform: uppercase;
+			color: var(--accent);
+		}
+
+		.section-title::before,
+		.section-title::after {
+			content: "";
+			flex: 1;
+			border-top: 1px solid var(--border);
+		}
+
+		.count-pill {
+			display: inline-block;
+			background: var(--accent-soft);
+			color: var(--accent);
+			border-radius: 999px;
+			padding: 1px 10px;
+			font-size: 0.75rem;
+		}
+
+		.cards { display: grid; gap: 16px; }
+
+		.card {
+			background: var(--card);
+			border: 1px solid var(--border);
+			border-radius: 10px;
+			box-shadow: var(--shadow);
+			padding: 20px 24px;
+		}
+
+		.card h3 {
+			margin: 0;
+			font-size: 1.25rem;
+			font-weight: 700;
+		}
+
+		.card .byline {
+			margin-top: 2px;
+			font-family: "Trebuchet MS", Verdana, sans-serif;
+			font-size: 0.75rem;
+			letter-spacing: 1px;
+			text-transform: uppercase;
+			color: var(--muted);
+		}
+
+		.card p.desc {
+			margin: 10px 0 0;
+			color: #55504a;
+			font-size: 0.98rem;
+		}
+
+		.tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+
+		.tag {
+			font-family: "Trebuchet MS", Verdana, sans-serif;
+			font-size: 0.72rem;
+			color: var(--muted);
+			background: var(--bg);
+			border: 1px solid var(--border);
+			border-radius: 999px;
+			padding: 2px 10px;
+		}
+
+		.mcp-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+			gap: 12px;
+		}
+
+		.mcp-item {
+			background: var(--card);
+			border: 1px solid var(--border);
+			border-radius: 8px;
+			padding: 12px 16px;
+			box-shadow: var(--shadow);
+		}
+
+		.mcp-item .name { font-weight: 700; font-size: 1rem; }
+
+		.mcp-item .author {
+			font-family: "Trebuchet MS", Verdana, sans-serif;
+			font-size: 0.72rem;
+			letter-spacing: 1px;
+			text-transform: uppercase;
+			color: var(--muted);
+			margin-top: 2px;
+		}
+
+		.status {
+			text-align: center;
+			color: var(--muted);
+			font-style: italic;
+			padding: 24px 0;
+		}
+
+		.status.error { color: #a33; }
+
+		footer {
+			border-top: 3px double var(--border);
+			text-align: center;
+			padding: 28px 20px 44px;
+			font-family: "Trebuchet MS", Verdana, sans-serif;
+			font-size: 0.78rem;
+			letter-spacing: 1px;
+			color: var(--muted);
+		}
+
+		footer a { color: var(--accent); text-decoration: none; }
+		footer a:hover { text-decoration: underline; }
+	</style>
+</head>
+<body>
+	<header class="masthead">
+		<h1><a href="./">MaveCode Marketplace</a></h1>
+		<p class="tagline">The official catalog of personas and MCP servers for the MaveCode extension.</p>
+		<p class="meta" id="feed-meta">Loading feed&hellip;</p>
+	</header>
+
+	<main>
+		<h2 class="section-title">Personas <span class="count-pill" id="personas-count">&hellip;</span></h2>
+		<div class="cards" id="personas-list">
+			<p class="status">Loading personas&hellip;</p>
+		</div>
+
+		<h2 class="section-title">MCP Servers <span class="count-pill" id="mcps-count">&hellip;</span></h2>
+		<div class="mcp-grid" id="mcps-list">
+			<p class="status">Loading MCP servers&hellip;</p>
+		</div>
+	</main>
+
+	<footer>
+		Served from <a href="marketplace.json">marketplace.json</a> &middot;
+		<a href="https://github.com/arkofheavean/MaveCode-MarketPlace">MaveCode-MarketPlace on GitHub</a>
+	</footer>
+
+	<script>
+		"use strict"
+
+		function el(tag, className, text) {
+			const node = document.createElement(tag)
+			if (className) node.className = className
+			if (text) node.textContent = text
+			return node
+		}
+
+		function showError(containerId, label) {
+			const container = document.getElementById(containerId)
+			container.replaceChildren(el("p", "status error", "Could not load " + label + "."))
+		}
+
+		function renderTags(tags) {
+			const wrap = el("div", "tags")
+			for (const tag of (tags || []).slice(0, 8)) {
+				wrap.appendChild(el("span", "tag", tag))
+			}
+			return wrap
+		}
+
+		async function loadJson(url) {
+			const response = await fetch(url, { cache: "no-cache" })
+			if (!response.ok) throw new Error(url + " -> HTTP " + response.status)
+			return response.json()
+		}
+
+		async function loadManifest() {
+			try {
+				const manifest = await loadJson("marketplace.json")
+				const published = manifest.publishedAt ? new Date(manifest.publishedAt) : null
+				const dateText = published && !isNaN(published)
+					? published.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+					: null
+				document.getElementById("feed-meta").textContent =
+					[manifest.publisher, dateText ? "Published " + dateText : null].filter(Boolean).join(" · ") ||
+					"Official feed"
+				return manifest
+			} catch {
+				document.getElementById("feed-meta").textContent = "Official feed"
+				return null
+			}
+		}
+
+		async function loadPersonas(manifest) {
+			const url = (manifest && manifest.personasCatalogUrl) || "personas/personas.json"
+			try {
+				const catalog = await loadJson(url)
+				const items = Array.isArray(catalog.items) ? catalog.items : []
+				document.getElementById("personas-count").textContent = String(items.length)
+				const container = document.getElementById("personas-list")
+				container.replaceChildren()
+				if (items.length === 0) {
+					container.appendChild(el("p", "status", "No personas published yet."))
+					return
+				}
+				for (const item of items) {
+					const card = el("article", "card")
+					card.appendChild(el("h3", null, item.name || item.id))
+					const byline = ["v" + (item.version || "?"), item.id].filter(Boolean).join(" · ")
+					card.appendChild(el("p", "byline", byline))
+					if (item.description) card.appendChild(el("p", "desc", item.description))
+					if (item.tags && item.tags.length) card.appendChild(renderTags(item.tags))
+					container.appendChild(card)
+				}
+			} catch {
+				document.getElementById("personas-count").textContent = "0"
+				showError("personas-list", "personas")
+			}
+		}
+
+		async function loadMcps(manifest) {
+			const url = (manifest && manifest.mcpsCatalogUrl) || "mcps/mcps.json"
+			try {
+				const catalog = await loadJson(url)
+				const items = Array.isArray(catalog.items) ? catalog.items : []
+				items.sort((a, b) => (a.name || a.id || "").localeCompare(b.name || b.id || ""))
+				document.getElementById("mcps-count").textContent = String(items.length)
+				const container = document.getElementById("mcps-list")
+				container.replaceChildren()
+				if (items.length === 0) {
+					container.appendChild(el("p", "status", "No MCP servers published yet."))
+					return
+				}
+				for (const item of items) {
+					const cell = el("div", "mcp-item")
+					cell.appendChild(el("div", "name", item.name || item.id))
+					if (item.author) cell.appendChild(el("div", "author", "by " + item.author))
+					container.appendChild(cell)
+				}
+			} catch {
+				document.getElementById("mcps-count").textContent = "0"
+				showError("mcps-list", "MCP servers")
+			}
+		}
+
+		loadManifest().then((manifest) => Promise.all([loadPersonas(manifest), loadMcps(manifest)]))
+	</script>
+</body>
+</html>
