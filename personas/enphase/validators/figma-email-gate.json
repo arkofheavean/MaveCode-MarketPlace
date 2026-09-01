@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "kind": "figma-email-html-gate",
+  "description": "Package-owned Enphase completion-gate validators for Figma/email output.",
+  "validators": [
+    "unsupported-code",
+    "shared-email-markup",
+    "image-alt-and-height",
+    "content-td-height",
+    "text-only-td-width",
+    "reference-sample-leakage",
+    "enphase-sfmc-anchor-attributes",
+    "enphase-mail-sms-link",
+    "enphase-url-utm",
+    "enphase-phone-tracking"
+  ],
+  "sampleLeakageMarkers": [
+    "Early access to new smart charging features before anyone else",
+    "Verify your details and request a call from Enphase",
+    "Pricing and Financing Disclaimer",
+    "LOYAL CUSTOMER EXCLUSIVE",
+    "SUBVENCIÓN BALEARES 2026"
+  ]
+}

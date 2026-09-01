@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "kind": "figma-email-qa-instructions",
+  "description": "Enphase package QA ownership for Figma/email generation.",
+  "instructions": [
+    "Use active Enphase persona rules and approved Enphase references as the only persona-pattern sources.",
+    "Preserve source boundaries: do not copy sample campaign copy, claims, prices, disclaimers, CTA labels, phone numbers, personalization strings, URLs, tracking parameters, hosted image URLs, or complete campaign blocks unless present in Figma primary reference/metadata or explicitly requested.",
+    "Apply shared email constraints: table-first HTML, role=\"presentation\" on layout tables, td align/valign attributes, no colspan, no unsupported tags/CSS, no image height attributes or inline image height CSS, no content td heights except CTA button and empty spacer cells, no paragraph-only td width, no span font-family, and span font-size/line-height only for intentional inline differences.",
+    "Apply Enphase SFMC requirements: every anchor includes conversion, data-linkto, href, title, and alias; web links use target=\"_blank\"; static web URLs include exactly one utm_campaign=%%=v(@utm_campaign)=%%; mailto/sms links use conversion=\"false\" and data-linkto=\"other\"; phone numbers use @CallCTA CloudPagesURL with RedirectTo(@CallCTA).",
+    "Do not apply Standard dark-mode QA unless Enphase package assets explicitly add it.",
+    "After editing, do one concise output-only source/persona review and let the automated completion gate report mechanical blockers."
+  ]
+}

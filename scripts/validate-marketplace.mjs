@@ -64,6 +64,57 @@ const validateMcpItem = (item, label) => {
   }
   scanSecrets(item, label)
 }
+
+const allowedFigmaEmailValidators = new Set([
+  "unsupported-code",
+  "shared-email-markup",
+  "image-alt-and-height",
+  "content-td-height",
+  "text-only-td-width",
+  "reference-sample-leakage",
+  "standard-dark-mode",
+  "enphase-sfmc-anchor-attributes",
+  "enphase-mail-sms-link",
+  "enphase-url-utm",
+  "enphase-phone-tracking",
+])
+
+const validatePersonaQaAssets = (personaPackage, label) => {
+  const validators = personaPackage.validators ?? []
+  const qa = personaPackage.qa ?? []
+  if (validators.length === 0) throw new Error(`${label} must include package-owned validator assets`)
+  if (qa.length === 0) throw new Error(`${label} must include package-owned QA assets`)
+  for (const file of validators) {
+    if (!file.path.startsWith("validators/") || !file.path.endsWith(".json")) {
+      throw new Error(`${label}.${file.path} must be a validators/*.json asset`)
+    }
+    const parsed = JSON.parse(file.content)
+    if (parsed.schemaVersion !== 1 || parsed.kind !== "figma-email-html-gate") {
+      throw new Error(`${label}.${file.path} has an unsupported validator schema`)
+    }
+    if (!Array.isArray(parsed.validators) || parsed.validators.length === 0) {
+      throw new Error(`${label}.${file.path} must declare validators`)
+    }
+    for (const validator of parsed.validators) {
+      if (!allowedFigmaEmailValidators.has(validator)) throw new Error(`${label}.${file.path} has unknown validator ${validator}`)
+    }
+    if (parsed.validators.includes("reference-sample-leakage") && !Array.isArray(parsed.sampleLeakageMarkers)) {
+      throw new Error(`${label}.${file.path} must declare sampleLeakageMarkers`)
+    }
+  }
+  for (const file of qa) {
+    if (!file.path.startsWith("qa/") || !file.path.endsWith(".json")) {
+      throw new Error(`${label}.${file.path} must be a qa/*.json asset`)
+    }
+    const parsed = JSON.parse(file.content)
+    if (parsed.schemaVersion !== 1 || parsed.kind !== "figma-email-qa-instructions") {
+      throw new Error(`${label}.${file.path} has an unsupported QA schema`)
+    }
+    if (!Array.isArray(parsed.instructions) || parsed.instructions.some((instruction) => typeof instruction !== "string" || instruction.length === 0)) {
+      throw new Error(`${label}.${file.path} must declare non-empty QA instructions`)
+    }
+  }
+}
 const key = (await readJson("keys/public-keys.json")).keys.find((entry) => entry.id === "mavecode-marketplace-2026-01")
 if (!key) throw new Error("Missing marketplace signing public key")
 
@@ -107,4 +158,5 @@ for (const item of personas.items) {
   if (personaPackage.id !== item.id || personaPackage.version !== item.version) {
     throw new Error(`${item.id} package identity does not match catalog`)
   }
+  validatePersonaQaAssets(personaPackage, item.id)
 }

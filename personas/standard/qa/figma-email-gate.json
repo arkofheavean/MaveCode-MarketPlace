@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "kind": "figma-email-qa-instructions",
+  "description": "Standard package QA ownership for Figma/email generation.",
+  "instructions": [
+    "Use active Standard persona rules and approved Standard references as the only persona-pattern sources.",
+    "Preserve source boundaries: do not copy sample content, URLs, legal text, blocks, or tracking values from references unless present in Figma primary reference/metadata or explicitly requested.",
+    "Apply shared email constraints: table-first HTML, role=\"presentation\" on layout tables, td align/valign attributes, no colspan, no unsupported tags/CSS, no image height attributes or inline image height CSS, no content td heights except CTA button and empty spacer cells, no paragraph-only td width, no span font-family, and span font-size/line-height only for intentional inline differences.",
+    "Apply Standard dark-mode requirements: complete approved stylesheet, color-scheme declarations, both dark-mode meta tags, approved prefers-color-scheme dark media query, fluid mobile em_main_table width:100% !important, and approved em_darkbg/em_lightbg/em_dm_txt_white/em_dm_txt_black mappings on qualifying surfaces, text, links, paragraphs, and CTAs.",
+    "After editing, do one concise output-only source/persona review and let the automated completion gate report mechanical blockers."
+  ]
+}

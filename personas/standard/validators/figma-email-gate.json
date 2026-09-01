@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "kind": "figma-email-html-gate",
+  "description": "Package-owned Standard completion-gate validators for Figma/email output.",
+  "validators": [
+    "unsupported-code",
+    "shared-email-markup",
+    "image-alt-and-height",
+    "content-td-height",
+    "text-only-td-width",
+    "reference-sample-leakage",
+    "standard-dark-mode"
+  ],
+  "sampleLeakageMarkers": [
+    "Prodigy Education",
+    "get.prodigygame.com",
+    "ProdigyGame"
+  ]
+}
