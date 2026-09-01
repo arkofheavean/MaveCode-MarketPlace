@@ -6,7 +6,6 @@
   "features": [
     "email-html-generation",
     "persona-prompt-rules",
-    "persona-skeleton",
     "completion-qa-gate"
   ]
 }

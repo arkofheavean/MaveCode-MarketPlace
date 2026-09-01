@@ -3,6 +3,7 @@
   "kind": "figma-prompt-rules",
   "description": "Enphase persona-specific Figma email prompt rules (SFMC).",
   "rules": [
+    "Enphase persona requirement: build the email starting from the exact boilerplate of the approved Enphase main reference (references/Enphase_Main_Reference.html): its doctype, html namespaces, MSO conditional blocks, meta tags, complete CSS reset and email-client fixes, responsive utility class library, breakpoints, and outer wrapper/main-table structure. Set the document title and main-table width from the Figma metadata. The sample content blocks inside the reference remain forbidden as content sources.",
     "Enphase persona requirement: every anchor must include conversion, data-linkto, href, title, and alias; web links also require target=\"_blank\".",
     "Enphase static web URLs must append utm_campaign=%%=v(@utm_campaign)=%% using ? when no query exists and & when a query already exists; never duplicate utm_campaign.",
     "Enphase mailto and sms links use conversion=\"false\" and data-linkto=\"other\" and must not receive campaign UTM parameters.",

@@ -264,21 +264,25 @@ const validatePersonaFigmaAssets = (personaPackage, label) => {
       throw new Error(`${label} figma/prompt-rules.json has a rule longer than ${maximumFigmaPromptRuleLength} characters`)
     }
   }
+  // figma/skeleton.html is OPTIONAL. Personas may instead instruct the model to build
+  // from their approved master-template boilerplate via figma/prompt-rules.json; the
+  // extension seeds a generic fallback skeleton when no packaged skeleton exists.
   const skeletonFile = byPath.get("figma/skeleton.html")
-  if (!skeletonFile) throw new Error(`${label} must include figma/skeleton.html`)
-  if (Buffer.byteLength(skeletonFile.content, "utf8") > maximumFigmaSkeletonBytes) {
-    throw new Error(`${label} figma/skeleton.html exceeds ${maximumFigmaSkeletonBytes} bytes`)
-  }
-  for (const placeholder of ["{{TITLE}}", "{{WIDTH}}"]) {
-    if (!skeletonFile.content.includes(placeholder)) {
-      throw new Error(`${label} figma/skeleton.html is missing the ${placeholder} placeholder`)
+  if (skeletonFile) {
+    if (Buffer.byteLength(skeletonFile.content, "utf8") > maximumFigmaSkeletonBytes) {
+      throw new Error(`${label} figma/skeleton.html exceeds ${maximumFigmaSkeletonBytes} bytes`)
     }
-  }
-  const invalidPlaceholders = [...skeletonFile.content.matchAll(/\{\{([^}]+)\}\}/g)]
-    .map((match) => match[1])
-    .filter((placeholder) => !/^[A-Z0-9_]+$/.test(placeholder))
-  if (invalidPlaceholders.length > 0) {
-    throw new Error(`${label} figma/skeleton.html has invalid placeholders: ${invalidPlaceholders.join(", ")}`)
+    for (const placeholder of ["{{TITLE}}", "{{WIDTH}}"]) {
+      if (!skeletonFile.content.includes(placeholder)) {
+        throw new Error(`${label} figma/skeleton.html is missing the ${placeholder} placeholder`)
+      }
+    }
+    const invalidPlaceholders = [...skeletonFile.content.matchAll(/\{\{([^}]+)\}\}/g)]
+      .map((match) => match[1])
+      .filter((placeholder) => !/^[A-Z0-9_]+$/.test(placeholder))
+    if (invalidPlaceholders.length > 0) {
+      throw new Error(`${label} figma/skeleton.html has invalid placeholders: ${invalidPlaceholders.join(", ")}`)
+    }
   }
 }
 
