@@ -373,3 +373,28 @@ for (const item of personas.items) {
   validatePersonaQaAssets(personaPackage, item.id)
   validatePersonaFigmaAssets(personaPackage, item.id)
 }
+
+if (marketplace.skillsCatalogUrl) {
+  const skillsCatalog = await verifySignedDocument(marketplace.skillsCatalogUrl)
+  assertNoDuplicate(skillsCatalog.items.map((item) => item.id), "skill id")
+  for (const [index, item] of skillsCatalog.items.entries()) {
+    const label = `skills.items[${index}]`
+    if (item.type !== "skill") throw new Error(`${label} must have type "skill"`)
+    for (const field of ["id", "name", "description", "version", "packageUrl", "sha256", "signingKeyId", "minimumMaveCodeVersion"]) {
+      if (typeof item[field] !== "string" || item[field].length === 0) throw new Error(`${label}.${field} must be a non-empty string`)
+    }
+    if (!/^[a-f0-9]{64}$/.test(item.sha256)) throw new Error(`${label}.sha256 must be a 64-character hex digest`)
+    if (!Number.isInteger(item.packageSize) || item.packageSize <= 0) throw new Error(`${label}.packageSize must be a positive integer`)
+    const bytes = await readFile(item.packageUrl)
+    if (bytes.length !== item.packageSize || sha256(bytes) !== item.sha256) {
+      throw new Error(`${item.id} skill package digest/size does not match catalog`)
+    }
+    const skillPackage = await verifySignedDocument(item.packageUrl)
+    if (skillPackage.id !== item.id || skillPackage.version !== item.version) {
+      throw new Error(`${item.id} skill package identity does not match catalog`)
+    }
+    if (typeof skillPackage.instructions !== "string" || skillPackage.instructions.length === 0) {
+      throw new Error(`${item.id} skill package must declare non-empty instructions`)
+    }
+  }
+}

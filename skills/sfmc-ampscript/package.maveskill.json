@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "sfmc-ampscript",
+  "version": "0.1.0",
+  "name": "SFMC - AMPSCRIPT",
+  "description": "Placeholder skill for Salesforce Marketing Cloud AMPscript development guidance. Full instructions coming soon.",
+  "instructions": "# SFMC - AMPSCRIPT\r\n\r\nThis is a placeholder skill for Salesforce Marketing Cloud AMPscript development.\r\n\r\nDetailed AMPscript authoring guidance, personalization string patterns, data\r\nextension lookup recipes, and SFMC-safe HTML rules will be published in a\r\nfuture version of this skill.\r\n\r\nUntil then, follow standard email development best practices and consult the\r\nofficial Salesforce Marketing Cloud AMPscript documentation.\r\n",
+  "source": {
+    "repository": "https://github.com/arkofheavean/MaveCode-MarketPlace"
+  },
+  "signingKeyId": "mavecode-marketplace-2026-01",
+  "signature": "BwgES7StX9DxE3HAaQooqRzsFB3C89wtnTECLUFPCfkDKVN/YJYzOfJUkhOgR2QTR7Sje9GBok/z50T+rM+fBg=="
+}

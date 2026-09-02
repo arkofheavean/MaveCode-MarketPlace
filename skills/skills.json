@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "publishedAt": "2026-09-01T00:00:00.000Z",
+  "sourceCommit": "local-development-placeholder",
+  "minimumMaveCodeVersion": "0.0.0",
+  "items": [
+    {
+      "id": "sfmc-ampscript",
+      "name": "SFMC - AMPSCRIPT",
+      "type": "skill",
+      "description": "Placeholder skill for Salesforce Marketing Cloud AMPscript development guidance. Full instructions coming soon.",
+      "version": "0.1.0",
+      "updatedAt": "2026-09-01T00:00:00.000Z",
+      "packageUrl": "skills/sfmc-ampscript/package.maveskill.json",
+      "sha256": "6af697fee22812a93d78fd8e0fd6fed5766938ef424fc15882aadda15a5640e2",
+      "packageSize": 959,
+      "signingKeyId": "mavecode-marketplace-2026-01",
+      "minimumMaveCodeVersion": "0.0.0",
+      "tags": [
+        "SFMC",
+        "AMPscript",
+        "Email-Dev"
+      ],
+      "placeholder": true
+    }
+  ],
+  "signingKeyId": "mavecode-marketplace-2026-01",
+  "signature": "45Y+KAeXeivoB0uqyEI804UQK2W4isNn3X94FS/cWCPH6vV7EVHtOwIcsC0grHxud6vB9dWsMAVGqKuELS9IBg=="
+}

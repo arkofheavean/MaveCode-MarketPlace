@@ -6,6 +6,7 @@
   "publishedAt": "2026-09-01T00:00:00.000Z",
   "personasCatalogUrl": "personas/personas.json",
   "mcpsCatalogUrl": "mcps/mcps.json",
+  "skillsCatalogUrl": "skills/skills.json",
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "LtftaxX+Uv2kQkviq9WkvyiBbMr+zTXLXTJVyDy4QBmb9UDUxvvt2oqiI9kOSBgZeh3k5AxSX5ZuLJ9+XcQeDg=="
+  "signature": "4AgJ1Ii+y5zulSRtfiVkO/e8p40arPhzIsVjG1OYcRC4Z2GaWenU2OykVWUzCP7dsn5Du5VG1ek7b0x2m+HaCA=="
 }

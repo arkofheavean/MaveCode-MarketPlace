@@ -103,6 +103,37 @@ const readFigmaCapability = (figmaFiles, id) => {
   return capability.supportsFigma === true
 }
 
+const buildSkillPackage = async (id, privateKeyPem) => {
+  const skillRoot = path.join(root, "skills", id)
+  const definition = JSON.parse(await readFile(path.join(skillRoot, "skill.json"), "utf8"))
+  const instructions = await readFile(path.join(skillRoot, "instructions.md"), "utf8")
+  const unsignedPackage = {
+    schemaVersion: 1,
+    id,
+    version: definition.version,
+    name: definition.name,
+    description: definition.description,
+    instructions,
+    ...(Array.isArray(definition.modeSlugs) && definition.modeSlugs.length > 0
+      ? { modeSlugs: definition.modeSlugs }
+      : {}),
+    source: { repository: "https://github.com/arkofheavean/MaveCode-MarketPlace" },
+    signingKeyId: keyId,
+  }
+  const pkg = signDocument(unsignedPackage, privateKeyPem)
+  const bytes = Buffer.from(serialize(pkg))
+  await writeFile(path.join(skillRoot, "package.maveskill.json"), bytes)
+  return { definition, sha256: sha256(bytes), packageSize: bytes.length }
+}
+
+const readSkillDirectories = async () => {
+  const skillsRoot = path.join(root, "skills")
+  return (await readdir(skillsRoot, { withFileTypes: true }).catch(() => []))
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort((left, right) => left.localeCompare(right))
+}
+
 const buildPersonaPackage = async (id, version, privateKeyPem) => {
   const personaRoot = path.join(root, "personas", id)
 	const definition = await readFile(path.join(personaRoot, "persona.yaml"), "utf8")
@@ -188,6 +219,42 @@ const mcpCatalog = signDocument(
 )
 await writeFile(path.join(root, "mcps", "mcps.json"), serialize(mcpCatalog))
 
+const skillItems = []
+for (const skillId of await readSkillDirectories()) {
+  const built = await buildSkillPackage(skillId, privateKeyPem)
+  skillItems.push({
+    id: skillId,
+    name: built.definition.name,
+    type: "skill",
+    description: built.definition.description,
+    version: built.definition.version,
+    updatedAt: publishedAt,
+    packageUrl: `skills/${skillId}/package.maveskill.json`,
+    sha256: built.sha256,
+    packageSize: built.packageSize,
+    signingKeyId: keyId,
+    minimumMaveCodeVersion: "0.0.0",
+    tags: built.definition.tags ?? [],
+    ...(built.definition.placeholder === true ? { placeholder: true } : {}),
+    ...(Array.isArray(built.definition.modeSlugs) && built.definition.modeSlugs.length > 0
+      ? { modeSlugs: built.definition.modeSlugs }
+      : {}),
+  })
+}
+
+const skillsCatalog = signDocument(
+  {
+    schemaVersion: 1,
+    publishedAt,
+    sourceCommit: "local-development-placeholder",
+    minimumMaveCodeVersion: "0.0.0",
+    items: skillItems,
+    signingKeyId: keyId,
+  },
+  privateKeyPem,
+)
+await writeFile(path.join(root, "skills", "skills.json"), serialize(skillsCatalog))
+
 const rootManifest = signDocument(
   {
     schemaVersion: 1,
@@ -197,10 +264,11 @@ const rootManifest = signDocument(
     publishedAt,
     personasCatalogUrl: "personas/personas.json",
     mcpsCatalogUrl: "mcps/mcps.json",
+    skillsCatalogUrl: "skills/skills.json",
     signingKeyId: keyId,
   },
   privateKeyPem,
 )
 await writeFile(path.join(root, "marketplace.json"), serialize(rootManifest))
 
-console.log({ standard, enphase })
+console.log({ standard, enphase, skills: skillItems.map(({ id, version }) => ({ id, version })) })

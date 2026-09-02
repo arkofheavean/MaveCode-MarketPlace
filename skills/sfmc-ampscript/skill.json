@@ -1,0 +1,9 @@
+{
+	"id": "sfmc-ampscript",
+	"name": "SFMC - AMPSCRIPT",
+	"description": "Placeholder skill for Salesforce Marketing Cloud AMPscript development guidance. Full instructions coming soon.",
+	"version": "0.1.0",
+	"tags": ["SFMC", "AMPscript", "Email-Dev"],
+	"placeholder": true,
+	"modeSlugs": []
+}
