@@ -465,10 +465,10 @@
 			</header>
 
 			<section class="mave-hero">
-				<h1>Marketplace<br /><span>Personas &amp; MCP servers</span></h1>
+				<h1>Marketplace<br /><span>Personas, Skills &amp; MCP servers</span></h1>
 				<p>
-					The live catalog powering the MaveCode extension. Personas and MCP server definitions listed here
-					are served directly from this feed and update automatically inside MaveCode.
+					The live catalog powering the MaveCode extension. Personas, skills, and MCP server definitions
+					listed here are served directly from this feed and update automatically inside MaveCode.
 				</p>
 				<div class="mave-meta" id="feed-meta">Loading feed&hellip;</div>
 			</section>
@@ -480,6 +480,16 @@
 				</div>
 				<div id="personas" class="persona-grid">
 					<div class="status">Loading personas&hellip;</div>
+				</div>
+			</section>
+
+			<section class="mave-section">
+				<div class="mave-section-head">
+					<h2>Skills</h2>
+					<span class="mave-count" id="skill-count">&hellip;</span>
+				</div>
+				<div id="skills" class="persona-grid">
+					<div class="status">Loading skills&hellip;</div>
 				</div>
 			</section>
 
@@ -573,6 +583,46 @@
 				}
 			}
 
+			async function loadSkills(manifest) {
+				const container = document.getElementById("skills")
+				const countEl = document.getElementById("skill-count")
+				try {
+					const url = (manifest && manifest.skillsCatalogUrl) || "skills/skills.json"
+					const catalog = await loadJson(url)
+					const items = Array.isArray(catalog.items) ? catalog.items : []
+					countEl.textContent = String(items.length)
+					if (items.length === 0) {
+						container.replaceChildren(el("div", "status", "No skills published yet"))
+						return
+					}
+					const cards = items.map((item, index) => {
+						const card = el("article", "mave-panel persona-card" + (index % 2 === 1 ? " mave-panel--cyan" : ""))
+						card.appendChild(el("h3", "", item.name || item.id || "Unnamed skill"))
+						const byline = []
+						if (item.version) byline.push("v" + item.version)
+						if (item.id) byline.push(item.id)
+						if (byline.length) card.appendChild(el("div", "persona-byline", byline.join(" · ")))
+						if (item.description) card.appendChild(el("p", "", item.description))
+						const tags = Array.isArray(item.tags) ? item.tags.slice(0, 8) : []
+						if (tags.length || item.alwaysEnabled === true) {
+							const row = el("div", "tag-row")
+							if (item.alwaysEnabled === true) {
+								row.appendChild(el("span", "tag", "Always enabled"))
+							}
+							for (const tag of tags) {
+								row.appendChild(el("span", "tag", String(tag)))
+							}
+							card.appendChild(row)
+						}
+						return card
+					})
+					container.replaceChildren(...cards)
+				} catch (error) {
+					countEl.textContent = "!"
+					showError("skills", "Failed to load skills catalog")
+				}
+			}
+
 			async function loadMcps(manifest) {
 				const container = document.getElementById("mcps")
 				const countEl = document.getElementById("mcp-count")
@@ -608,7 +658,7 @@
 				}
 			}
 
-			loadManifest().then((manifest) => Promise.all([loadPersonas(manifest), loadMcps(manifest)]))
+			loadManifest().then((manifest) => Promise.all([loadPersonas(manifest), loadSkills(manifest), loadMcps(manifest)]))
 		</script>
 	</body>
 </html>
