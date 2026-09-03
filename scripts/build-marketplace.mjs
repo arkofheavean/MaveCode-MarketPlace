@@ -271,4 +271,42 @@ const rootManifest = signDocument(
 )
 await writeFile(path.join(root, "marketplace.json"), serialize(rootManifest))
 
+// Per-category root manifests: each carries its own source id and lists only its
+// catalog so persona, skill, and MCP sources can be enabled/disabled independently.
+const categoryManifests = [
+  {
+    file: "marketplace-personas.json",
+    id: "official-mavecode-personas",
+    name: "MaveCode-MarketPlace Personas",
+    catalog: { personasCatalogUrl: "personas/personas.json" },
+  },
+  {
+    file: "marketplace-skills.json",
+    id: "official-mavecode-skills",
+    name: "MaveCode-MarketPlace Skills",
+    catalog: { skillsCatalogUrl: "skills/skills.json" },
+  },
+  {
+    file: "marketplace-mcps.json",
+    id: "official-mavecode-mcps",
+    name: "MaveCode-MarketPlace MCPs",
+    catalog: { mcpsCatalogUrl: "mcps/mcps.json" },
+  },
+]
+for (const { file, id, name, catalog } of categoryManifests) {
+  const manifest = signDocument(
+    {
+      schemaVersion: 1,
+      id,
+      name,
+      publisher: "MaveCode",
+      publishedAt,
+      ...catalog,
+      signingKeyId: keyId,
+    },
+    privateKeyPem,
+  )
+  await writeFile(path.join(root, file), serialize(manifest))
+}
+
 console.log({ standard, enphase, skills: skillItems.map(({ id, version }) => ({ id, version })) })

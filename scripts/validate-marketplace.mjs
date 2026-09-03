@@ -343,6 +343,35 @@ const verifySignedDocument = async (filePath) => {
 const marketplace = await verifySignedDocument("marketplace.json")
 if (marketplace.name !== "MaveCode-MarketPlace") throw new Error("Root marketplace name changed")
 
+// Per-category root manifests: each must carry its own id and only its own catalog URL,
+// and that catalog URL must match the legacy root manifest's corresponding entry.
+const categoryManifestChecks = [
+  { file: "marketplace-personas.json", id: "official-mavecode-personas", name: "MaveCode-MarketPlace Personas", urlField: "personasCatalogUrl" },
+  { file: "marketplace-skills.json", id: "official-mavecode-skills", name: "MaveCode-MarketPlace Skills", urlField: "skillsCatalogUrl" },
+  { file: "marketplace-mcps.json", id: "official-mavecode-mcps", name: "MaveCode-MarketPlace MCPs", urlField: "mcpsCatalogUrl" },
+]
+const allCatalogUrlFields = ["personasCatalogUrl", "skillsCatalogUrl", "mcpsCatalogUrl"]
+for (const check of categoryManifestChecks) {
+  const manifest = await verifySignedDocument(check.file)
+  if (manifest.schemaVersion !== 1) throw new Error(`${check.file} must declare schemaVersion 1`)
+  if (manifest.id !== check.id) throw new Error(`${check.file} id must be ${check.id}`)
+  if (manifest.name !== check.name) throw new Error(`${check.file} name changed`)
+  if (typeof manifest.publishedAt !== "string" || manifest.publishedAt.length === 0) {
+    throw new Error(`${check.file} must declare publishedAt`)
+  }
+  if (typeof manifest[check.urlField] !== "string" || manifest[check.urlField].length === 0) {
+    throw new Error(`${check.file} must declare ${check.urlField}`)
+  }
+  if (manifest[check.urlField] !== marketplace[check.urlField]) {
+    throw new Error(`${check.file} ${check.urlField} does not match marketplace.json`)
+  }
+  for (const field of allCatalogUrlFields) {
+    if (field !== check.urlField && manifest[field] !== undefined) {
+      throw new Error(`${check.file} must not declare ${field}`)
+    }
+  }
+}
+
 const personas = await verifySignedDocument("personas/personas.json")
 const mcps = await verifySignedDocument("mcps/mcps.json")
 assertNoDuplicate(personas.items.map((item) => item.id), "persona id")

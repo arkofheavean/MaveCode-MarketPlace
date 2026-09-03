@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "id": "official-mavecode-mcps",
+  "name": "MaveCode-MarketPlace MCPs",
+  "publisher": "MaveCode",
+  "publishedAt": "2026-09-01T00:00:00.000Z",
+  "mcpsCatalogUrl": "mcps/mcps.json",
+  "signingKeyId": "mavecode-marketplace-2026-01",
+  "signature": "usVkPaHqravjgAcoRE0OUw1s/+0XbF579MdTIF7OUk376wib2tLjYQglDOt9eOhtCscv1slfLyhbp1qeB+3wBA=="
+}

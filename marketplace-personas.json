@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "id": "official-mavecode-personas",
+  "name": "MaveCode-MarketPlace Personas",
+  "publisher": "MaveCode",
+  "publishedAt": "2026-09-01T00:00:00.000Z",
+  "personasCatalogUrl": "personas/personas.json",
+  "signingKeyId": "mavecode-marketplace-2026-01",
+  "signature": "upSH7ddk+AzSSNdIv4judmYASMVcDrrVbO0OSRKuqeDlDsoqdF4Z6H3P3JTHrE+WHKMxbr2VbHD6ZIcZDhPCAA=="
+}

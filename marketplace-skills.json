@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "id": "official-mavecode-skills",
+  "name": "MaveCode-MarketPlace Skills",
+  "publisher": "MaveCode",
+  "publishedAt": "2026-09-01T00:00:00.000Z",
+  "skillsCatalogUrl": "skills/skills.json",
+  "signingKeyId": "mavecode-marketplace-2026-01",
+  "signature": "CTq43iC9wS7tLLGuAOyCPVnGm0GuBJLx/ZOgapi1iwDUgR/VrLFbs/FxLwsvGiMbzN+VQVkjtTS18ZwKFaU7Bg=="
+}

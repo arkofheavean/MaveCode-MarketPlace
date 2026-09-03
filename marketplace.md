@@ -213,7 +213,7 @@ Rules:
 
 ### Root source manifest
 
-Every marketplace source URL points to a root manifest:
+Every marketplace source URL points to a root manifest. As of 2 Sep 2026 the official marketplace publishes three per-category signed root manifests at the repo root alongside the legacy combined `marketplace.json` (see the dated "Per-category official sources" section below): `marketplace-personas.json` (`official-mavecode-personas`, `personasCatalogUrl` only), `marketplace-skills.json` (`official-mavecode-skills`, `skillsCatalogUrl` only), and `marketplace-mcps.json` (`official-mavecode-mcps`, `mcpsCatalogUrl` only). The legacy combined manifest below remains published for older clients:
 
 ```json
 {
@@ -1346,6 +1346,21 @@ Remove and cleanup behavior:
 - Cleanup calls persona managed-storage removal and MCP source-cache removal for the source, then invalidates persona cache.
 - Cleanup does not block Settings save, Marketplace refresh, chat, or extension startup. Failures are logged as cleanup failures.
 - Standard and Enphase marketplace-managed copies are removed only from marketplace-managed storage; bundled fallback remains available for required/default behavior.
+
+## 2 Sep 2026 — Per-category official sources, skills marketplace UX, batch enable/disable, alwaysEnabled
+
+**IMPLEMENTED.** Marketplace-repo and extension-side changes shipped together; no persona/skill/MCP content files were changed (current signed versions stay standard 1.2.21 / enphase 1.3.20).
+
+- Three per-category signed root manifests are now published at the repo root alongside the legacy combined `marketplace.json`:
+    - `marketplace-personas.json` → id `official-mavecode-personas`, `personasCatalogUrl` only.
+    - `marketplace-skills.json` → id `official-mavecode-skills`, `skillsCatalogUrl` only.
+    - `marketplace-mcps.json` → id `official-mavecode-mcps`, `mcpsCatalogUrl` only.
+    - Each is signed with `mavecode-marketplace-2026-01` and validated by `scripts/validate-marketplace.mjs`. Official URLs: `https://arkofheavean.github.io/MaveCode-MarketPlace/marketplace-personas.json`, `.../marketplace-skills.json`, `.../marketplace-mcps.json`.
+- Extension Settings now shows three per-category source lists (Personas, Skills, MCPs), each with its own non-removable official entry pointing at its distinct manifest URL. Disabling one official source affects only that catalog. The legacy `official-mavecode` entry is migrated one-shot into the three per-category entries; the legacy combined `marketplace.json` remains published for older clients.
+- Official source toggle semantics: toggling an official source off shows an inline confirm hint (not a modal) — e.g. "Marketplace skills will be hidden and disabled until re-enabled." Items from that source are hidden and force-disabled, never deleted; per-item enabled state is preserved and restored exactly on re-enable (only items the user had enabled come back enabled).
+- Skills marketplace cards are toggle-only (no remove/trash action), and skills can be auto-invoked by the AI only while enabled: disabled marketplace skills are excluded from mode skill lists and `getSkillContent` returns null for them.
+- New optional catalog item field `alwaysEnabled` (personas, skills, MCPs): when true, the item auto-enables on install/update via tri-state enabled storage (auto-on / user-on / user-off). A user disable is sticky — the item stays off across updates until the user manually re-enables it.
+- All three Marketplace tabs support multi-select batch enable/disable: select mode with select-all, selection count, Enable/Disable selected, and Cancel; batch runs sequentially, continues after per-item failures, and reports failures in a single aggregated error toast.
 
 ## 1 Sep 2026 — Enphase 1.3.16: header/footer country selection + SFMC anchor rule hardening
 
