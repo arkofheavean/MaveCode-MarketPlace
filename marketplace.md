@@ -41,6 +41,15 @@ The extension ships with only the runtime code and mandatory fallback assets nee
 - Installed item updates are replace-only: old active persona/MCP files must be overwritten/replaced and removed from active storage after a successful update.
 - If an item is removed from remote catalogs, the 2-hour check detects removal and destroys local marketplace-managed copies in the background without freezing the extension.
 
+## 2.1 Extension integration update: skills, DCG, Execute, and MCP settings
+
+- Disabled marketplace skills must be absent from chat skill dropdown data and from AI-visible skill loading paths. Single and batch skill enable/disable operations refresh discovered skills and immediately post an enabled, mode-visible skill list back to the webview.
+- Destructive Command Guard (DCG) is managed on by MaveCode policy and is shown in a dedicated extension Settings section below Auto-Approve. The UI shows runtime status, installed/target versions, last check time, last error, and Manual Refresh.
+- DCG install/check runs in the extension background without blocking startup. Normal refresh is throttled to once per 24 hours; Manual Refresh bypasses the throttle.
+- Execute auto-approval remains a user preference. Execute ON auto-runs terminal commands/scripts only when DCG is active and allows the command. Execute OFF requires approval. If DCG is unavailable, commands require approval.
+- Legacy allowed command prefixes, including `*`, may remain in local settings for compatibility, but they do not bypass DCG, do not approve all scripts when DCG is unavailable, and do not override Execute OFF.
+- Project MCP editing is no longer promoted in extension Settings because marketplace MCPs are managed globally. The MCP settings view keeps global MCP editing, refresh, and Marketplace access.
+
 ## 3. Current architecture inventory
 
 ### Core built-in modes
