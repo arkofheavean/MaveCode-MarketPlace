@@ -1,0 +1,9 @@
+{
+	"id": "sfmc-automation",
+	"name": "SFMC - Automation",
+	"description": "Plans, builds, and troubleshoots SFMC Automation Studio automations (scheduled, triggered, file-drop), covering activity sequencing, error handling, and monitoring.",
+	"version": "1.0.0",
+	"tags": ["SFMC", "Automation-Studio"],
+	"alwaysEnabled": true,
+	"modeSlugs": []
+}

@@ -1,0 +1,9 @@
+{
+	"id": "sfmc-sql",
+	"name": "SFMC - SQL",
+	"description": "Generates SFMC Query Studio SQL for Data Extension queries, Data View joins, subscriber segmentation, engagement filtering, and scheduled query activities.",
+	"version": "1.0.0",
+	"tags": ["SFMC", "SQL", "Query-Studio"],
+	"alwaysEnabled": true,
+	"modeSlugs": []
+}

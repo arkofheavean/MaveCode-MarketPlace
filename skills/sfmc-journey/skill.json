@@ -1,0 +1,9 @@
+{
+	"id": "sfmc-journey",
+	"name": "SFMC - Journey",
+	"description": "Designs, configures, and troubleshoots SFMC Journey Builder journeys: entry sources, decision and engagement splits, wait steps, email activities, and exit criteria.",
+	"version": "1.0.0",
+	"tags": ["SFMC", "Journey-Builder"],
+	"alwaysEnabled": true,
+	"modeSlugs": []
+}

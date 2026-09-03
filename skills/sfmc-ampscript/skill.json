@@ -1,9 +1,9 @@
 {
 	"id": "sfmc-ampscript",
 	"name": "SFMC - AMPSCRIPT",
-	"description": "Placeholder skill for Salesforce Marketing Cloud AMPscript development guidance. Full instructions coming soon.",
-	"version": "0.1.0",
+	"description": "Writes, explains, and debugs AMPscript for Salesforce Marketing Cloud emails, landing pages, and CloudPages, covering personalization, data lookups, conditional logic, and error handling.",
+	"version": "1.0.0",
 	"tags": ["SFMC", "AMPscript", "Email-Dev"],
-	"placeholder": true,
+	"alwaysEnabled": true,
 	"modeSlugs": []
 }

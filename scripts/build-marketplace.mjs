@@ -236,6 +236,7 @@ for (const skillId of await readSkillDirectories()) {
     minimumMaveCodeVersion: "0.0.0",
     tags: built.definition.tags ?? [],
     ...(built.definition.placeholder === true ? { placeholder: true } : {}),
+    ...(built.definition.alwaysEnabled === true ? { alwaysEnabled: true } : {}),
     ...(Array.isArray(built.definition.modeSlugs) && built.definition.modeSlugs.length > 0
       ? { modeSlugs: built.definition.modeSlugs }
       : {}),

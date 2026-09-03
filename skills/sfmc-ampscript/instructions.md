@@ -1,10 +1,125 @@
 # SFMC - AMPSCRIPT
 
-This is a placeholder skill for Salesforce Marketing Cloud AMPscript development.
+Writes, explains, and debugs AMPscript for Salesforce Marketing Cloud. Built from official SFMC documentation. Handles personalization, dynamic content, data lookups, API calls, and content block references.
 
-Detailed AMPscript authoring guidance, personalization string patterns, data
-extension lookup recipes, and SFMC-safe HTML rules will be published in a
-future version of this skill.
+## When To Use
 
-Until then, follow standard email development best practices and consult the
-official Salesforce Marketing Cloud AMPscript documentation.
+Use this skill when the user needs AMPscript code for SFMC emails, landing pages, or CloudPages. Covers: variable setting, data extension lookups, conditional logic, string manipulation, date functions, API calls, content blocks, and error handling.
+
+## Trigger Phrases
+
+- "write AMPscript"
+- "AMPscript help"
+- "AMPscript for personalization"
+- "AMPscript lookup"
+- "debug AMPscript"
+- "explain this AMPscript"
+- "SFMC personalization code"
+
+## Instructions
+
+### Step 1 — Understand the Requirement
+
+Clarify:
+
+- Where will this AMPscript run? (email / landing page / CloudPage / SMS)
+- What data source? (DE name, sendable DE, profile attributes, API)
+- What personalization is needed? (name, product, conditional content, dynamic links)
+- Error handling preference? (fail silently / show default / show error)
+
+### Step 2 — Write the AMPscript
+
+Generate AMPscript following SFMC best practices:
+
+- Declare all variables at the top with SET
+- Use Lookup / LookupRows for DE queries
+- Use IIF for simple conditionals, IF-THEN-ELSE for complex logic
+- Use ContentBlockByKey for reusable content
+- Include error handling with empty() checks
+- Comment every logical block
+
+**Output format:**
+
+```
+AMPSCRIPT
+═════════
+
+PURPOSE: [what this code does in one line]
+RUNS IN: [email / landing page / CloudPage]
+DATA SOURCE: [DE name or profile attributes]
+```
+
+```ampscript
+%%[
+/* ═══ Variable Declarations ═══ */
+SET @variableName = [value or lookup]
+
+/* ═══ Data Lookup ═══ */
+SET @rows = LookupRows("DataExtensionName", "keyColumn", @keyValue)
+
+/* ═══ Conditional Logic ═══ */
+IF NOT EMPTY(@rows) THEN
+  SET @row = Row(@rows, 1)
+  SET @fieldValue = Field(@row, "FieldName")
+ELSE
+  SET @fieldValue = "Default Value"
+ENDIF
+]%%
+
+/* ═══ Output ═══ */
+%%=v(@fieldValue)=%%
+```
+
+```
+EXPLANATION:
+- Line-by-line walkthrough of what each section does
+- Why this approach was chosen over alternatives
+
+TESTING:
+- How to test in Preview & Test
+- Sample data to use
+- Common errors to watch for
+```
+
+### Step 3 — Debug Mode
+
+If the user shares broken AMPscript:
+
+1. Identify the error type (syntax / logic / data / runtime)
+2. Explain what's wrong and why
+3. Provide the corrected code with changes highlighted
+4. Suggest how to prevent this error pattern
+
+## Reference
+
+### Core Functions
+
+| Function | Signature |
+|----------|-----------|
+| lookup | `Lookup(DE, returnField, lookupField, lookupValue)` |
+| lookuprows | `LookupRows(DE, lookupField, lookupValue)` |
+| row | `Row(rowset, index)` |
+| field | `Field(row, fieldName)` |
+| concat | `Concat(string1, string2, ...)` |
+| format | `Format(value, formatString)` |
+| now | `Now()` |
+| dateadd | `DateAdd(date, number, datePart)` |
+| datediff | `DateDiff(date1, date2, datePart)` |
+| iif | `IIF(condition, trueValue, falseValue)` |
+| empty | `Empty(value)` |
+| contentblockbykey | `ContentBlockByKey(key)` |
+| treatascontent | `TreatAsContent(string)` |
+| redirectto | `RedirectTo(url)` |
+| cloudfunctionurl | `CloudPagesURL(pageId)` |
+| insertde | `InsertDE(DE, field1, value1, field2, value2)` |
+| updatede | `UpdateDE(DE, keyField, keyValue, field1, value1)` |
+| upsertde | `UpsertDE(DE, keyField, keyValue, field1, value1)` |
+
+## Rules
+
+- Always declare variables before use — SFMC throws silent errors on undeclared variables
+- Always wrap lookups in Empty() checks — missing data should fail gracefully
+- Use ContentBlockByKey over ContentBlockByName for reliability
+- Comment every logical block — SFMC code is maintained by teams, not individuals
+- Never hardcode subscriber keys or email addresses in code
+- Test guidance is mandatory — include Preview & Test instructions with every code block

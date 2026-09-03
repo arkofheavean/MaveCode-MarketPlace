@@ -8,12 +8,12 @@
       "id": "sfmc-ampscript",
       "name": "SFMC - AMPSCRIPT",
       "type": "skill",
-      "description": "Placeholder skill for Salesforce Marketing Cloud AMPscript development guidance. Full instructions coming soon.",
-      "version": "0.1.0",
+      "description": "Writes, explains, and debugs AMPscript for Salesforce Marketing Cloud emails, landing pages, and CloudPages, covering personalization, data lookups, conditional logic, and error handling.",
+      "version": "1.0.0",
       "updatedAt": "2026-09-01T00:00:00.000Z",
       "packageUrl": "skills/sfmc-ampscript/package.maveskill.json",
-      "sha256": "6af697fee22812a93d78fd8e0fd6fed5766938ef424fc15882aadda15a5640e2",
-      "packageSize": 959,
+      "sha256": "8337dcf1240487c0ad21cb18ccfa15e7c7d52a31fdbaa2c4c9e1eb29178eb610",
+      "packageSize": 4946,
       "signingKeyId": "mavecode-marketplace-2026-01",
       "minimumMaveCodeVersion": "0.0.0",
       "tags": [
@@ -21,9 +21,64 @@
         "AMPscript",
         "Email-Dev"
       ],
-      "placeholder": true
+      "alwaysEnabled": true
+    },
+    {
+      "id": "sfmc-automation",
+      "name": "SFMC - Automation",
+      "type": "skill",
+      "description": "Plans, builds, and troubleshoots SFMC Automation Studio automations (scheduled, triggered, file-drop), covering activity sequencing, error handling, and monitoring.",
+      "version": "1.0.0",
+      "updatedAt": "2026-09-01T00:00:00.000Z",
+      "packageUrl": "skills/sfmc-automation/package.maveskill.json",
+      "sha256": "610526c7f846fedbc00c53883b42269315921cc85334e08d8a4e62cf68e51c82",
+      "packageSize": 3911,
+      "signingKeyId": "mavecode-marketplace-2026-01",
+      "minimumMaveCodeVersion": "0.0.0",
+      "tags": [
+        "SFMC",
+        "Automation-Studio"
+      ],
+      "alwaysEnabled": true
+    },
+    {
+      "id": "sfmc-journey",
+      "name": "SFMC - Journey",
+      "type": "skill",
+      "description": "Designs, configures, and troubleshoots SFMC Journey Builder journeys: entry sources, decision and engagement splits, wait steps, email activities, and exit criteria.",
+      "version": "1.0.0",
+      "updatedAt": "2026-09-01T00:00:00.000Z",
+      "packageUrl": "skills/sfmc-journey/package.maveskill.json",
+      "sha256": "5363b31f8b1a79d7c04ac2981a3436d27fd1b4abe745d32bbb312e1174d93b82",
+      "packageSize": 4394,
+      "signingKeyId": "mavecode-marketplace-2026-01",
+      "minimumMaveCodeVersion": "0.0.0",
+      "tags": [
+        "SFMC",
+        "Journey-Builder"
+      ],
+      "alwaysEnabled": true
+    },
+    {
+      "id": "sfmc-sql",
+      "name": "SFMC - SQL",
+      "type": "skill",
+      "description": "Generates SFMC Query Studio SQL for Data Extension queries, Data View joins, subscriber segmentation, engagement filtering, and scheduled query activities.",
+      "version": "1.0.0",
+      "updatedAt": "2026-09-01T00:00:00.000Z",
+      "packageUrl": "skills/sfmc-sql/package.maveskill.json",
+      "sha256": "1a89983cff71482efc4898a180b78dc8a8eb4cc4cd1d1195af92d425073e61a8",
+      "packageSize": 4379,
+      "signingKeyId": "mavecode-marketplace-2026-01",
+      "minimumMaveCodeVersion": "0.0.0",
+      "tags": [
+        "SFMC",
+        "SQL",
+        "Query-Studio"
+      ],
+      "alwaysEnabled": true
     }
   ],
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "45Y+KAeXeivoB0uqyEI804UQK2W4isNn3X94FS/cWCPH6vV7EVHtOwIcsC0grHxud6vB9dWsMAVGqKuELS9IBg=="
+  "signature": "BjTkutEfs3SLl6QKFUBNPw+lP/LBJm2EJeFCbHLrXHBhHdwNVRFOlm6Mp9jTrclQRDxIVcl22mWcXkqLuI5YAQ=="
 }
