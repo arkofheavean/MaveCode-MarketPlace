@@ -422,8 +422,37 @@ if (marketplace.skillsCatalogUrl) {
     if (skillPackage.id !== item.id || skillPackage.version !== item.version) {
       throw new Error(`${item.id} skill package identity does not match catalog`)
     }
+    if (skillPackage.schemaVersion !== 1 && skillPackage.schemaVersion !== 2) {
+      throw new Error(`${item.id} skill package must declare schemaVersion 1 or 2`)
+    }
     if (typeof skillPackage.instructions !== "string" || skillPackage.instructions.length === 0) {
       throw new Error(`${item.id} skill package must declare non-empty instructions`)
+    }
+    scanSecrets(skillPackage.instructions, `${item.id} skill instructions`)
+    const bundledBuckets = [
+      { key: "references", prefix: "references/" },
+      { key: "templates", prefix: "templates/" },
+      { key: "scripts", prefix: "scripts/" },
+    ]
+    for (const bucket of bundledBuckets) {
+      const files = skillPackage[bucket.key]
+      if (files === undefined) continue
+      if (!Array.isArray(files)) {
+        throw new Error(`${item.id} skill package ${bucket.key} must be an array when present`)
+      }
+      for (const [fileIndex, file] of files.entries()) {
+        const fileLabel = `${item.id} skill ${bucket.key}[${fileIndex}]`
+        if (typeof file?.path !== "string" || file.path.length === 0) {
+          throw new Error(`${fileLabel}.path must be a non-empty string`)
+        }
+        if (typeof file?.content !== "string" || file.content.length === 0) {
+          throw new Error(`${fileLabel}.content must be a non-empty string`)
+        }
+        if (!file.path.startsWith(bucket.prefix)) {
+          throw new Error(`${fileLabel}.path must start with "${bucket.prefix}"`)
+        }
+        scanSecrets(file.content, `${fileLabel}.content`)
+      }
     }
   }
 }

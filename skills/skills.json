@@ -9,11 +9,11 @@
       "name": "SFMC - AMPSCRIPT",
       "type": "skill",
       "description": "Writes, explains, and debugs AMPscript for Salesforce Marketing Cloud emails, landing pages, and CloudPages, covering personalization, data lookups, conditional logic, and error handling.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "updatedAt": "2026-09-01T00:00:00.000Z",
       "packageUrl": "skills/sfmc-ampscript/package.maveskill.json",
-      "sha256": "8337dcf1240487c0ad21cb18ccfa15e7c7d52a31fdbaa2c4c9e1eb29178eb610",
-      "packageSize": 4946,
+      "sha256": "89f563c80781bb4606c1aa9e947a19f0643e415a4061d33c13e6834347a65228",
+      "packageSize": 58517,
       "signingKeyId": "mavecode-marketplace-2026-01",
       "minimumMaveCodeVersion": "0.0.0",
       "tags": [
@@ -31,8 +31,8 @@
       "version": "1.0.0",
       "updatedAt": "2026-09-01T00:00:00.000Z",
       "packageUrl": "skills/sfmc-automation/package.maveskill.json",
-      "sha256": "610526c7f846fedbc00c53883b42269315921cc85334e08d8a4e62cf68e51c82",
-      "packageSize": 3911,
+      "sha256": "bc78b285e4cf5c2feacc09adcd8ba15ce02217c881eb32c3a8dc2d724e1bfc49",
+      "packageSize": 3967,
       "signingKeyId": "mavecode-marketplace-2026-01",
       "minimumMaveCodeVersion": "0.0.0",
       "tags": [
@@ -49,8 +49,8 @@
       "version": "1.0.0",
       "updatedAt": "2026-09-01T00:00:00.000Z",
       "packageUrl": "skills/sfmc-journey/package.maveskill.json",
-      "sha256": "5363b31f8b1a79d7c04ac2981a3436d27fd1b4abe745d32bbb312e1174d93b82",
-      "packageSize": 4394,
+      "sha256": "4097b22e5b50a7c42b8ef6d954836312cc8c19f0752bcc4f415fc38b17089360",
+      "packageSize": 4450,
       "signingKeyId": "mavecode-marketplace-2026-01",
       "minimumMaveCodeVersion": "0.0.0",
       "tags": [
@@ -67,8 +67,8 @@
       "version": "1.0.0",
       "updatedAt": "2026-09-01T00:00:00.000Z",
       "packageUrl": "skills/sfmc-sql/package.maveskill.json",
-      "sha256": "1a89983cff71482efc4898a180b78dc8a8eb4cc4cd1d1195af92d425073e61a8",
-      "packageSize": 4379,
+      "sha256": "5c91d24b25515bbd110e5c855242b8f6dbbc2bc03ec06e0ff17dd821d584af65",
+      "packageSize": 4435,
       "signingKeyId": "mavecode-marketplace-2026-01",
       "minimumMaveCodeVersion": "0.0.0",
       "tags": [
@@ -80,5 +80,5 @@
     }
   ],
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "BjTkutEfs3SLl6QKFUBNPw+lP/LBJm2EJeFCbHLrXHBhHdwNVRFOlm6Mp9jTrclQRDxIVcl22mWcXkqLuI5YAQ=="
+  "signature": "v0Sw1MZwsUNxDKFaRwfrwrokJdUoO8vP8VywDBDJ3fnczE3CSo7Hahz81UFTdu+pnmQpY1kgBzwnJaG15x6EDA=="
 }

@@ -107,13 +107,19 @@ const buildSkillPackage = async (id, privateKeyPem) => {
   const skillRoot = path.join(root, "skills", id)
   const definition = JSON.parse(await readFile(path.join(skillRoot, "skill.json"), "utf8"))
   const instructions = await readFile(path.join(skillRoot, "instructions.md"), "utf8")
+  const references = await readTextFiles(path.join(skillRoot, "references"))
+  const templates = await readTextFiles(path.join(skillRoot, "templates"))
+  const scripts = await readTextFiles(path.join(skillRoot, "scripts"))
   const unsignedPackage = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id,
     version: definition.version,
     name: definition.name,
     description: definition.description,
     instructions,
+    references,
+    templates,
+    scripts,
     ...(Array.isArray(definition.modeSlugs) && definition.modeSlugs.length > 0
       ? { modeSlugs: definition.modeSlugs }
       : {}),
