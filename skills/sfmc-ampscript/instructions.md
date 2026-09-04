@@ -322,3 +322,21 @@ Non-obvious platform behaviors that cause real production problems:
 - `data-extension-design` — design DEs with appropriate PKs and indexing before writing AMPscript Lookup calls against them
 - `email-studio-administration` — configure sendable DEs, All Subscribers list, and send classification before writing subscriber-context AMPscript
 - `marketing-cloud-data-sync` — set up Synchronized Data Extensions (SDEs) used as lookup sources in AMPscript personalization
+
+---
+
+## Bundled Reference
+
+This skill bundles a complete, normalized AMPscript function reference consolidated from the official Salesforce Marketing Cloud AMPscript documentation (176 pages). Consult these files when you need exact function signatures, parameters, platform support (Engagement vs Next), or family-level navigation. Each function entry lists its parameters and any captured example; entries whose source omitted a code sample are annotated `Example code not captured in source.` Do not invent example code for those.
+
+| File | Contents |
+|---|---|
+| `references/function-index.md` | Navigation surface: every function grouped by family with a one-line description and Engagement/Next support columns, plus personalization/system-string pointers. Start here to locate a function. |
+| `references/language-guide.md` | Language concepts (blocks vs inline vs tag syntax, variables, conditionals, loops, rowset iteration, MO message parsing) and the VS Code AMPscript Core tooling notes. Deduplicated against Core Concepts above. |
+| `references/fn-data-extension.md` | Data Extension functions: `Lookup` family, `Row`/`RowCount`/`Field`, `Claim*`, `Insert`/`Update`/`Upsert`/`Delete`, `ExecuteFilter*`, `BuildRowSetFrom*`. |
+| `references/fn-string-math-date.md` | All String, Math, and Date/Time functions. |
+| `references/fn-utility-content.md` | Utility, Content, Site/URL (including `Redirect`, `WAT`/`WATP`), and Impression functions. |
+| `references/fn-http-crypto.md` | HTTP functions (`HttpGet`, `HttpPost`/`HttpPost2`, retries, `IsCHTMLBrowser`, `WrapLongURL`, `RedirectTo`) and Encryption/Hashing (`EncryptSymmetric`/`DecryptSymmetric`, `MD5`/`SHA*`, `GetJWT*`). |
+| `references/fn-integrations-appendix.md` | Niche integration families: SOAP API, Contact, SMS/MMS, Social, Microsoft Dynamics CRM, Sales/Service Cloud (including `LongSFID`), and authenticated-user personalization functions. |
+
+The four curated guides — `references/examples.md`, `references/gotchas.md`, `references/well-architected.md`, and `references/llm-anti-patterns.md` — remain the authoritative sources for worked patterns, pitfalls, architecture guidance, and anti-patterns.

@@ -9,11 +9,11 @@
       "name": "SFMC - AMPSCRIPT",
       "type": "skill",
       "description": "Writes, explains, and debugs AMPscript for Salesforce Marketing Cloud emails, landing pages, and CloudPages, covering personalization, data lookups, conditional logic, and error handling.",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "updatedAt": "2026-09-01T00:00:00.000Z",
       "packageUrl": "skills/sfmc-ampscript/package.maveskill.json",
-      "sha256": "89f563c80781bb4606c1aa9e947a19f0643e415a4061d33c13e6834347a65228",
-      "packageSize": 58517,
+      "sha256": "faa46acd5658553970b1e3623f31bbafdb15c9c6f38e906859bd28c2ca80dc57",
+      "packageSize": 165110,
       "signingKeyId": "mavecode-marketplace-2026-01",
       "minimumMaveCodeVersion": "0.0.0",
       "tags": [
@@ -80,5 +80,5 @@
     }
   ],
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "v0Sw1MZwsUNxDKFaRwfrwrokJdUoO8vP8VywDBDJ3fnczE3CSo7Hahz81UFTdu+pnmQpY1kgBzwnJaG15x6EDA=="
+  "signature": "7hKTrIv5PTdxybIDXE6P9AHkh8aWiu51gh6ReONOuNVb7d2NNiwm72gygW+rdeQaVtCG/Jt1rEtWDOvsLJ1OBg=="
 }
