@@ -5,6 +5,25 @@
   "minimumMaveCodeVersion": "0.0.0",
   "items": [
     {
+      "id": "iterable-handlebars",
+      "name": "Iterable - Handlebars",
+      "type": "skill",
+      "description": "Writes, explains, and debugs Handlebars personalization for Iterable email, SMS, and push templates — merge tags, helpers (text, math, date, looping, conditional, regex, encoding/hashing), built-in merge tags, and troubleshooting.",
+      "version": "1.0.0",
+      "updatedAt": "2026-09-01T00:00:00.000Z",
+      "packageUrl": "skills/iterable-handlebars/package.maveskill.json",
+      "sha256": "ee35e9919fb77b84d5d3821a15a6fe82e154d0b37cd7b084ca5b76cdac205776",
+      "packageSize": 186405,
+      "signingKeyId": "mavecode-marketplace-2026-01",
+      "minimumMaveCodeVersion": "0.0.0",
+      "tags": [
+        "Iterable",
+        "Handlebars",
+        "Email-Dev"
+      ],
+      "alwaysEnabled": true
+    },
+    {
       "id": "sfmc-ampscript",
       "name": "SFMC - AMPSCRIPT",
       "type": "skill",
@@ -80,5 +99,5 @@
     }
   ],
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "7hKTrIv5PTdxybIDXE6P9AHkh8aWiu51gh6ReONOuNVb7d2NNiwm72gygW+rdeQaVtCG/Jt1rEtWDOvsLJ1OBg=="
+  "signature": "mvW2lc3+vXrJweSyX26FwpdWAizkW55Ivun+v7NFNA6/xxGROPiaPq9g3M0TZ4O9NabKQwrFBXE1jZSUPUCPBQ=="
 }

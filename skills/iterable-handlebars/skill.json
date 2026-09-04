@@ -1,0 +1,9 @@
+{
+	"id": "iterable-handlebars",
+	"name": "Iterable - Handlebars",
+	"description": "Writes, explains, and debugs Handlebars personalization for Iterable email, SMS, and push templates — merge tags, helpers (text, math, date, looping, conditional, regex, encoding/hashing), built-in merge tags, and troubleshooting.",
+	"version": "1.0.0",
+	"tags": ["Iterable", "Handlebars", "Email-Dev"],
+	"alwaysEnabled": true,
+	"modeSlugs": []
+}
