@@ -45,3 +45,10 @@ As of the extension `3.77.0` release, the chat `/` menu resolves to **skills onl
 ## Signing
 
 Packages and catalogs are signed with an ed25519 key (`signingKeyId: mavecode-marketplace-2026-01`). The matching public key in `keys/public-keys.json` is bundled into the extension for verification; the extension rejects any package/catalog signed by an untrusted key. The private key is never committed to the extension repository.
+
+## Extension release notes
+
+These notes track behavior in the MaveCode extension that affects how marketplace content and accounts are presented. Marketplace content packages are versioned independently in their own `skill.json` / persona / MCP manifests.
+
+- **Extension `3.79.1`** — Account avatar fix. Google profile photos are served from several `*.googleusercontent.com` hosts (for example `lh3`, `lh4`, `lh5`, `lh6`, and `lh3-rc`). The webview Content-Security-Policy `img-src` previously allow-listed only `https://lh3.googleusercontent.com`, so accounts whose photo resolved to any other Google host fell back to the initial/`!` placeholder in the account button. The CSP now allows `https://*.googleusercontent.com`, so all Google account avatars render. No marketplace content changes were required for this release.
+- **Extension `3.77.0`** — Chat `/` resolves to skills only; see "Slash `/` invokes skills" above.
