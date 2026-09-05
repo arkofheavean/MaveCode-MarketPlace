@@ -51,6 +51,14 @@ The extension ships with only the runtime code and mandatory fallback assets nee
 - Project MCP editing is no longer promoted in extension Settings because marketplace MCPs are managed globally. The MCP settings view keeps global MCP editing, refresh, and Marketplace access.
 - Slash `/` in chat resolves to skills only. As of extension `3.77.0` the legacy slash-command subsystem was removed in favor of skills: the `/` menu no longer lists modes or legacy commands, the `run_slash_command` tool is tombstoned (retained only as a name in `@roo-code/types` for backward compatibility and never offered at runtime), and the standalone slash-command settings/services were deleted. Marketplace content therefore publishes skills, not slash commands; an installed and enabled skill is invocable from chat as `/skill-name` and also surfaces as a command. There is no separate slash-command content type in the marketplace.
 
+### Extension 3.80.0 provider boundary
+
+- The retired MaveChat runtime, frontend, Apps Script files, tests, and scheduled trigger are removed; marketplace packages must not reference MaveChat services.
+- MaveCode Free provider/model configuration is Google-Sheet-driven and is not duplicated into marketplace catalogs or packages.
+- MaveCode Free and MaveCode Codex use authenticated live Cloudflare relays. `MAVECODE_RELAY_SECRET` and provider credentials are deployment secrets, never marketplace assets.
+- The standalone OpenAI providers remain separate and unchanged by this integration.
+- GitHub release `v3.80.0` distributes the extension VSIX and Figma plugin ZIP together. This project does not publish the extension to the VS Code Marketplace.
+
 ## 3. Current architecture inventory
 
 ### Core built-in modes

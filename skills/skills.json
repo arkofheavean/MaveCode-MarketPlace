@@ -65,11 +65,11 @@
       "name": "SFMC - Journey",
       "type": "skill",
       "description": "Designs, configures, and troubleshoots SFMC Journey Builder journeys: entry sources, decision and engagement splits, wait steps, email activities, and exit criteria.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "updatedAt": "2026-09-01T00:00:00.000Z",
       "packageUrl": "skills/sfmc-journey/package.maveskill.json",
-      "sha256": "4097b22e5b50a7c42b8ef6d954836312cc8c19f0752bcc4f415fc38b17089360",
-      "packageSize": 4450,
+      "sha256": "f269265fa2f83eff02dffefd190727569b2460fd2e904b1c1613b04e36a86ba5",
+      "packageSize": 5729,
       "signingKeyId": "mavecode-marketplace-2026-01",
       "minimumMaveCodeVersion": "0.0.0",
       "tags": [
@@ -99,5 +99,5 @@
     }
   ],
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "mvW2lc3+vXrJweSyX26FwpdWAizkW55Ivun+v7NFNA6/xxGROPiaPq9g3M0TZ4O9NabKQwrFBXE1jZSUPUCPBQ=="
+  "signature": "mGfDG+gV96V8lADC4BYwKzubTEQvXOczBVZWQ/3HuaiqKnvcrDHRHdUNmr/eB6KFTczP/Q7F3IucaggI3x+5Dg=="
 }
