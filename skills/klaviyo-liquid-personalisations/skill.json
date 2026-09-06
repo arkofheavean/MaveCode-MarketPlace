@@ -1,0 +1,9 @@
+{
+	"id": "klaviyo-liquid-personalisations",
+	"name": "Klaviyo - Liquid Personalisations",
+	"description": "Authors Klaviyo message-template personalization using the Django-based template language — template variables (recipient, account, event), template tags (unsubscribe, web view, manage preferences, dates), conditionals and loops, filters (lookup, default, floatformat), custom-coded HTML blocks, catalog lookup tags for dynamic product recommendations, and AMP markup with verbatim tags.",
+	"version": "1.0.0",
+	"tags": ["Klaviyo", "Personalization", "Email-Dev"],
+	"alwaysEnabled": true,
+	"modeSlugs": []
+}

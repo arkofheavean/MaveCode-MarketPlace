@@ -1,0 +1,9 @@
+{
+	"id": "klaviyo-email-operations",
+	"name": "Klaviyo - Email Operations",
+	"description": "Plans and builds Klaviyo email operations — campaigns vs. flows vs. transactional distinction, API-based transactional email templates (order/shipping/password/invoice/account events), flow-driven content via webhooks and custom actions, email/SMS consent and compliance, deliverability and sender authentication (SPF/DKIM/DMARC), and email metrics/analytics.",
+	"version": "1.0.0",
+	"tags": ["Klaviyo", "Email-Ops", "Email-Dev"],
+	"alwaysEnabled": true,
+	"modeSlugs": []
+}

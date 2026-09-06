@@ -24,6 +24,44 @@
       "alwaysEnabled": true
     },
     {
+      "id": "klaviyo-email-operations",
+      "name": "Klaviyo - Email Operations",
+      "type": "skill",
+      "description": "Plans and builds Klaviyo email operations — campaigns vs. flows vs. transactional distinction, API-based transactional email templates (order/shipping/password/invoice/account events), flow-driven content via webhooks and custom actions, email/SMS consent and compliance, deliverability and sender authentication (SPF/DKIM/DMARC), and email metrics/analytics.",
+      "version": "1.0.0",
+      "updatedAt": "2026-09-01T00:00:00.000Z",
+      "packageUrl": "skills/klaviyo-email-operations/package.maveskill.json",
+      "sha256": "e781ffee392dec999d4e08837e91baad5cff3169f37d3d610515c9888654f0c3",
+      "packageSize": 60598,
+      "signingKeyId": "mavecode-marketplace-2026-01",
+      "minimumMaveCodeVersion": "0.0.0",
+      "tags": [
+        "Klaviyo",
+        "Email-Ops",
+        "Email-Dev"
+      ],
+      "alwaysEnabled": true
+    },
+    {
+      "id": "klaviyo-liquid-personalisations",
+      "name": "Klaviyo - Liquid Personalisations",
+      "type": "skill",
+      "description": "Authors Klaviyo message-template personalization using the Django-based template language — template variables (recipient, account, event), template tags (unsubscribe, web view, manage preferences, dates), conditionals and loops, filters (lookup, default, floatformat), custom-coded HTML blocks, catalog lookup tags for dynamic product recommendations, and AMP markup with verbatim tags.",
+      "version": "1.0.0",
+      "updatedAt": "2026-09-01T00:00:00.000Z",
+      "packageUrl": "skills/klaviyo-liquid-personalisations/package.maveskill.json",
+      "sha256": "6199deed1b3b86c183059273071aa953aec39ea5cfa3ea1ec2dbec46b722d83e",
+      "packageSize": 24279,
+      "signingKeyId": "mavecode-marketplace-2026-01",
+      "minimumMaveCodeVersion": "0.0.0",
+      "tags": [
+        "Klaviyo",
+        "Personalization",
+        "Email-Dev"
+      ],
+      "alwaysEnabled": true
+    },
+    {
       "id": "sfmc-ampscript",
       "name": "SFMC - AMPSCRIPT",
       "type": "skill",
@@ -99,5 +137,5 @@
     }
   ],
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "mGfDG+gV96V8lADC4BYwKzubTEQvXOczBVZWQ/3HuaiqKnvcrDHRHdUNmr/eB6KFTczP/Q7F3IucaggI3x+5Dg=="
+  "signature": "/IKa2pHKYPDhtgy0jbQ7j0KPazPLt0cthHfbp4eEd8s5udODZUqjJediyn7vq6pYqnBRzevwKXXn+LUs1JcbDA=="
 }
