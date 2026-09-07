@@ -120,12 +120,12 @@
       "id": "sfmc-sql",
       "name": "SFMC - SQL",
       "type": "skill",
-      "description": "Generates SFMC Query Studio SQL for Data Extension queries, Data View joins, subscriber segmentation, engagement filtering, and scheduled query activities.",
-      "version": "1.0.0",
+      "description": "Generates SFMC Query Studio SQL for Data Extension queries, Data View joins, subscriber segmentation, engagement filtering, and scheduled query activities, with Marketing Cloud Engagement best practices for readable, explicit, maintainable, and tested SQL.",
+      "version": "1.1.0",
       "updatedAt": "2026-09-01T00:00:00.000Z",
       "packageUrl": "skills/sfmc-sql/package.maveskill.json",
-      "sha256": "5c91d24b25515bbd110e5c855242b8f6dbbc2bc03ec06e0ff17dd821d584af65",
-      "packageSize": 4435,
+      "sha256": "3a65ace884d231cd0b61ef0dbd1e25b909dbb7d0918fb05b131d5d5aba38595d",
+      "packageSize": 22764,
       "signingKeyId": "mavecode-marketplace-2026-01",
       "minimumMaveCodeVersion": "0.0.0",
       "tags": [
@@ -137,5 +137,5 @@
     }
   ],
   "signingKeyId": "mavecode-marketplace-2026-01",
-  "signature": "/IKa2pHKYPDhtgy0jbQ7j0KPazPLt0cthHfbp4eEd8s5udODZUqjJediyn7vq6pYqnBRzevwKXXn+LUs1JcbDA=="
+  "signature": "lg6iyq1jUE77nBZoYWjQ9Bvg2k913ot4Ih0QQ/8GW30c13E25UovpprAajJKEuj1r5mZj15ipLR2uA8zAakXDA=="
 }
