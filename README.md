@@ -33,14 +33,107 @@ The extension ships only with runtime code and mandatory fallback assets:
 
 As of the extension `3.77.0` release, the chat `/` menu resolves to **skills only**. The legacy slash-command subsystem was removed from the extension in favor of skills. Skills can be authored here (see `skills/`) and, once installed and enabled, are invocable from chat via `/skill-name` and also surface as commands. There is no separate "slash command" content type in the marketplace; publish skills instead.
 
+## Agent Skills compatibility for Claude Code, Roo Code, Zoo Code, Kiro, and other agents
+
+MaveCode users should continue installing skills from the built-in MaveCode Marketplace. That path uses the signed `package.maveskill.json` packages and verified catalogs in this repository.
+
+For other Agent Skills-compatible tools, every Marketplace skill directory also includes a standard `SKILL.md` file. This file is a portability mirror only:
+
+- `name` comes from the skill directory ID and `skill.json.id`.
+- `description` comes from `skill.json.description`.
+- the Markdown body is copied from `instructions.md`.
+- supporting files remain in the existing `references/`, `templates/`, and `scripts/` directories.
+
+Do not edit `SKILL.md` as the source of truth. Update `skill.json` and `instructions.md` first, then regenerate or manually sync the matching `SKILL.md` before publishing.
+
+### Install all skills
+
+If your Agent Skills installer supports installing all skills from a GitHub repository, use the repository URL and the installer option for all skills. For example, with a compatible `skills` CLI version:
+
+```sh
+npx skills add arkofheavean/MaveCode-MarketPlace --all
+```
+
+This should install every directory under `skills/` that contains a `SKILL.md` file:
+
+- `iterable-handlebars`
+- `klaviyo-email-operations`
+- `klaviyo-liquid-personalisations`
+- `sfmc-ampscript`
+- `sfmc-automation`
+- `sfmc-journey`
+- `sfmc-sql`
+
+If the installer does not understand nested repository layouts, use the manual method below and copy the contents of this repository's `skills/` directory into the target agent's skills directory.
+
+### Install one skill
+
+If your Agent Skills installer supports selecting a single skill, pass the skill ID. For example:
+
+```sh
+npx skills add arkofheavean/MaveCode-MarketPlace --skill sfmc-ampscript
+```
+
+Use the exact IDs listed above. Do not shorten them to ambiguous names like `sfmc` or `klaviyo`, because multiple Marketplace skills share those brands.
+
+### Install multiple selected skills
+
+Some installer versions support repeating `--skill`:
+
+```sh
+npx skills add arkofheavean/MaveCode-MarketPlace --skill sfmc-ampscript --skill sfmc-sql
+```
+
+If repeated flags are not supported by your installer version, run the single-skill install command once per skill.
+
+### Manual install fallback
+
+Manual installation works for any agent that reads standard Agent Skills folders:
+
+1. Clone or download this repository.
+2. Open the `skills/` directory.
+3. Copy the complete skill directory or directories you want.
+4. Paste them into your agent's documented skills directory.
+5. Confirm the final path ends with `<skill-id>/SKILL.md`.
+6. Restart or refresh the agent if needed.
+
+For example, installing all skills into a Roo-compatible project directory should produce this shape:
+
+```text
+your-project/
+  .roo/
+    skills/
+      iterable-handlebars/
+        SKILL.md
+      klaviyo-email-operations/
+        SKILL.md
+      klaviyo-liquid-personalisations/
+        SKILL.md
+      sfmc-ampscript/
+        SKILL.md
+      sfmc-automation/
+        SKILL.md
+      sfmc-journey/
+        SKILL.md
+      sfmc-sql/
+        SKILL.md
+```
+
+For agents that support the shared Agent Skills location, the same directories can be copied under `.agents/skills/` instead. Claude Code, Roo Code, Zoo Code, Kiro, and OpenCode may each have product/version-specific locations or import behavior, so follow the documentation for the exact version you use.
+
+### Security and scripts
+
+Marketplace skill scripts are distributed only as supporting resources. They must not run automatically during install. Only execute a script after explicit user review and consent.
+
 ## Publishing workflow
 
 1. Edit persona/MCP/skill source files in this repo (in VS Code).
 2. Bump the version for every content change.
-3. Run marketplace validation and build (`node scripts/validate-marketplace.mjs`, `node scripts/build-marketplace.mjs`).
-4. Commit with a clear message and push to `main` (no new branch).
-5. CI validates/signs/publishes the catalogs and packages.
-6. Clients receive updates through the cache-first background refresh (every 2 hours) or a manual Marketplace refresh.
+3. For every skill content change, keep `SKILL.md` synchronized with `skill.json` and `instructions.md` for Agent Skills compatibility.
+4. Run marketplace validation and build (`node scripts/validate-marketplace.mjs`, `node scripts/build-marketplace.mjs`).
+5. Commit with a clear message and push to `main` (no new branch).
+6. CI validates/signs/publishes the catalogs and packages.
+7. Clients receive updates through the cache-first background refresh (every 2 hours) or a manual Marketplace refresh.
 
 ## Signing
 

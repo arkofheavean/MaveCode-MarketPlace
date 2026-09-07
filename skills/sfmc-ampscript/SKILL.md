@@ -1,0 +1,347 @@
+---
+name: sfmc-ampscript
+description: "Writes, explains, and debugs AMPscript for Salesforce Marketing Cloud emails, landing pages, and CloudPages, covering personalization, data lookups, conditional logic, and error handling."
+---
+
+# SFMC - AMPSCRIPT
+
+Writes, explains, and debugs AMPscript for Salesforce Marketing Cloud. Built from official SFMC documentation. Handles personalization, dynamic content, data lookups, API calls, and content block references.
+
+## When To Use
+
+Use this skill when the user needs AMPscript code for SFMC emails, landing pages, or CloudPages. Covers: variable setting, data extension lookups, conditional logic, string manipulation, date functions, API calls, content blocks, and error handling.
+
+## Trigger Phrases
+
+- "write AMPscript"
+- "AMPscript help"
+- "AMPscript for personalization"
+- "AMPscript lookup"
+- "debug AMPscript"
+- "explain this AMPscript"
+- "SFMC personalization code"
+
+## Instructions
+
+### Step 1 — Understand the Requirement
+
+Clarify:
+
+- Where will this AMPscript run? (email / landing page / CloudPage / SMS)
+- What data source? (DE name, sendable DE, profile attributes, API)
+- What personalization is needed? (name, product, conditional content, dynamic links)
+- Error handling preference? (fail silently / show default / show error)
+
+### Step 2 — Write the AMPscript
+
+Generate AMPscript following SFMC best practices:
+
+- Declare all variables at the top with SET
+- Use Lookup / LookupRows for DE queries
+- Use IIF for simple conditionals, IF-THEN-ELSE for complex logic
+- Use ContentBlockByKey for reusable content
+- Include error handling with empty() checks
+- Comment every logical block
+
+**Output format:**
+
+```
+AMPSCRIPT
+═════════
+
+PURPOSE: [what this code does in one line]
+RUNS IN: [email / landing page / CloudPage]
+DATA SOURCE: [DE name or profile attributes]
+```
+
+```ampscript
+%%[
+/* ═══ Variable Declarations ═══ */
+SET @variableName = [value or lookup]
+
+/* ═══ Data Lookup ═══ */
+SET @rows = LookupRows("DataExtensionName", "keyColumn", @keyValue)
+
+/* ═══ Conditional Logic ═══ */
+IF NOT EMPTY(@rows) THEN
+  SET @row = Row(@rows, 1)
+  SET @fieldValue = Field(@row, "FieldName")
+ELSE
+  SET @fieldValue = "Default Value"
+ENDIF
+]%%
+
+/* ═══ Output ═══ */
+%%=v(@fieldValue)=%%
+```
+
+```
+EXPLANATION:
+- Line-by-line walkthrough of what each section does
+- Why this approach was chosen over alternatives
+
+TESTING:
+- How to test in Preview & Test
+- Sample data to use
+- Common errors to watch for
+```
+
+### Step 3 — Debug Mode
+
+If the user shares broken AMPscript:
+
+1. Identify the error type (syntax / logic / data / runtime)
+2. Explain what's wrong and why
+3. Provide the corrected code with changes highlighted
+4. Suggest how to prevent this error pattern
+
+## Reference
+
+### Core Functions
+
+| Function | Signature |
+|----------|-----------|
+| lookup | `Lookup(DE, returnField, lookupField, lookupValue)` |
+| lookuprows | `LookupRows(DE, lookupField, lookupValue)` |
+| row | `Row(rowset, index)` |
+| field | `Field(row, fieldName)` |
+| concat | `Concat(string1, string2, ...)` |
+| format | `Format(value, formatString)` |
+| now | `Now()` |
+| dateadd | `DateAdd(date, number, datePart)` |
+| datediff | `DateDiff(date1, date2, datePart)` |
+| iif | `IIF(condition, trueValue, falseValue)` |
+| empty | `Empty(value)` |
+| contentblockbykey | `ContentBlockByKey(key)` |
+| treatascontent | `TreatAsContent(string)` |
+| redirectto | `RedirectTo(url)` |
+| cloudfunctionurl | `CloudPagesURL(pageId)` |
+| insertde | `InsertDE(DE, field1, value1, field2, value2)` |
+| updatede | `UpdateDE(DE, keyField, keyValue, field1, value1)` |
+| upsertde | `UpsertDE(DE, keyField, keyValue, field1, value1)` |
+
+## Rules
+
+- Always declare variables before use — SFMC throws silent errors on undeclared variables
+- Always wrap lookups in Empty() checks — missing data should fail gracefully
+- Use ContentBlockByKey over ContentBlockByName for reliability
+- Comment every logical block — SFMC code is maintained by teams, not individuals
+- Never hardcode subscriber keys or email addresses in code
+- Test guidance is mandatory — include Preview & Test instructions with every code block
+
+---
+
+# AMPscript Development
+
+This skill activates when a practitioner needs to write or debug AMPscript — the Marketing Cloud server-side scripting language evaluated at send time — to retrieve data from Data Extensions, apply conditional logic per subscriber, iterate over multi-row results, or embed dynamic personalization in email, SMS, push, or Cloud Page content. It does not cover SSJS, SQL Query Activities, or Journey Builder entry configuration.
+
+---
+
+## Before Starting
+
+Gather this context before working on anything in this domain:
+
+- **Channel:** AMPscript syntax is identical across channels (email, SMS, push, Cloud Page), but subject lines and preheaders support only inline `%%= ... =%%` expressions — block syntax `%%[ ... ]%%` in subject lines causes send failures.
+- **Data Extension structure:** Confirm the DE name (exact, case-sensitive in some contexts), the primary key field(s), and which field holds the subscriber's match value. Non-PK fields used in `Lookup` or `LookupRows` trigger full table scans on large DEs.
+- **Subscriber context:** For email sends, the sendable DE or All Subscribers list provides the subscriber key. `AttributeValue("FieldName")` reads from the sendable DE row for the current subscriber; `Lookup()` reads from any other DE.
+- **Common wrong assumption:** Practitioners assume AMPscript variables are available across `%%[ ... ]%%` blocks without re-declaration. Variables declared in one block are available in subsequent blocks in the same content area, but not across separate content areas in a template.
+- **Limits:** `LookupRows()` returns a maximum of 2,000 rows. `LookupOrderedRows()` accepts a count cap as its second argument. Neither function paginates — design DEs so subscriber-scoped queries return well under 2,000 rows.
+
+---
+
+## Core Concepts
+
+### AMPscript Execution Model
+
+AMPscript is evaluated server-side at send time — once per subscriber per send. It is not evaluated when the email is designed, previewed without a subscriber context, or when the template is saved. The implication: preview with a specific test subscriber selected, not the generic preview, or personalization strings and Lookup calls will return empty.
+
+Code blocks use `%%[ ... ]%%` syntax. Multiple blocks in a single content area execute sequentially in document order. Inline output uses `%%= expression =%%` or the equivalent `%%=v(@variable)=%%` shorthand.
+
+### Variables and Declaration
+
+Every variable must be declared with `SET` before use:
+
+```
+%%[
+SET @firstName = AttributeValue("FirstName")
+SET @loyaltyTier = Lookup("Loyalty_DE", "Tier", "SubscriberKey", _subscriberkey)
+]%%
+```
+
+Referencing `@firstName` before the `SET` statement causes a runtime error and may suppress the entire email. AMPscript is case-insensitive for variable names but case-sensitive for DE names and field names in Lookup calls on case-sensitive (`CS`) function variants.
+
+### Lookup Functions
+
+Four lookup functions cover the main retrieval patterns:
+
+| Function | Returns | When to Use |
+|---|---|---|
+| `Lookup(DE, returnField, matchField, matchValue)` | Single scalar value | Fetch one field from one matching row |
+| `LookupRows(DE, matchField, matchValue)` | Rowset (all matches) | Fetch all matching rows for iteration |
+| `LookupOrderedRows(DE, count, sortField, sortOrder, matchField, matchValue)` | Rowset (capped, sorted) | Fetch top-N rows in order |
+| `LookupCS(...)` / `LookupRowsCS(...)` | Same as above | Case-sensitive match — required when match values include mixed case and the DE is case-sensitive |
+
+`Lookup()` returns the value of `returnField` from the first matching row only. If multiple rows match, only the first is returned (undefined ordering unless the DE has a single PK match). Use `LookupRows()` when multiple rows may match.
+
+### FOR Loops Over Rowsets
+
+Iterating over a `LookupRows()` result uses a numeric FOR loop with `Row(@rowset, @index)` to dereference each row:
+
+```
+%%[
+SET @rows = LookupRows("Order_DE", "SubscriberKey", _subscriberkey)
+SET @rowCount = RowCount(@rows)
+
+FOR @i = 1 TO @rowCount DO
+  SET @row = Row(@rows, @i)
+  SET @orderNum = Field(@row, "OrderNumber")
+  SET @total = Field(@row, "Total")
+  /* output handled inline below */
+NEXT @i
+]%%
+```
+
+The inline output for each iteration must be placed between `DO` and `NEXT @i` or use separate inline expressions. `RowCount()` returns 0 when no rows match — always guard with an `IF @rowCount > 0` check before the loop to avoid rendering empty list markup.
+
+---
+
+## Common Patterns
+
+### Pattern: Conditional Content Block by Subscriber Attribute
+
+**When to use:** Show different email body sections based on a field value in the sendable DE or a related DE (e.g., loyalty tier, product preference, region).
+
+**How it works:**
+```
+%%[
+SET @tier = AttributeValue("LoyaltyTier")
+]%%
+
+%%[ IF @tier == "Gold" THEN ]%%
+  <p>As a Gold member, enjoy 20% off your next order.</p>
+%%[ ELSEIF @tier == "Silver" THEN ]%%
+  <p>As a Silver member, enjoy 10% off your next order.</p>
+%%[ ELSE ]%%
+  <p>Join our loyalty program to start earning rewards.</p>
+%%[ ENDIF ]%%
+```
+
+**Why not the alternative:** Dynamic Content blocks in Email Studio are configured via the UI and evaluated before send — they cannot use AMPscript expressions as their conditions, only data filter rules. Use AMPscript `IF/ELSEIF` when conditions are data-driven and require arithmetic, string concatenation, or nested lookups.
+
+### Pattern: Multi-Row Order / Product List in Email Body
+
+**When to use:** Render a subscriber-specific list (recent orders, product recommendations, event registrations) fetched from a non-sendable DE.
+
+**How it works:**
+```
+%%[
+SET @subKey = _subscriberkey
+SET @orders = LookupOrderedRows("RecentOrders_DE", 5, "OrderDate", "DESC", "SubscriberKey", @subKey)
+SET @orderCount = RowCount(@orders)
+]%%
+
+%%[ IF @orderCount > 0 THEN ]%%
+<ul>
+%%[ FOR @i = 1 TO @orderCount DO ]%%
+  %%[ SET @row = Row(@orders, @i) ]%%
+  <li>%%=Field(@row, "OrderNumber")=%% — %%=Field(@row, "Total")=%%</li>
+%%[ NEXT @i ]%%
+</ul>
+%%[ ELSE ]%%
+<p>No recent orders found.</p>
+%%[ ENDIF ]%%
+```
+
+**Why not the alternative:** SSJS can perform the same retrieval via `Platform.Load("Core", "1")` and `DataExtension.Init()`, but SSJS is evaluated once per page/send context and has a higher runtime cost. For per-subscriber rendering AMPscript is preferred. Use SSJS only when making HTTP API calls or manipulating complex data structures unavailable in AMPscript.
+
+---
+
+## Decision Guidance
+
+| Situation | Recommended Approach | Reason |
+|---|---|---|
+| Per-subscriber field personalization from sendable DE | `AttributeValue()` or personalization string `%%FieldName%%` | Direct access to sendable DE row; no extra query cost |
+| Fetch a single value from another DE | `Lookup()` | Returns scalar value; lightest-weight retrieval |
+| Fetch multiple rows from another DE | `LookupRows()` or `LookupOrderedRows()` | Returns iterable rowset; use FOR loop for rendering |
+| Condition depends on subscriber data at send time | AMPscript `IF/ELSEIF/ELSE` | Evaluated per subscriber; Dynamic Content blocks cannot use runtime expressions |
+| Need to call a REST API or perform HTTP fetch | SSJS | AMPscript has no HTTP call functions; use `HTTPGet` in AMPscript only for simple URL fetches with no auth headers |
+| Case-sensitive field match required | `LookupCS()` / `LookupRowsCS()` | Default Lookup variants are case-insensitive; CS variants force exact case matching |
+| Subject line or preheader personalization | Inline `%%= AttributeValue("Field") =%%` | Block syntax `%%[ ]%%` not supported in subject/preheader |
+
+---
+
+## Recommended Workflow
+
+Step-by-step instructions for an AI agent or practitioner working on this task:
+
+1. **Identify the channel and content area** — confirm whether the AMPscript will live in the email body, subject line, preheader, SMS, push, or Cloud Page. Subject lines and preheaders support inline expressions only.
+2. **Map the data source** — identify the Data Extension name(s) and field(s) needed. Note whether the lookup field is the DE primary key (fast) or a non-PK field (full table scan risk on large DEs).
+3. **Choose the retrieval function** — use `AttributeValue()` for sendable DE fields, `Lookup()` for a single value from another DE, `LookupRows()` or `LookupOrderedRows()` for multi-row results. Use `CS` variants only if case-sensitive matching is required.
+4. **Write and declare all variables before use** — place all `SET` statements at the top of the `%%[ ... ]%%` block. Never reference a variable before it is declared.
+5. **Build the FOR loop with null guard** — always check `RowCount(@rows) > 0` before entering a FOR loop. Access each row with `Row(@rows, @i)` and each field with `Field(@row, "FieldName")`.
+6. **Preview with a real subscriber context** — use the Preview tab with a subscriber selected or a test send to a seed list. Generic preview does not evaluate Lookup calls.
+7. **Validate output and fallback paths** — confirm the ELSE branch renders correctly when no data matches, and that required fields are never null in output positions.
+
+---
+
+## Review Checklist
+
+Run through these before marking work in this area complete:
+
+- [ ] All variables declared with `SET` before first use
+- [ ] `LookupRows()` results guarded with `IF RowCount(@rows) > 0` before FOR loop
+- [ ] FOR loop uses `Row(@rows, @i)` and `Field(@row, "FieldName")` — not direct array notation
+- [ ] Subject line and preheader use only inline `%%= ... =%%` syntax, not block syntax
+- [ ] Lookup field is the DE primary key or has a documented performance note if non-PK
+- [ ] All string literals use straight quotes (`"`) not smart/curly quotes
+- [ ] Fallback/ELSE content is present and renders correctly when no data matches
+- [ ] Tested with a real subscriber via preview or test send — not generic preview only
+
+---
+
+## Salesforce-Specific Gotchas
+
+Non-obvious platform behaviors that cause real production problems:
+
+1. **Primary key immutability post-creation** — Once a Data Extension is created, its primary key field(s) cannot be changed. If the wrong field is set as the PK, the DE must be recreated and all historical data migrated. This frequently affects teams that set `Email` as the PK and later need to switch to `ContactKey`.
+2. **Generic preview suppresses Lookup errors** — Previewing an email without selecting a specific subscriber returns empty strings for all `Lookup()` and `AttributeValue()` calls rather than an error. Teams ship broken personalization to production because generic preview "worked." Always preview with a real subscriber or send to a test seed list.
+3. **Block syntax in subject lines silently breaks the send** — Using `%%[ SET @x = ... ]%%` in a subject line field does not produce an error in the UI; it renders the literal `%%[...]%%` text to subscribers. Marketing Cloud only evaluates inline `%%= ... =%%` syntax in subject and preheader fields.
+4. **LookupRows cap at 2,000 rows with no error** — If a subscriber has more than 2,000 matching rows, `LookupRows()` silently returns 2,000 rows with no warning. Loops that depend on a complete dataset will silently produce incomplete output. Use `LookupOrderedRows()` with an explicit count to make the cap intentional.
+5. **Smart quotes cause parse failures** — Copying AMPscript from Word, Google Docs, or a rich-text editor frequently introduces curly/smart quotes. Marketing Cloud's parser treats these as invalid characters, and the error message is often generic ("script error") rather than pointing at the quote character.
+
+---
+
+## Output Artifacts
+
+| Artifact | Description |
+|---|---|
+| AMPscript code block | `%%[ ... ]%%` block with variable declarations, lookup calls, and conditional/loop logic |
+| Inline output expression | `%%= v(@var) =%%` or `%%=Field(@row, "Field")=%%` placed in HTML content |
+| Decision note | Documentation of AMPscript vs SSJS choice rationale for the use case |
+| Test subscriber record | Seed list entry or test data record used to validate personalization at send time |
+
+---
+
+## Related Skills
+
+- `data-extension-design` — design DEs with appropriate PKs and indexing before writing AMPscript Lookup calls against them
+- `email-studio-administration` — configure sendable DEs, All Subscribers list, and send classification before writing subscriber-context AMPscript
+- `marketing-cloud-data-sync` — set up Synchronized Data Extensions (SDEs) used as lookup sources in AMPscript personalization
+
+---
+
+## Bundled Reference
+
+This skill bundles a complete, normalized AMPscript function reference consolidated from the official Salesforce Marketing Cloud AMPscript documentation (176 pages). Consult these files when you need exact function signatures, parameters, platform support (Engagement vs Next), or family-level navigation. Each function entry lists its parameters and any captured example; entries whose source omitted a code sample are annotated `Example code not captured in source.` Do not invent example code for those.
+
+| File | Contents |
+|---|---|
+| `references/function-index.md` | Navigation surface: every function grouped by family with a one-line description and Engagement/Next support columns, plus personalization/system-string pointers. Start here to locate a function. |
+| `references/language-guide.md` | Language concepts (blocks vs inline vs tag syntax, variables, conditionals, loops, rowset iteration, MO message parsing) and the VS Code AMPscript Core tooling notes. Deduplicated against Core Concepts above. |
+| `references/fn-data-extension.md` | Data Extension functions: `Lookup` family, `Row`/`RowCount`/`Field`, `Claim*`, `Insert`/`Update`/`Upsert`/`Delete`, `ExecuteFilter*`, `BuildRowSetFrom*`. |
+| `references/fn-string-math-date.md` | All String, Math, and Date/Time functions. |
+| `references/fn-utility-content.md` | Utility, Content, Site/URL (including `Redirect`, `WAT`/`WATP`), and Impression functions. |
+| `references/fn-http-crypto.md` | HTTP functions (`HttpGet`, `HttpPost`/`HttpPost2`, retries, `IsCHTMLBrowser`, `WrapLongURL`, `RedirectTo`) and Encryption/Hashing (`EncryptSymmetric`/`DecryptSymmetric`, `MD5`/`SHA*`, `GetJWT*`). |
+| `references/fn-integrations-appendix.md` | Niche integration families: SOAP API, Contact, SMS/MMS, Social, Microsoft Dynamics CRM, Sales/Service Cloud (including `LongSFID`), and authenticated-user personalization functions. |
+
+The four curated guides — `references/examples.md`, `references/gotchas.md`, `references/well-architected.md`, and `references/llm-anti-patterns.md` — remain the authoritative sources for worked patterns, pitfalls, architecture guidance, and anti-patterns.

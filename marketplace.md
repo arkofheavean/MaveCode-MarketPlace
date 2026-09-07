@@ -227,6 +227,52 @@ Rules:
 - Extension consumes published catalogs/packages, not raw mutable folders.
 - Raw source folders are for public review and CI package generation.
 
+### Agent Skills compatibility mirror for marketplace skills
+
+As of 7 Sep 2026, each skill source directory also contains a standard `SKILL.md` file so the same Marketplace skill can be copied or installed into Agent Skills-compatible tools such as Claude Code, Roo Code, Zoo Code, Kiro, OpenCode, and other clients that discover skills through `SKILL.md`.
+
+This is a source-repository compatibility layer only. It does not change the MaveCode extension, the signed `package.maveskill.json` format, the published catalogs, package digests, package sizes, marketplace install/update semantics, or extension VSIX releases.
+
+Skill source directories must keep this shape:
+
+```text
+skills/
+  skill-id/
+    SKILL.md
+    skill.json
+    instructions.md
+    package.maveskill.json
+    references/   # optional
+    templates/    # optional
+    scripts/      # optional, inert assets only
+```
+
+`SKILL.md` generation rules:
+
+- filename is exactly `SKILL.md`
+- frontmatter `name` equals `skill.json.id`
+- frontmatter `name` equals the parent directory name
+- frontmatter `description` equals `skill.json.description`
+- body equals the complete `instructions.md` content
+- portable frontmatter stays minimal: `name` and `description` only
+- MaveCode-only metadata such as `alwaysEnabled`, `modeSlugs`, package signatures, digests, and catalog URLs stays out of `SKILL.md`
+- references, templates, and scripts stay in their existing directories and are not duplicated into `SKILL.md`
+- scripts remain inert and must not auto-run during install or update
+
+Future skill authoring rule:
+
+- Every new skill added under `skills/<skill-id>/` must include a synchronized `SKILL.md` before it is committed.
+- Every update to `skill.json.description` or `instructions.md` must be mirrored in `SKILL.md` in the same commit.
+- Existing skill behavior must remain sourced from `skill.json`, `instructions.md`, references, templates, and scripts for MaveCode package generation; `SKILL.md` is for external Agent Skills consumers and public portability.
+- A `SKILL.md`-only synchronization commit does not require a MaveCode extension change, VSIX rebuild, extension GitHub release, marketplace package version bump, catalog regeneration, or VS Code Marketplace release.
+
+External installation guidance:
+
+- One skill: install or copy `skills/<skill-id>/` so the final target path is `<agent-skills-dir>/<skill-id>/SKILL.md`.
+- All skills: install or copy every child directory under `skills/` that contains `SKILL.md`.
+- Do not copy the whole repository into an agent skills directory if that leaves an extra nesting level like `<agent-skills-dir>/MaveCode-MarketPlace/skills/<skill-id>/SKILL.md`; most agents expect each skill directory directly under the skills root.
+- With compatible installer versions, commands may look like `npx skills add arkofheavean/MaveCode-MarketPlace --skill sfmc-ampscript` for one skill and `npx skills add arkofheavean/MaveCode-MarketPlace --all` for all skills, but public documentation must note that exact CLI behavior depends on the installer version.
+
 ## 5. Manifest, catalog, and package schemas
 
 ### Root source manifest
